@@ -84,9 +84,9 @@ class McarTests():
 
         for var in vars:
             for tvar in vars:
-                part_one = dataset.loc[dataset[var].isnull(), tvar]
-                part_two = dataset.loc[~dataset[var].isnull(), tvar]
-                mcar_matrix.loc[var, tvar] = st.ttest_ind(part_one, part_two, nan_policy='omit').pvalue
+                part_one = dataset.loc[dataset[var].isnull(), tvar].dropna()
+                part_two = dataset.loc[~dataset[var].isnull(), tvar].dropna()
+                mcar_matrix.loc[var, tvar] = st.ttest_ind(part_one, part_two, equal_var=False).pvalue
 
         mcar_matrix = mcar_matrix[mcar_matrix.notnull()] > 0.05
 
