@@ -23,7 +23,7 @@ class McarTests():
             'the missingness mechanism of the incomplete dataset is MCAR' can be rejected.
         """
 
-        dataset = self.data
+        dataset = self.data.copy()
         vars = dataset.dtypes.index.values
         n_var = dataset.shape[1]
 
@@ -77,7 +77,7 @@ class McarTests():
             False: Missingness in index variable is not MCAR for column variable
         """
 
-        dataset = self.data
+        dataset = self.data.copy()
         vars = dataset.dtypes.index.values
         mcar_matrix = pd.DataFrame(data=np.zeros(shape=(dataset.shape[1], dataset.shape[1])),
                                    columns=vars, index=vars)
