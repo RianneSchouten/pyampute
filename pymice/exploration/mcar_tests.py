@@ -3,6 +3,30 @@ import pandas as pd
 import math as ma
 import scipy.stats as st
 
+def checks_input_mcar_tests(data):
+    """ Checks whether the input parameter of class McarTests is correct
+
+            Parameters
+            ----------
+            data:
+                The input of McarTests specified as 'data'
+
+            Returns
+            -------
+            bool
+                True if input is correct
+            """
+
+    if not isinstance(data, pd.DataFrame):
+        print("Error: Data should be a Pandas DataFrame")
+        return False
+
+    if not data.isnull().values.any():
+        print("Error: No NaN's in given data")
+        return False
+
+    return True
+
 class McarTests():
 
     def __init__(self, data):
@@ -22,6 +46,9 @@ class McarTests():
             This value is the outcome of a chi-square statistical test, testing whether the null hypothesis
             'the missingness mechanism of the incomplete dataset is MCAR' can be rejected.
         """
+
+        if not checks_input_mcar_tests(self.data):
+            raise Exception("Input not correct")
 
         dataset = self.data.copy()
         vars = dataset.dtypes.index.values
