@@ -21,6 +21,11 @@ def checks_input_mcar_tests(data):
         print("Error: Data should be a Pandas DataFrame")
         return False
 
+    if not any(data.dtypes.values == np.float):
+        if not any(data.dtypes.values == np.int):
+            print("Error: Dataset cannot contain other value types than floats and/or integers")
+            return False
+
     if not data.isnull().values.any():
         print("Error: No NaN's in given data")
         return False
@@ -103,6 +108,9 @@ class McarTests():
             True: Missingness in index variable is MCAR for column variable
             False: Missingness in index variable is not MCAR for column variable
         """
+
+        if not checks_input_mcar_tests(self.data):
+            raise Exception("Input not correct")
 
         dataset = self.data.copy()
         vars = dataset.dtypes.index.values
