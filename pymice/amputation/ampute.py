@@ -131,6 +131,7 @@ class MultivariateAmputation(TransformerMixin):
 
         # when wss contains merely zeroos, the mechanism is MCAR
         # then each case has an equal probability of becoming missing
+        # update 21/6: it is not necessarily true that then it is MCAR, it can be MAR with binary variables
         if  np.all(wss == 0):
             probs = np.repeat(self.freqs[i], len(wss))
         # else we calculate the probabilities based on the wss
