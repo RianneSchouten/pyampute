@@ -1,5 +1,6 @@
+# Author: Rianne Schouten <r.m.schouten@tue.nl; riannemargarethaschouten@gmail.com>
+
 """Transformer for generating multivariate missingness in complete datasets"""
-# Author: Rianne Schouten <riannemargarethaschouten@gmail.com>
 
 import numpy as np
 from sklearn.base import TransformerMixin
@@ -49,7 +50,7 @@ class MultivariateAmputation(TransformerMixin):
     ----------
     .. [1] Rianne Margaretha Schouten, Peter Lugtig & Gerko Vink (2018). 
     Generating missing values for simulation purposes: A multivariate amputation procedure. 
-    Journal of Statistical Computation and Simulation, DOI: 10.1080/00949655.2018.1491577
+    Journal of Statistical Computation and Simulation, https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577
     """
 
 
