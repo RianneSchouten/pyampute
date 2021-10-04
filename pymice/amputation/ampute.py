@@ -2,13 +2,24 @@
 # Author: Rianne Schouten <riannemargarethaschouten@gmail.com>
 # Co-Author: Davina Zamanzadeh <davzaman@gmail.com>
 
-from typing import Tuple
+from typing import Callable, Tuple
+import logging
 import numpy as np
 from sklearn.base import TransformerMixin
 from scipy import stats
 
 # Local
-from utils import ArrayLike, Matrix, contains_nan, isin, enforce_numeric, sigmoid
+from utils import (
+    ArrayLike,
+    Matrix,
+    isin,
+    isnan,
+    is_numeric,
+    enforce_numeric,
+    setup_logging,
+    missingness_profile,
+    sigmoid_scores,
+)
 
 # TODO: Odds
 
@@ -25,9 +36,9 @@ class MultivariateAmputation(TransformerMixin):
     Parameters: <param name> : <type/shape> : <default value>
     ----------
     complete_data : matrix with shape (n, m)
-        Dataset with no missing values.
+        Dataset with no missing values for vars involved in amputation.
         n rows (samples) and m columns (features).
-        Values should be numeric.
+        Values involved in amputation should be numeric, or will be forced.
         Categorical variables should have been transformed to dummies.
 
     prop : float [0,1] : 0.5
@@ -46,7 +57,8 @@ class MultivariateAmputation(TransformerMixin):
             of all samples with missing values,
             40% should have pattern 1, 40% pattern 2. and 2% pattern 3.
 
-    weights : matrix with shape (k, m) :  MCAR: all 0's, MAR: observed vars weight 1, MNAR: missing vars weight 1.
+    weights : matrix with shape (k, m)
+            : MCAR: all 0's, MAR: observed vars weight 1, MNAR: missing vars weight 1.
         Weight matrix specifying size of effect of var on missing vars.
         - negative (decrease effect)
         - 0 (no role in missingness)
@@ -91,6 +103,17 @@ class MultivariateAmputation(TransformerMixin):
         the horizontal shift of the inputs (weighted sum scores) to the
         sigmoid function.
 
+    score_to_probability_func : fn takes an array, shift amount, and type of cutoff
+                              : sigmoid
+        Function converts standardized weighted scores for each sample (in a
+        data subset corresponding to pattern k) to probability of missingness
+        for each sample according to a cutoff type in self.types.
+        - shift amount is an additional shift constant that we find via binary search to
+        ensure the joint missingness probabilities of multiple vars makes sense.
+        ! Note any function that can take a raw value and map it to [0, 1] will work
+            in general, though might not behave according to a cutoff unless tested.
+        # TODO: in validation test if the function passed will work approximately?
+
     Attributes
     ----------
     incomplete_data :  matrix with shape (n, m)
@@ -123,6 +146,7 @@ class MultivariateAmputation(TransformerMixin):
         upper_range: float = 3,
         max_dif_with_target: float = 0.001,
         max_iter: int = 100,
+        score_to_probability_func: Callable[[ArrayLike], ArrayLike] = sigmoid_scores,
     ):
 
         self.prop = prop
@@ -136,34 +160,19 @@ class MultivariateAmputation(TransformerMixin):
         self.upper_range = upper_range
         self.max_dif_with_target = max_dif_with_target
         self.max_iter = max_iter
+        self.score_to_probability_func = score_to_probability_func
 
-        """
-        Uses self.type to convert a weighted sum score for each sample
-            to a probability of being missing.
-        Right: Regular sigmoid pushes larger values to have high probability,
-        Left: To flip regular sigmoid across y axis, make input negative.
-            This pushes smaller values to have high probability.
-        We apply similar tricks for mid and tail, shifting appropriately.
-
-        b is an additional shift constant that we find via binary search to
-        ensure the joint missingness probabilities of multiple vars makes sense.
-        """
-        # TODO: better name
-        self.score_to_prob = {
-            "RIGHT": lambda wss_standardized, b: wss_standardized + b,
-            "LEFT": lambda wss_standardized, b: -wss_standardized + b,
-            "TAIL": lambda wss_standardized, b: (
-                np.absolute(wss_standardized) - 0.75 + b
-            ),
-            "MID": lambda wss_standardized, b: (
-                -np.absolute(wss_standardized) + 0.75 + b
-            ),
-        }
+        setup_logging()
 
     def _binary_search(
         self, wss_standardized: ArrayLike, pattern_ind: int
     ) -> Tuple[float, Matrix]:
-        # TODO: add description
+        """
+        Search for the appropriate shift/transformation to the scores before passing
+            through the self.probability_function to result in the desired missingness
+            proportion.  e.g. raw wss will mask 17% of samples in pattern k but you want
+            40% missing.
+        """
 
         b = 0
         counter = 0
@@ -183,9 +192,9 @@ class MultivariateAmputation(TransformerMixin):
                 break
 
             # calculate the expected missingness proportion
-            # depends on the logit type, the sum scores and b
-            probs_matrix = sigmoid(
-                self.score_to_prob[self.types[pattern_ind]](wss_standardized, b)
+            # depends on the logit cutoff type, the sum scores and b
+            probs_matrix = self.score_to_probability_func(
+                wss_standardized, b, self.types[pattern_ind]
             )
             current_prop = np.mean(probs_matrix)
 
@@ -207,33 +216,52 @@ class MultivariateAmputation(TransformerMixin):
 
         return b, probs_matrix
 
-    def _choose_probabilities(self, wss: ArrayLike, pattern_ind: int) -> Matrix:
-        # TODO: add description
+    def _choose_probabilities(self, wss: ArrayLike, pattern_index: int) -> Matrix:
+        """
+        Assigns missingness probabilities for each sample in the data subset
+            corresponding to pattern k (pattern_index) using the standardized wss.
+        This is later thresholded to use to decide whether or not to apply pattern k
+        to sample i.
+
+        """
         # when wss contains merely zeros, the mechanism is
         # 1. MCAR: each case has an equal probability of becoming missing
         # 2. MAR with binary variables
+        # Therefore we just use uniform probability of missing per var using self.freqs
         if np.all(wss == 0):
-            probs = np.repeat(self.freqs[pattern_ind], len(wss))
-        # else we calculate the probabilities based on the wss
-        else:
+            probs = np.repeat(self.freqs[pattern_index], len(wss))
+        else:  # else we calculate the probabilities based on the wss
             # standardize wss
             wss_standardized = stats.zscore(wss)
             # calculate the size of b for the desired missingness proportion
-            b, probs_matrix = self._binary_search(wss_standardized, pattern_ind)
+            b, probs_matrix = self._binary_search(wss_standardized, pattern_index)
             probs = np.squeeze(np.asarray(probs_matrix))
 
         return probs
 
     def _calculate_sumscores(self, data_group: Matrix, pattern_ind: int) -> ArrayLike:
-        # TODO: add description
+        """
+        Creates a vector of weighted sum score for each sample in the data subset
+        corresponding to pattern k by computing the inner product of
+            self.weights and the raw values of the samples in that subset.
 
-        # transform categorical data to numerical data
+        This is later converted to a probability to be thresholded on to decide
+            whether or not to apply pattern k to sample i in the data subset.
+        """
+
+        # transform only vars involved in amputation to numeric to compute weights
+        # does not transform the original datset
+        logging.info(
+            "Enforcing data to be numeric since calculation of weights"
+            " requires numeric data."
+        )
+        data_group = enforce_numeric(data_group)
         # standardize data or not
         if self.std:
             data_group = stats.zscore(data_group)
 
         # calculate sum scores
-        # in case of MCAR, weights[i, ] contains merely zeroos and wss are merely zeroos
+        # in case of MCAR, weights[i, ] contains merely zeros and wss are merely zeros
         # in case of MAR, MNAR, the mechanisms is determined by the weights
         wss = np.dot(data_group, self.weights[pattern_ind, :].T)
 
@@ -247,45 +275,45 @@ class MultivariateAmputation(TransformerMixin):
         """
         # check for prop that makes sense, since we validate after setting defaults
         if self.prop > 1 and self.prop <= 100:
-            print(
-                "INFO: Detected proportion of missingness to be percentage,"
+            logging.info(
+                "Detected proportion of missingness to be percentage,"
                 " converting to decimal."
             )
             self.prop /= 100
 
         # RELIES ON: patterns
         if self.freqs is None:
-            print("INFO: no freq passed, assigning uniform frequency across patterns.")
+            logging.info("No freq passed, assigning uniform frequency across patterns.")
             self.freqs = np.repeat(1 / self.num_patterns, self.num_patterns)
         elif len(self.freqs) == 1:
-            print("INFO: One frequency passed, assigning to every pattern.")
+            logging.info("One frequency passed, assigning to every pattern.")
             self.freqs = np.repeat(self.freqs[0], self.num_patterns)
         # TODO : chop off extras?
         # TODO: recalculate frequencies to sum to 1?
 
         # RELIES ON: patterns
         if self.mechanisms is None:
-            print("INFO: No mechanisms passed, assuming MAR for every pattern.")
+            logging.info("No mechanisms passed, assuming MAR for every pattern.")
             self.mechanisms = np.repeat("MAR", self.num_patterns)
         elif len(self.mechanisms) == 1:  # repeat same mechanism for all vars
-            print("INFO: One mechanism passed, assigning to every pattern.")
+            logging.info("One mechanism passed, assigning to every pattern.")
             self.mechanisms = np.repeat(self.mechanisms[0], self.num_patterns)
 
         # RELIES ON: patterns
         if self.types is None:
-            print(
-                "INFO: No amputation type passed, assuming RIGHT amputation."
+            logging.info(
+                "No amputation type passed, assuming RIGHT amputation."
                 " Large scores are assigned high probability to be amputed."
             )
             self.types = np.repeat("RIGHT", self.num_patterns)
         elif len(self.types) == 1:
-            print("INFO: One type passed, assigning to every pattern.")
+            logging.info("One type passed, assigning to every pattern.")
             self.types = np.repeat(self.types[0], self.num_patterns)
 
         # RELIES ON: patterns, mechanisms
         if self.weights is None:
-            print(
-                "INFO: No weights passed."
+            logging.info(
+                "No weights passed."
                 " MCAR: weights are all 0s."
                 " MAR: all observed vars have weight 1."
                 " MNAR: all missing vars have weight 1."
@@ -376,24 +404,10 @@ class MultivariateAmputation(TransformerMixin):
         """
 
         ##################
-        #      DATA      #
-        ##################
-        assert X is not None, "No dataset passed, cannot be None."
-        assert X.shape[1] > 1, "Dataset passed must contain at least two columns."
-        assert not contains_nan(
-            X
-        ), "Dataset passed must be complete, but contains NaNs."
-        print(
-            "INFO: Enforcing all data to be numeric since calculation of weights"
-            " requires numeric data."
-        )
-        X = enforce_numeric(X)
-
-        ##################
         #    PATTERNS    #
         ##################
         if self.patterns is None:
-            print("INFO: No patterns passed, assuming missingness on each variable.")
+            logging.info("No patterns passed, assuming missingness on each variable.")
             self.patterns = 1 - np.identity(n=X.shape[1])
         assert self.patterns.shape[1] == X.shape[1], (
             "Each pattern should specify weights for each feature."
@@ -408,6 +422,25 @@ class MultivariateAmputation(TransformerMixin):
         # defaults for the rest of the args (depends on patterns being initialized)
         self._set_defaults()
         self._validate_args()
+
+        # vars involved in amputation have scores computed and need to be
+        #   complete and numeric
+        # A var (column) is involved if for any pattern (row) it has a weight.
+        vars_involved_in_ampute = (self.weights != 0).any(axis=0)
+
+        ##################
+        #      DATA      #
+        ##################
+        assert X is not None, "No dataset passed, cannot be None."
+        assert X.shape[1] > 1, "Dataset passed must contain at least two columns."
+        assert not isnan(
+            X[:, vars_involved_in_ampute]
+        ).any(), "Features involved in amputation must be complete, but contains NaNs."
+        if not is_numeric(X[:, vars_involved_in_ampute]):
+            logging.warn(
+                "Features involved in amputation found to be non-numeric."
+                " They will be forced to numeric upon calculating sum scores."
+            )
 
         return X
 
@@ -456,4 +489,5 @@ class MultivariateAmputation(TransformerMixin):
             chosen_indices = group_indices[chosen_candidates == 1]
             X_incomplete[chosen_indices, pattern == 0] = np.nan
 
+        missingness_profile(X_incomplete)
         return X_incomplete
