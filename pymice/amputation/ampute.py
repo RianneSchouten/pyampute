@@ -2,14 +2,16 @@
 # Author: Rianne Schouten <riannemargarethaschouten@gmail.com>
 # Co-Author: Davina Zamanzadeh <davzaman@gmail.com>
 
-from typing import Callable, Tuple
+from typing import Callable, Tuple, Union
 import logging
 import numpy as np
+from pandas import DataFrame
 from sklearn.base import TransformerMixin
 from scipy import stats
+from math import isclose
 
 # Local
-from utils import (
+from .utils import (
     ArrayLike,
     Matrix,
     isin,
@@ -19,6 +21,7 @@ from utils import (
     setup_logging,
     missingness_profile,
     sigmoid_scores,
+    standardize_uppercase,
 )
 
 # TODO: Odds
@@ -50,7 +53,7 @@ class MultivariateAmputation(TransformerMixin):
         Number of patterns is theoretically unlimited,
             but too many will send the data subset size to 0.
 
-    freq : array of length k : uniform frequency across patterns
+    freq : float or array of length k : uniform frequency across patterns
         Relative frequency of each pattern, should sum to 1.
         If one specified, it will be replicated k times.
         For example (k = 3 patterns), freq := [0.4, 0.4, 0.2] =>
@@ -71,14 +74,14 @@ class MultivariateAmputation(TransformerMixin):
         Whether or not to standardize data before computing scores.
         Don't standardize if passing both train and test (prevent leaking).
 
-    mechanism: array of length k : MAR
+    mechanism: string or array of length k : MAR
         Specify a mechanism per pattern.
-        Choices: [MCAR, MAR, MNAR]
+        Choices: [MCAR, MAR, MNAR], case insensitive.
         If one specified, it will be replicated k times.
 
-    types : array of length k : RIGHT
+    types : string or array of length k : RIGHT
         Specify a logit cutoff per pattern.
-        Choices: [RIGHT, LEFT, MID, TAIL].
+        Choices: [RIGHT, LEFT, MID, TAIL], case insensitive.
         Dictates a [high, low, average, extreme] score
             (respectively) has a high probability of amputation.
         If one specified, it will be replicated k times.
@@ -107,7 +110,8 @@ class MultivariateAmputation(TransformerMixin):
                               : sigmoid
         Function converts standardized weighted scores for each sample (in a
         data subset corresponding to pattern k) to probability of missingness
-        for each sample according to a cutoff type in self.types.
+        for each sample according to a cutoff type in self.types, i.e.
+            a vector of values [0, 1] that don't have to sum to 1.
         - shift amount is an additional shift constant that we find via binary search to
         ensure the joint missingness probabilities of multiple vars makes sense.
         ! Note any function that can take a raw value and map it to [0, 1] will work
@@ -137,11 +141,11 @@ class MultivariateAmputation(TransformerMixin):
         self,
         prop: float = 0.5,
         patterns: Matrix = None,
-        freqs: ArrayLike = None,
+        freqs: Union[float, ArrayLike] = None,
         weights: Matrix = None,
         std: bool = True,
-        mechanisms: ArrayLike = None,
-        types: ArrayLike = None,
+        mechanisms: Union[str, ArrayLike] = None,
+        types: Union[str, ArrayLike] = None,
         lower_range: float = -3,
         upper_range: float = 3,
         max_dif_with_target: float = 0.001,
@@ -271,7 +275,9 @@ class MultivariateAmputation(TransformerMixin):
         """
         Set defaults for args, assuming patterns has been initialized.
         Most of the defaults rely on info from patterns.
-        Will adjust vars (e.g. change % to decimal, repeat for all patterns, etc.)
+        Will adjust vars:
+            change % to decimal, repeat for all patterns,
+            standardize strings to uppercase force lists to np arrays, etc.)
         """
         # check for prop that makes sense, since we validate after setting defaults
         if self.prop > 1 and self.prop <= 100:
@@ -285,9 +291,15 @@ class MultivariateAmputation(TransformerMixin):
         if self.freqs is None:
             logging.info("No freq passed, assigning uniform frequency across patterns.")
             self.freqs = np.repeat(1 / self.num_patterns, self.num_patterns)
+        elif isinstance(self.freqs, float) or isinstance(self.freqs, int):
+            logging.info("One frequency passed, assigning to every pattern.")
+            self.freqs = np.repeat(self.freqs, self.num_patterns)
+        # TODO : chop off extras?
         elif len(self.freqs) == 1:
             logging.info("One frequency passed, assigning to every pattern.")
             self.freqs = np.repeat(self.freqs[0], self.num_patterns)
+        else:  # force numpy
+            self.freqs = np.array(self.freqs)
         # TODO : chop off extras?
         # TODO: recalculate frequencies to sum to 1?
 
@@ -295,9 +307,24 @@ class MultivariateAmputation(TransformerMixin):
         if self.mechanisms is None:
             logging.info("No mechanisms passed, assuming MAR for every pattern.")
             self.mechanisms = np.repeat("MAR", self.num_patterns)
+        elif isinstance(self.mechanisms, str):
+            logging.info("One mechanism passed, assigning to every pattern.")
+            self.mechanisms = np.repeat(
+                standardize_uppercase(self.mechanisms), self.num_patterns
+            )
         elif len(self.mechanisms) == 1:  # repeat same mechanism for all vars
             logging.info("One mechanism passed, assigning to every pattern.")
-            self.mechanisms = np.repeat(self.mechanisms[0], self.num_patterns)
+            self.mechanisms = np.repeat(
+                standardize_uppercase(self.mechanisms[0]), self.num_patterns
+            )
+        else:  # nothing else to adjust, just standardize to upper case
+            self.mechanisms = np.array(
+                list(map(standardize_uppercase, self.mechanisms))
+            )
+        # assertion here instead of validate_args because weights depends on this.
+        assert (
+            len(self.mechanisms) == self.num_patterns
+        ), "Must specify a mechanism per pattern, but they do not match."
 
         # RELIES ON: patterns
         if self.types is None:
@@ -306,9 +333,16 @@ class MultivariateAmputation(TransformerMixin):
                 " Large scores are assigned high probability to be amputed."
             )
             self.types = np.repeat("RIGHT", self.num_patterns)
+        elif isinstance(self.types, str):
+            logging.info("One type passed, assigning to every pattern.")
+            self.types = np.repeat(standardize_uppercase(self.types), self.num_patterns)
         elif len(self.types) == 1:
             logging.info("One type passed, assigning to every pattern.")
-            self.types = np.repeat(self.types[0], self.num_patterns)
+            self.types = np.repeat(
+                standardize_uppercase(self.types[0]), self.num_patterns
+            )
+        else:  # nothing else to adjust, just standardize to upper case
+            self.types = np.array(list(map(standardize_uppercase, self.types)))
 
         # RELIES ON: patterns, mechanisms
         if self.weights is None:
@@ -335,21 +369,24 @@ class MultivariateAmputation(TransformerMixin):
         ####################
         #     PATTERNS     #
         ####################
-        assert isin(self.patterns, [0, 1]), "Patterns can only contain 0's and 1's."
         # axis=None reduces all axes for both pandas and numpy
+        assert isin(self.patterns, [0, 1]).all(
+            axis=None
+        ), "Patterns can only contain 0's and 1's."
         assert not ((self.patterns == 1).all(axis=None)), (
             "Patterns cannot be all 1's."
             " A pattern with all 1's results in no amputation."
         )
-        assert not (self.patterns[self.mechanisms == "MAR"] == 0).all(axis=None), (
-            "Patterns cannot be all 0's if specifying MAR."
-            " A pattern with all 0's results in all vars missing."
-        )
+        if isin(self.mechanisms, "MAR").any(axis=0):
+            assert not (self.patterns[self.mechanisms == "MAR"] == 0).all(axis=None), (
+                "Patterns cannot be all 0's if specifying MAR."
+                " A pattern with all 0's results in all vars missing."
+            )
 
         ##################
         #      PROP      #
         ##################
-        assert self.prop >= 0 or self.prop <= 100, (
+        assert self.prop >= 0 and self.prop <= 100, (
             "Proportion of missingness should be a value between 0 and 1"
             " (for a proportion) or between 1 and 100 (for a percentage)"
         )
@@ -365,7 +402,8 @@ class MultivariateAmputation(TransformerMixin):
         assert (self.freqs >= 0).all() and (
             self.freqs <= 1
         ).all(), "Frequencies must be between 0 and 1 inclusive."
-        assert sum(self.freqs) == 1, "Frequencies should sum to 1."
+        # there's imprecision in float, so it might be 0.9999999
+        assert isclose(sum(self.freqs), 1), "Frequencies should sum to 1."
 
         ##################
         #   MECHANISMS   #
@@ -375,7 +413,7 @@ class MultivariateAmputation(TransformerMixin):
         ), "Must specify a mechanism per pattern, but they do not match."
         assert isin(
             self.mechanisms, ["MCAR", "MAR", "MNAR"]
-        ), "Mechanisms specified must be one of ['MCAR', 'MAR', 'MNAR']."
+        ).all(), "Mechanisms specified must be one of ['MCAR', 'MAR', 'MNAR']."
 
         #################
         #    WEIGHTS    #
@@ -383,25 +421,28 @@ class MultivariateAmputation(TransformerMixin):
         assert (
             self.weights.shape == self.patterns.shape
         ), "Weights passed must match dimensions of patterns passed."
-        assert (self.patterns[self.mechanisms == "MCAR"] == 0).all(
+        assert (self.weights[self.mechanisms == "MCAR"] == 0).all(
             axis=None
         ), "Patterns with MCAR should have weights of all 0's."
 
         #################
         #     TYPES     #
         #################
-        assert (len(self.types) == len(self.mechanisms)) and (
-            len(self.types) == len(self.freqs)
-        ), "Types, mechs, and freqs must all be the same dimension (# vars)."
+        assert (
+            len(self.types) == self.num_patterns
+        ), "Types, mechs, and freqs must all be the same dimension (# patterns)."
         assert isin(
-            self.types, ["right", "left", "mid", "tail"]
-        ), "Types can only be one of ['right', 'left', 'mid', 'tail']."
+            self.types, ["RIGHT", "LEFT", "MID", "TAIL"]
+        ).all(), "Types can only be one of ['right', 'left', 'mid', 'tail']."
 
     def _validate_input(self, X: Matrix) -> Matrix:
         """
         Validates input data with given arguments to amputer.
         Will modify the dataset to comply if possible, while giving warnings.
         """
+        # This must come first so we can check patterns
+        assert X is not None, "No dataset passed, cannot be None."
+        assert len(X.shape) == 2, "Dataset must be 2 dimensional."
 
         ##################
         #    PATTERNS    #
@@ -409,6 +450,10 @@ class MultivariateAmputation(TransformerMixin):
         if self.patterns is None:
             logging.info("No patterns passed, assuming missingness on each variable.")
             self.patterns = 1 - np.identity(n=X.shape[1])
+        else:
+            assert (
+                len(self.patterns.shape) == 2
+            ), "If a pattern is provided, it must be 2 dimensional."
         assert self.patterns.shape[1] == X.shape[1], (
             "Each pattern should specify weights for each feature."
             " The number of entries for each pattern does not match the"
@@ -431,12 +476,13 @@ class MultivariateAmputation(TransformerMixin):
         ##################
         #      DATA      #
         ##################
-        assert X is not None, "No dataset passed, cannot be None."
         assert X.shape[1] > 1, "Dataset passed must contain at least two columns."
+        # enforce numpy just for checking
+        X_check = X.values if isinstance(X, DataFrame) else X
         assert not isnan(
-            X[:, vars_involved_in_ampute]
+            X_check[:, vars_involved_in_ampute]
         ).any(), "Features involved in amputation must be complete, but contains NaNs."
-        if not is_numeric(X[:, vars_involved_in_ampute]):
+        if not is_numeric(X_check[:, vars_involved_in_ampute]):
             logging.warn(
                 "Features involved in amputation found to be non-numeric."
                 " They will be forced to numeric upon calculating sum scores."

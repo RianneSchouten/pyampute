@@ -21,13 +21,16 @@ def setup_logging(log_filename: str = "output.log"):
     )
 
 
+def standardize_uppercase(input: str) -> str:
+    """Standardize string to upper case."""
+    return input.upper()
+
+
 def sigmoid_scores(
     wss_standardized: ArrayLike, shift_amount: float, cutoff_type: str
 ) -> ArrayLike:
     """
     Applies sigmoid to standardized weighted sum scores to conver to probability.
-    shift_amount is an additional shift constant that we find via binary search to
-        ensure the joint missingness probabilities of multiple vars makes sense.
 
     Right: Regular sigmoid pushes larger values to have high probability,
     Left: To flip regular sigmoid across y axis, make input negative.
@@ -51,7 +54,7 @@ def sigmoid(X: ArrayLike) -> ArrayLike:
 
 def isnan(X: Matrix):
     # ref: https://stackoverflow.com/a/29530601/1888794
-    if isinstance(X, pd.dataframe):
+    if isinstance(X, pd.DataFrame):
         return X.isnull().values
     # else np.ndarray
     return np.isnan(X)
@@ -91,7 +94,8 @@ def missingness_profile(X: Matrix):
     # By row
     entries_missing = nans.any(axis=1).sum()
     print(
-        f"Entries missing a value: {entries_missing} ({percentify(entries_missing, 0)}%)"
+        "Entries missing a value: "
+        f"{entries_missing} ({percentify(entries_missing, 0)}%)"
     )
 
     # By column
