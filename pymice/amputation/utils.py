@@ -1,7 +1,7 @@
 """ Utils mainly to write code agnostic to numpy or pandas.  """
 # Author: Davina Zamanzadeh <davzaman@gmail.com>
 
-from typing import List, Union
+from typing import Callable, List, Union
 import logging
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
@@ -26,26 +26,37 @@ def standardize_uppercase(input: str) -> str:
     return input.upper()
 
 
-def sigmoid_scores(
-    wss_standardized: ArrayLike, shift_amount: float, cutoff_type: str
+def shifted_probability_func(
+    wss_standardized: ArrayLike,
+    shift_amount: float,
+    probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
 ) -> ArrayLike:
     """
-    Applies sigmoid to standardized weighted sum scores to conver to probability.
-
-    Right: Regular sigmoid pushes larger values to have high probability,
-    Left: To flip regular sigmoid across y axis, make input negative.
-        This pushes smaller values to have high probability.
-    We apply similar tricks for mid and tail, shifting appropriately.
+    Applies shifted custom function or sigmoid (with cutoff) to
+        standardized weighted sum scores to convert to probability.
+    String: sigmoid-
+        Right: Regular sigmoid pushes larger values to have high probability,
+        Left: To flip regular sigmoid across y axis, make input negative.
+            This pushes smaller values to have high probability.
+        We apply similar tricks for mid and tail, shifting appropriately.
     """
 
-    cutoff_transformations = {
-        "RIGHT": lambda wss_standardized, b: wss_standardized + b,
-        "LEFT": lambda wss_standardized, b: -wss_standardized + b,
-        "TAIL": lambda wss_standardized, b: (np.absolute(wss_standardized) - 0.75 + b),
-        "MID": lambda wss_standardized, b: (-np.absolute(wss_standardized) + 0.75 + b),
-    }
+    if isinstance(probability_func, str):
+        cutoff_transformations = {
+            "SIGMOID-RIGHT": lambda wss_standardized, b: wss_standardized + b,
+            "SIGMOID-LEFT": lambda wss_standardized, b: -wss_standardized + b,
+            "SIGMOID-TAIL": lambda wss_standardized, b: (
+                np.absolute(wss_standardized) - 0.75 + b
+            ),
+            "SIGMOID-MID": lambda wss_standardized, b: (
+                -np.absolute(wss_standardized) + 0.75 + b
+            ),
+        }
 
-    return sigmoid(cutoff_transformations[cutoff_type](wss_standardized, shift_amount))
+        return sigmoid(
+            cutoff_transformations[probability_func](wss_standardized, shift_amount)
+        )
+    return probability_func(wss_standardized) + shift_amount
 
 
 def sigmoid(X: ArrayLike) -> ArrayLike:

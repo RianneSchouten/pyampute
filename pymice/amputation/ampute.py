@@ -2,7 +2,7 @@
 # Author: Rianne Schouten <riannemargarethaschouten@gmail.com>
 # Co-Author: Davina Zamanzadeh <davzaman@gmail.com>
 
-from typing import Callable, Tuple, Union
+from typing import Any, Dict, Tuple, Type, Union
 import logging
 import numpy as np
 from pandas import DataFrame
@@ -11,7 +11,7 @@ from scipy import stats
 from math import isclose
 
 # Local
-from .utils import (
+from utils import (
     ArrayLike,
     Matrix,
     isin,
@@ -20,7 +20,7 @@ from .utils import (
     enforce_numeric,
     setup_logging,
     missingness_profile,
-    sigmoid_scores,
+    shifted_probability_func,
     standardize_uppercase,
 )
 
@@ -47,44 +47,55 @@ class MultivariateAmputation(TransformerMixin):
     prop : float [0,1] : 0.5
         Proportion of missingness as a decimal or percent.
 
-    patterns : indicator matrix shape (k, m) : square matrix (1 var missing per pattern)
-        Specifying observed(1)/missing(0) vars per pattern.
-        Each row is 1 pattern (for k total patterns) (minimum 1 pattern).
-        Number of patterns is theoretically unlimited,
-            but too many will send the data subset size to 0.
-
-    freq : float or array of length k : uniform frequency across patterns
-        Relative frequency of each pattern, should sum to 1.
-        If one specified, it will be replicated k times.
-        For example (k = 3 patterns), freq := [0.4, 0.4, 0.2] =>
-            of all samples with missing values,
-            40% should have pattern 1, 40% pattern 2. and 2% pattern 3.
-
-    weights : matrix with shape (k, m)
-            : MCAR: all 0's, MAR: observed vars weight 1, MNAR: missing vars weight 1.
-        Weight matrix specifying size of effect of var on missing vars.
-        - negative (decrease effect)
-        - 0 (no role in missingness)
-        - positive (increase effect).
-        Score for sample i in group k = innerproduct(weights[k], sample[i]).
-        Within each pattern, the relative size of the values are of importance,
-            therefore standardization data for computing scores is important.
+    patterns : list of k dictionaries : 1 pattern: {
+        "incomplete_vars": random 50% of vars,
+        "mechanism": MAR,
+        "score-to-prob": sigmoid-right
+        "freq": 1
+    }
+        If there are too many patterns:
+            subsequent data subset (for pattern) will be empty, no amputation will occur
+        Each dictionary has the following key-value pairs (required unless [optional]):
+        Note: the required entries are required for ALL patterns
+            (the defaults will not extend to missing entries, unless optional).
+        - incomplete_vars : list-like of var/col {indices (ints) or names (strs)}
+                          : array of 50% randomly chosen indices (range 0:m-1)
+            Indicates variables that should be amputed.
+            observed_vars = list-like(complement of incomplete_vars).
+        - weights [optional]
+                : list-like of m floats [0,1] OR
+                  dict {index/name: weight} for each var influencing missingness
+                : if mechanism == MCAR: all 0's
+                                  MAR: observed_vars weight 1
+                                  MNAR: incomplete_vars weight 1.
+            Specify size of effect of each specified var on missing vars.
+                - negative (decrease effect)
+                - 0 (no role in missingness) If dict, unspecified vars have weight 0.
+                - positive (increase effect).
+            Missing score for sample i in pattern k = innerproduct(weights, sample[i]).
+        - mechanism : string : MAR
+            Choices: [MCAR, MAR, MNAR, MAR+MNAR] case insensitive.
+        - freq : float [0,1] : all patterns with equal frequency (1/k)
+            Relative occurence of a pattern with respect to other patterns.
+            All frequencies across k dicts/patterns must sum to 1.
+            For example (k = 3 patterns), freq := [0.4, 0.4, 0.2] =>
+                of all samples with missing values,
+                40% should have pattern 1, 40% pattern 2. and 20% pattern 3.
+        - score_to_probability_func
+            : str or fn[list-like floats [-inf, inf] -> list-like floats [0, 1]]
+            : sigmoid-right
+            Converts standardized weighted scores for each sample
+                (in a data subset corresponding to pattern k)
+                to probability of missingness.
+            Choices for string: sigmoid-[RIGHT, LEFT, MID, TAIL], case insensitive.
+                Applies sigmoid function with a logit cutoff per pattern.
+                Dictates a [high, low, average, extreme] score
+                    (respectively) has a high probability of amputation.
+            Fn will be shifted to ensure correct joint missingness probabilities.
 
     std : boolean : True
         Whether or not to standardize data before computing scores.
         Don't standardize if passing both train and test (prevent leaking).
-
-    mechanism: string or array of length k : MAR
-        Specify a mechanism per pattern.
-        Choices: [MCAR, MAR, MNAR], case insensitive.
-        If one specified, it will be replicated k times.
-
-    types : string or array of length k : RIGHT
-        Specify a logit cutoff per pattern.
-        Choices: [RIGHT, LEFT, MID, TAIL], case insensitive.
-        Dictates a [high, low, average, extreme] score
-            (respectively) has a high probability of amputation.
-        If one specified, it will be replicated k times.
 
     lower_range : float : -3
         Lower limit in range to search for b, the horizontal shift
@@ -106,17 +117,6 @@ class MultivariateAmputation(TransformerMixin):
         the horizontal shift of the inputs (weighted sum scores) to the
         sigmoid function.
 
-    score_to_probability_func : fn takes an array, shift amount, and type of cutoff
-                              : sigmoid
-        Function converts standardized weighted scores for each sample (in a
-        data subset corresponding to pattern k) to probability of missingness
-        for each sample according to a cutoff type in self.types, i.e.
-            a vector of values [0, 1] that don't have to sum to 1.
-        - shift amount is an additional shift constant that we find via binary search to
-        ensure the joint missingness probabilities of multiple vars makes sense.
-        ! Note any function that can take a raw value and map it to [0, 1] will work
-            in general, though might not behave according to a cutoff unless tested.
-        # TODO: in validation test if the function passed will work approximately?
 
     Attributes
     ----------
@@ -140,31 +140,21 @@ class MultivariateAmputation(TransformerMixin):
     def __init__(
         self,
         prop: float = 0.5,
-        patterns: Matrix = None,
-        freqs: Union[float, ArrayLike] = None,
-        weights: Matrix = None,
+        patterns: Dict[str, Any] = None,
         std: bool = True,
-        mechanisms: Union[str, ArrayLike] = None,
-        types: Union[str, ArrayLike] = None,
         lower_range: float = -3,
         upper_range: float = 3,
         max_dif_with_target: float = 0.001,
         max_iter: int = 100,
-        score_to_probability_func: Callable[[ArrayLike], ArrayLike] = sigmoid_scores,
     ):
-
         self.prop = prop
         self.patterns = patterns
-        self.freqs = freqs
-        self.weights = weights
         self.std = std
-        self.mechanisms = mechanisms
-        self.types = types
         self.lower_range = lower_range
         self.upper_range = upper_range
         self.max_dif_with_target = max_dif_with_target
         self.max_iter = max_iter
-        self.score_to_probability_func = score_to_probability_func
+        # The rest are set by _pattern_dict_to_matrix_form()
 
         setup_logging()
 
@@ -197,8 +187,8 @@ class MultivariateAmputation(TransformerMixin):
 
             # calculate the expected missingness proportion
             # depends on the logit cutoff type, the sum scores and b
-            probs_matrix = self.score_to_probability_func(
-                wss_standardized, b, self.types[pattern_ind]
+            probs_matrix = shifted_probability_func(
+                wss_standardized, b, self.score_to_probability_func[pattern_ind]
             )
             current_prop = np.mean(probs_matrix)
 
@@ -210,7 +200,8 @@ class MultivariateAmputation(TransformerMixin):
 
             # if we have not reached the desired proportion
             # we adjust either the upper or lower range
-            # this way of adjusting works for self.types[i] = 'RIGHT'
+            # this way works for self.score_to_probability_func[i] = 'SIGMOID-RIGHT'
+            # TODO: discuss about this working for custom and other ways
             # need to check for the other types
             # in the next iteration, a new b is then calculated and used
             if (current_prop - self.prop) > 0:
@@ -271,6 +262,87 @@ class MultivariateAmputation(TransformerMixin):
 
         return wss
 
+    def _get_default_pattern(self, m_features: int) -> Dict[str, Any]:
+        return {
+            # Random half of vars (random 50% of indices)
+            "incomplete_vars": np.random.choice(
+                np.arange(m_features), int(m_features / 2), replace=False
+            ),
+            "mechanism": "MAR",
+            "freq": 1,
+            "score_to_probability_func": "sigmoid-RIGHT",
+        }
+
+    def _pattern_dict_to_matrix_form(self):
+        """
+        Converts the list of dictionaries into corresponding matrices and arrays.
+        Each dict entry that's list-like will transform into a matrix (k, m)
+            e.g., weight array for pattern i will define the row i in the weight matrix
+        Each dict entry that's a single value will transform into an array of length m
+            e.g., freq for pattern i will define ith entry in freqs array.
+        """
+        k_by_m = (self.num_patterns, self.num_features)
+
+        #### Init ####
+        # indicator matrix (k, m) {0, 1}, (previously called patterns)
+        self.observed_var_indicator = np.empty(shape=k_by_m, dtype=bool)
+        # weight for scores matrix (k, m) [-inf, inf]
+        self.weights = np.empty(shape=k_by_m, dtype=float)
+        # array of mechanisms per pattern (len k)
+        self.mechanisms = np.empty(shape=self.num_patterns, dtype=str)
+        # array of frequencies per pattern (len k)
+        self.freqs = np.empty(shape=self.num_patterns, dtype=float)
+        # list of functions or strings per pattern (len k)
+        self.score_to_probability_func = []
+
+        def populate_pattern_array(
+            indices_or_names: ArrayLike,
+            fill_value: Union[float, ArrayLike],
+            dtype: Type,
+        ) -> ArrayLike:
+            """
+            Fills an array of length m (for each feature) with fill_value
+                wherever indicated by indices_or_names.
+            Column names will be mapped to their corresponding indices.
+            """
+            # init zeros so unmentioned vars have no effect
+            matrix_row_entry = np.zeros(shape=self.num_features, dtype=dtype)
+            # if names, convert to indices
+            if isinstance(indices_or_names, str):
+                indices = [self.colname_to_idx[coln] for coln in indices_or_names]
+            # force to np array to act as indexer
+            indices = np.array(indices_or_names)
+            # if int will fill same int for all indices
+            # else len(indices) == len(fill_value)
+            matrix_row_entry[indices] = fill_value
+            return matrix_row_entry
+
+        #### Build from Dicts ####
+        for i, pattern in enumerate(self.patterns):
+            # one-hot the at corresponding indices
+            amputed_var_indicator = populate_pattern_array(
+                pattern["incomplete_vars"], fill_value=1, dtype=bool
+            )
+            # flip indicator
+            self.observed_var_indicator[i] = 1 - amputed_var_indicator
+
+            # TODO: add checks that the dict values make sense?
+            if "weights" in pattern:
+                if isinstance(pattern["weights"], Dict):
+                    # basically unzip dictionary into 2 lists of equal length
+                    indices_or_names, weights_per_var = zip(*pattern["weights"].items())
+                    self.weights[i] = populate_pattern_array(
+                        indices_or_names, fill_value=weights_per_var, dtype=float
+                    )
+                else:  # array of weights directly given
+                    self.weights[i] = pattern["weights"]
+            else:  # weights missing, fill with nan
+                self.weights[i] = np.full(shape=self.num_features, fill_value=np.nan)
+
+            self.mechanisms[i] = pattern["mechanism"]
+            self.freqs[i] = pattern["freq"]
+            self.score_to_probability_func.append(pattern["score_to_probability_func"])
+
     def _set_defaults(self):
         """
         Set defaults for args, assuming patterns has been initialized.
@@ -288,77 +360,50 @@ class MultivariateAmputation(TransformerMixin):
             self.prop /= 100
 
         # RELIES ON: patterns
-        if self.freqs is None:
-            logging.info("No freq passed, assigning uniform frequency across patterns.")
-            self.freqs = np.repeat(1 / self.num_patterns, self.num_patterns)
-        elif isinstance(self.freqs, float) or isinstance(self.freqs, int):
-            logging.info("One frequency passed, assigning to every pattern.")
-            self.freqs = np.repeat(self.freqs, self.num_patterns)
-        # TODO : chop off extras?
-        elif len(self.freqs) == 1:
-            logging.info("One frequency passed, assigning to every pattern.")
-            self.freqs = np.repeat(self.freqs[0], self.num_patterns)
-        else:  # force numpy
-            self.freqs = np.array(self.freqs)
-        # TODO : chop off extras?
+        # force numpy
+        self.freqs = np.array(self.freqs)
         # TODO: recalculate frequencies to sum to 1?
 
         # RELIES ON: patterns
-        if self.mechanisms is None:
-            logging.info("No mechanisms passed, assuming MAR for every pattern.")
-            self.mechanisms = np.repeat("MAR", self.num_patterns)
-        elif isinstance(self.mechanisms, str):
-            logging.info("One mechanism passed, assigning to every pattern.")
-            self.mechanisms = np.repeat(
-                standardize_uppercase(self.mechanisms), self.num_patterns
-            )
-        elif len(self.mechanisms) == 1:  # repeat same mechanism for all vars
-            logging.info("One mechanism passed, assigning to every pattern.")
-            self.mechanisms = np.repeat(
-                standardize_uppercase(self.mechanisms[0]), self.num_patterns
-            )
-        else:  # nothing else to adjust, just standardize to upper case
-            self.mechanisms = np.array(
-                list(map(standardize_uppercase, self.mechanisms))
-            )
-        # assertion here instead of validate_args because weights depends on this.
-        assert (
-            len(self.mechanisms) == self.num_patterns
-        ), "Must specify a mechanism per pattern, but they do not match."
+        # just standardize to upper case
+        self.mechanisms = np.array(list(map(standardize_uppercase, self.mechanisms)))
 
         # RELIES ON: patterns
-        if self.types is None:
-            logging.info(
-                "No amputation type passed, assuming RIGHT amputation."
-                " Large scores are assigned high probability to be amputed."
-            )
-            self.types = np.repeat("RIGHT", self.num_patterns)
-        elif isinstance(self.types, str):
-            logging.info("One type passed, assigning to every pattern.")
-            self.types = np.repeat(standardize_uppercase(self.types), self.num_patterns)
-        elif len(self.types) == 1:
-            logging.info("One type passed, assigning to every pattern.")
-            self.types = np.repeat(
-                standardize_uppercase(self.types[0]), self.num_patterns
-            )
-        else:  # nothing else to adjust, just standardize to upper case
-            self.types = np.array(list(map(standardize_uppercase, self.types)))
+        # just standardize to upper case if string
+        self.score_to_probability_func = np.array(
+            [
+                standardize_uppercase(func) if isinstance(func, str) else func
+                for func in self.score_to_probability_func
+            ]
+        )
 
         # RELIES ON: patterns, mechanisms
-        if self.weights is None:
+        # if only some weights are indicated:
+        #   fill the rest (all nan rows) with default according to mechanism.
+        if np.isnan(self.weights).any(axis=None):
             logging.info(
-                "No weights passed."
+                "No weights passed for some patterns, filling them in per pattern."
                 " MCAR: weights are all 0s."
                 " MAR: all observed vars have weight 1."
                 " MNAR: all missing vars have weight 1."
             )
-            self.weights = np.zeros(shape=(self.num_patterns, self.num_features))
-            self.weights[self.mechanisms == "MAR"] = self.patterns[
-                self.mechanisms == "MAR",
+            patterns_with_missing_weights = np.isnan(self.weights).all(axis=1)
+
+            self.weights[
+                patterns_with_missing_weights & self.mechanisms == "MCAR"
+            ] = np.zeros(shape=self.num_features)
+
+            missing_mar_mask = patterns_with_missing_weights & self.mechanisms == "MAR"
+            self.weights[missing_mar_mask] = self.observed_var_indicator[
+                missing_mar_mask
             ]
-            # note that non-observed is given a value 0 in patterns
-            self.weights[self.mechanisms == "MNAR"] = (
-                1 - self.patterns[self.mechanisms == "MNAR"]
+
+            missing_mnar_mask = (
+                patterns_with_missing_weights & self.mechanisms == "MNAR"
+            )
+            # note that non-observed is given a value 0 in indicator matrix
+            self.weights[missing_mnar_mask] = (
+                1 - self.observed_var_indicator[missing_mnar_mask]
             )
 
     def _validate_args(self):
@@ -366,22 +411,20 @@ class MultivariateAmputation(TransformerMixin):
         Validates remainined constructor args after having set defaults.
         Only makes assertions, assuming everything is initialized.
         """
-        ####################
-        #     PATTERNS     #
-        ####################
+        ##################################
+        #     OBSERVED VAR INDICATOR     #
+        ##################################
         # axis=None reduces all axes for both pandas and numpy
-        assert isin(self.patterns, [0, 1]).all(
+        assert isin(self.observed_var_indicator, [0, 1]).all(
             axis=None
-        ), "Patterns can only contain 0's and 1's."
-        assert not ((self.patterns == 1).all(axis=None)), (
-            "Patterns cannot be all 1's."
-            " A pattern with all 1's results in no amputation."
-        )
+        ), "Indicator matrix can only contain 0's and 1's."
+        assert not (
+            (self.observed_var_indicator == 1).all(axis=None)
+        ), "Cannot indicate no features to be amputed, will result in no amputation."
         if isin(self.mechanisms, "MAR").any(axis=0):
-            assert not (self.patterns[self.mechanisms == "MAR"] == 0).all(axis=None), (
-                "Patterns cannot be all 0's if specifying MAR."
-                " A pattern with all 0's results in all vars missing."
-            )
+            assert not (self.observed_var_indicator[self.mechanisms == "MAR"] == 0).all(
+                axis=None
+            ), "Cannot ampute all features under MAR, since all vars will be missing."
 
         ##################
         #      PROP      #
@@ -411,29 +454,37 @@ class MultivariateAmputation(TransformerMixin):
         assert (
             len(self.mechanisms) == self.num_patterns
         ), "Must specify a mechanism per pattern, but they do not match."
+        mechanism_options = ["MCAR", "MAR", "MNAR", "MAR+MNAR"]
         assert isin(
-            self.mechanisms, ["MCAR", "MAR", "MNAR"]
-        ).all(), "Mechanisms specified must be one of ['MCAR', 'MAR', 'MNAR']."
+            self.mechanisms, mechanism_options
+        ).all(), f"Mechanisms specified must be one of {mechanism_options}."
 
         #################
         #    WEIGHTS    #
         #################
         assert (
-            self.weights.shape == self.patterns.shape
+            self.weights.shape == self.observed_var_indicator.shape
         ), "Weights passed must match dimensions of patterns passed."
         assert (self.weights[self.mechanisms == "MCAR"] == 0).all(
             axis=None
         ), "Patterns with MCAR should have weights of all 0's."
+        # TODO: add checks if weights make sense with coresponding mechanisms
+        # TODO: cannot pass MAR+MNAR with no weights
 
-        #################
-        #     TYPES     #
-        #################
+        #####################################
+        #     SCORE TO PROBABILITY FUNC     #
+        #####################################
         assert (
-            len(self.types) == self.num_patterns
+            len(self.score_to_probability_func) == self.num_patterns
         ), "Types, mechs, and freqs must all be the same dimension (# patterns)."
+        func_str_options = (
+            ["SIGMOID-RIGHT", "SIGMOID-LEFT", "SIGMOID-MID", "SIGMOID-TAIL"],
+        )
+        # check only the str entries in the funcs list
         assert isin(
-            self.types, ["RIGHT", "LEFT", "MID", "TAIL"]
-        ).all(), "Types can only be one of ['right', 'left', 'mid', 'tail']."
+            [fn for fn in self.score_to_probability_func if isinstance(fn, str)],
+            func_str_options,
+        ).all(), f"String funcs can only be one of {func_str_options}"
 
     def _validate_input(self, X: Matrix) -> Matrix:
         """
@@ -443,27 +494,35 @@ class MultivariateAmputation(TransformerMixin):
         # This must come first so we can check patterns
         assert X is not None, "No dataset passed, cannot be None."
         assert len(X.shape) == 2, "Dataset must be 2 dimensional."
+        num_features = X.shape[1]
 
         ##################
         #    PATTERNS    #
         ##################
         if self.patterns is None:
-            logging.info("No patterns passed, assuming missingness on each variable.")
-            self.patterns = 1 - np.identity(n=X.shape[1])
-        else:
-            assert (
-                len(self.patterns.shape) == 2
-            ), "If a pattern is provided, it must be 2 dimensional."
-        assert self.patterns.shape[1] == X.shape[1], (
-            "Each pattern should specify weights for each feature."
-            " The number of entries for each pattern does not match the"
-            " number of features in the dataset."
+            logging.info("No patterns passed, setting default pattern.")
+            self.patterns = self._get_default_pattern(num_features)
+        assert len(self.patterns) > 0, "Must contain at least one pattern."
+        # check each dict has the required entries (via superset check)
+        required_keys = {
+            "incomplete_vars",
+            "mechanism",
+            "freq",
+            "score_to_probability_func",
+        }
+        assert {keys for keys, _ in self.patterns.items()}.issuperset(required_keys), (
+            "Patterns is malformed. "
+            f"Each dict in the list must contain at least these keys: {required_keys}. "
+            "The 'weights' entry is optional."
         )
 
         # bookkeeping vars for readability
-        self.num_patterns = self.patterns.shape[0]
-        self.num_features = self.patterns.shape[1]
+        self.num_patterns = len(self.patterns)
+        self.num_features = num_features
+        self.colname_to_idx = {colname: idx for idx, colname in enumerate(X.columns)}
 
+        # converts patterms to matrix form for easy interal processing
+        self._pattern_dict_to_matrix_form()
         # defaults for the rest of the args (depends on patterns being initialized)
         self._set_defaults()
         self._validate_args()
@@ -509,7 +568,6 @@ class MultivariateAmputation(TransformerMixin):
 
         # split complete_data in groups
         # the number of groups is defined by the number of patterns
-        # we know the number of patterns by the number of rows of self.patterns
         num_samples = X.shape[0]
         X_incomplete = np.zeros(X.shape)
         X_indices = np.arange(num_samples)
@@ -521,7 +579,9 @@ class MultivariateAmputation(TransformerMixin):
         for pattern_ind in range(self.num_patterns):
             # assign cases to the group
             group_indices = X_indices[assigned_group_number == pattern_ind]
-            pattern = np.squeeze(np.asarray(self.patterns[pattern_ind, :]))
+            pattern = np.squeeze(
+                np.asarray(self.observed_var_indicator[pattern_ind, :])
+            )
             data_group = X[group_indices]
             # calculate weighted sum scores for each sample in the group
             wss = self._calculate_sumscores(data_group, pattern_ind)
