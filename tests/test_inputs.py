@@ -54,118 +54,133 @@ class TestDefaults(unittest.TestCase):
     def test_minimal_defaults(self):
         minimal = MultivariateAmputation()
         minimal._validate_input(X_nomissing)
-        a_sixth = 1 / 6
-        self.assertTrue(np.array_equal(minimal.patterns, default_missing_pattern))
+        self.assertTrue(np.array_equal(minimal.freqs, np.array([1]),))
+        self.assertTrue(np.array_equal(minimal.mechanisms, np.array(["MAR"])))
         self.assertTrue(
             np.array_equal(
-                minimal.freqs,
-                np.array([a_sixth, a_sixth, a_sixth, a_sixth, a_sixth, a_sixth]),
+                minimal.score_to_probability_func, np.array(["SIGMOID-RIGHT"])
             )
         )
-        self.assertTrue(
-            np.array_equal(
-                minimal.mechanisms, np.array(["MAR", "MAR", "MAR", "MAR", "MAR", "MAR"])
-            )
-        )
-        self.assertTrue(
-            np.array_equal(
-                minimal.types,
-                np.array(["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT"]),
-            )
-        )
-        self.assertTrue(np.array_equal(minimal.weights, default_missing_pattern))
+        X_amputed = minimal.fit_transform(X_nomissing)
+        # TODO: 66% missing per var and 33% data missing, is that what we want?
+        # self.assertAlmostEqual(np.isnan(X_amputed).mean(), 0.5)
 
     def test_adjusting_inputs(self):
         with self.subTest("Adjust Primitive Defaults"):
-            adjust = MultivariateAmputation(prop=45, mechanisms="mar", types="right")
+            # test no passing any freq
+            patterns = [
+                # Test lowercase names, named indices, no weights
+                {
+                    "incomplete_vars": ["age"],
+                    "mechanism": "mar",
+                    "score_to_probability_func": "sigmoid-left",
+                },
+                # test mixed case names, integer indices, custom weight, mar+mnar
+                {
+                    "incomplete_vars": [0, 3],
+                    "mechanism": "maR+mNar",
+                    "score_to_probability_func": "sigmoid-mid",
+                    "weights": [0.5, 1, 0, 0, 0, 0],
+                },
+            ]
+            adjust = MultivariateAmputation(prop=45, patterns=patterns)
             adjust._validate_input(X_nomissing)
 
             self.assertEqual(adjust.prop, 0.45)
             self.assertTrue(
                 np.array_equal(
-                    adjust.mechanisms,
-                    np.array(["MAR", "MAR", "MAR", "MAR", "MAR", "MAR"]),
+                    adjust.observed_var_indicator,
+                    np.array([[0, 1, 1, 1, 1, 1], [0, 1, 1, 0, 1, 1]]),
                 )
             )
             self.assertTrue(
+                np.array_equal(adjust.mechanisms, np.array(["MAR", "MAR+MNAR"]),)
+            )
+            self.assertTrue(
                 np.array_equal(
-                    adjust.types,
-                    np.array(["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT"]),
+                    adjust.score_to_probability_func,
+                    np.array(["SIGMOID-LEFT", "SIGMOID-MID"]),
                 )
             )
 
-            # mixed case fine too
-            adjust_mixed = MultivariateAmputation(mechanisms="mAr", types="rIGht")
-            adjust_mixed._validate_input(X_nomissing)
-            self.assertTrue(
-                np.array_equal(
-                    adjust_mixed.mechanisms,
-                    np.array(["MAR", "MAR", "MAR", "MAR", "MAR", "MAR"]),
-                )
+    def test_optional_args(self):
+        # includes testing no freqs passed
+        patterns = [
+            {"incomplete_vars": [0]},
+            {"incomplete_vars": [1], "mechanism": "MCAR"},
+            {"incomplete_vars": [2], "score_to_probability_func": "sigmoid-mid"},
+        ]
+        mechanism_case_coverage = MultivariateAmputation(patterns=patterns)
+        mechanism_case_coverage._validate_input(X_nomissing)
+        self.assertTrue(
+            np.array_equal(
+                mechanism_case_coverage.observed_var_indicator,
+                np.array([[0, 1, 1, 1, 1, 1], [1, 0, 1, 1, 1, 1], [1, 1, 0, 1, 1, 1]]),
             )
-            self.assertTrue(
-                np.array_equal(
-                    adjust_mixed.types,
-                    np.array(["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT"]),
-                )
+        )
+        self.assertTrue(
+            np.array_equal(
+                mechanism_case_coverage.mechanisms, np.array(["MAR", "MCAR", "MAR"]),
             )
+        )
+        self.assertTrue(
+            np.array_equal(
+                mechanism_case_coverage.score_to_probability_func,
+                np.array(["SIGMOID-RIGHT", "SIGMOID-RIGHT", "SIGMOID-MID"]),
+            )
+        )
+        self.assertTrue(
+            np.array_equal(mechanism_case_coverage.freqs, np.array([1 / 3] * 3),)
+        )
 
-        with self.subTest("Adjust Broadcasting Primitives"):
-            broadcast_primitives = MultivariateAmputation(
-                freqs=1 / 6, mechanisms="MCAR", types="TAIL"
+    def test_weights_dict(self):
+        # TODO
+        # test names
+        patterns = [
+            {
+                "incomplete_vars": [0],
+                "mechanism": "mar+mnar",
+                "weights": {name: 1 for name in columns[:-2]},
+            }
+        ]
+        mechanism_case_coverage = MultivariateAmputation(patterns=patterns)
+        mechanism_case_coverage._validate_input(X_nomissing)
+        self.assertTrue(
+            np.array_equal(
+                mechanism_case_coverage.weights, np.array([[1, 1, 1, 1, 0, 0]]),
             )
-            # default 6 patterns
-            broadcast_primitives._validate_input(X_nomissing)
+        )
 
-            self.assertTrue(
-                np.array_equal(
-                    broadcast_primitives.freqs,
-                    np.array([1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6]),
-                )
+        # test indices
+        patterns = [
+            {
+                "incomplete_vars": [0],
+                "mechanism": "mar+mnar",
+                "weights": {i: 1 for i in [0, 2, 4]},
+            }
+        ]
+        mechanism_case_coverage = MultivariateAmputation(patterns=patterns)
+        mechanism_case_coverage._validate_input(X_nomissing)
+        self.assertTrue(
+            np.array_equal(
+                mechanism_case_coverage.weights, np.array([[1, 0, 1, 0, 1, 0]]),
             )
-            self.assertTrue(
-                np.array_equal(
-                    broadcast_primitives.mechanisms,
-                    np.array(["MCAR", "MCAR", "MCAR", "MCAR", "MCAR", "MCAR"]),
-                )
-            )
-            self.assertTrue(
-                np.array_equal(
-                    broadcast_primitives.types,
-                    np.array(["TAIL", "TAIL", "TAIL", "TAIL", "TAIL", "TAIL"]),
-                )
-            )
-
-        with self.subTest("Adjust Broadcasting 1 List Item"):
-            adjust_broadcast = MultivariateAmputation(
-                freqs=[1 / 6], mechanisms=["MCAR"], types=["TAIL"]
-            )
-            # default 6 patterns
-            adjust_broadcast._validate_input(X_nomissing)
-
-            self.assertTrue(
-                np.array_equal(
-                    adjust_broadcast.freqs,
-                    np.array([1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6]),
-                )
-            )
-            self.assertTrue(
-                np.array_equal(
-                    adjust_broadcast.mechanisms,
-                    np.array(["MCAR", "MCAR", "MCAR", "MCAR", "MCAR", "MCAR"]),
-                )
-            )
-            self.assertTrue(
-                np.array_equal(
-                    adjust_broadcast.types,
-                    np.array(["TAIL", "TAIL", "TAIL", "TAIL", "TAIL", "TAIL"]),
-                )
-            )
+        )
 
     def test_mechanism_case_coverage(self):
-        mechanism_case_coverage = MultivariateAmputation(
-            mechanisms=["MCAR", "MAR", "MNAR", "MCAR", "MAR", "MNAR"]
-        )
+        # TODO: test for repeat patterns?
+        mar_mnar_weights = [0, 0, 0, 0.5, 1, 0]
+        patterns = [
+            {"incomplete_vars": [0], "mechanism": "mcar"},
+            {"incomplete_vars": [1], "mechanism": "mar"},
+            {"incomplete_vars": [2], "mechanism": "mnar"},
+            {
+                "incomplete_vars": [3],
+                "mechanism": "mar+mnar",
+                "weights": mar_mnar_weights,
+            },
+        ]
+        mechanism_case_coverage = MultivariateAmputation(patterns=patterns)
         mechanism_case_coverage._validate_input(X_nomissing)
 
         self.assertTrue(
@@ -176,9 +191,7 @@ class TestDefaults(unittest.TestCase):
                         [0, 0, 0, 0, 0, 0],
                         [1, 0, 1, 1, 1, 1],
                         [0, 0, 1, 0, 0, 0],
-                        [0, 0, 0, 0, 0, 0],
-                        [1, 1, 1, 1, 0, 1],
-                        [0, 0, 0, 0, 0, 1],
+                        mar_mnar_weights,
                     ]
                 ),
             )
@@ -201,32 +214,28 @@ class TestBadArgs(unittest.TestCase):
         with self.assertRaises(AssertionError):
             amputer._validate_input(X_nomissing.iloc[0, :])
 
-    def test_bad_patterns(self):
-        # bad shape
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(patterns=np.array([0, 1, 1]))._validate_input(
-                X_nomissing
-            )
-        # num of vars in patterns don't match the num of vars in data
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(
-                patterns=np.array([[0, 1, 1], [0, 0, 1]])
-            )._validate_input(X_nomissing)
-        # only 0s/1s
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(
-                patterns=np.array([0, 3, 1, 0, 1, 1])
-            )._validate_input(X_nomissing)
-        # all 1s does nothing
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(
-                patterns=np.array([1, 1, 1, 1, 1, 1])
-            )._validate_input(X_nomissing)
-        # MAR needs at least one observed var
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(
-                mechanisms="MAR", patterns=np.array([0, 0, 0, 0, 0, 0])
-            )._validate_input(X_nomissing)
+    def test_bad_incomplete_vars(self):
+        bad_patterns = [
+            # no features to be amputed
+            [{"incomplete_vars": []}],
+            # num of vars in patterns too many
+            [{"incomplete_vars": list(range(15))}],
+            # bad indices (int)
+            [{"incomplete_vars": [0, 15]}],
+            # bad indices (name)
+            [{"incomplete_vars": ["age", "burger"]}],
+            # all vars missing does nothing under MAR
+            [
+                {
+                    "incomplete_vars": np.array(range(X_nomissing.shape[1])),
+                    "mechanism": "MAR",
+                }
+            ],
+        ]
+
+        for patterns in bad_patterns:
+            with self.assertRaises(AssertionError):
+                MultivariateAmputation(patterns=patterns)._validate_input(X_nomissing)
 
     def test_bad_prop(self):
         # 0 and 100 fine
@@ -236,71 +245,84 @@ class TestBadArgs(unittest.TestCase):
             MultivariateAmputation(prop=324)._validate_input(X_nomissing)
 
     def test_bad_freqs(self):
-        # can't be all 0s or 1s, needs to sum to 1
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(freqs=1)._validate_input(X_nomissing)
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(freqs=0)._validate_input(X_nomissing)
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(freqs=2)._validate_input(X_nomissing)
-
-        # must be between 0 and 1 (even though it sums to 1)
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(freqs=[0.2, 3, 0.1, -3, 0.4, 0.3])._validate_input(
-                X_nomissing
-            )
-        # must sum to 1
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(
-                freqs=[0.2, 0.3, 0.1, 0.3, 0.4, 0.3]
-            )._validate_input(X_nomissing)
+        bad_patterns = [
+            # can't be all 0s, needs to sum to 1
+            [{"incomplete_vars": [0], "freq": 0}],
+            [{"incomplete_vars": [0], "freq": 2}],
+            # must be between 0 and 1 (even though it sums to 1)
+            [
+                {"incomplete_vars": [ivs], "freq": f}
+                for ivs, f in zip(range(6), [0.2, 3, 0.1, -3, 0.4, 0.3])
+            ],
+            # must sum to 1
+            [
+                {"incomplete_vars": [ivs], "freq": f}
+                for ivs, f in zip(range(6), [0.2, 0.3, 0.1, 0.3, 0.4, 0.3])
+            ],
+            # cannot specify only some
+            [{"incomplete_vars": [0], "freq": 0}, {"incomplete_vars": [1]}],
+        ]
+        for patterns in bad_patterns:
+            with self.assertRaises(AssertionError):
+                MultivariateAmputation(patterns=patterns)._validate_input(X_nomissing)
 
     def test_bad_mechanisms(self):
-        # default is 6 patterns for X_nomissing, must have the same # mechanisms
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(mechanisms=["MCAR", "MAR", "MNAR"])._validate_input(
-                X_nomissing
-            )
         # invalid names
         with self.assertRaises(AssertionError):
             MultivariateAmputation(
-                mechanisms=["MCAR", "MARP", "MNAR", "MAR", "MCAR", "MAR"]
+                patterns=[{"incomplete_vars": [0], "mechanism": "MARP"}]
             )._validate_input(X_nomissing)
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(mechanisms="MARP")._validate_input(X_nomissing)
 
-    def test_bad_types(self):
-        # default is 6 patterns for X_nomissing, 6 mechanisms, must have same # types
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(types=["right", "left"])._validate_input(X_nomissing)
-        # invalid names
+    def test_bad_score_to_probabiliyt_func(self):
+        # bad name
         with self.assertRaises(AssertionError):
             MultivariateAmputation(
-                mechanisms=["right", "sright", "left", "mid", "tail", "mid"]
+                patterns=[
+                    {
+                        "incomplete_vars": [0],
+                        "score_to_probability_func": "smigmoid-up",
+                    }
+                ]
             )._validate_input(X_nomissing)
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(mechanisms="sright")._validate_input(X_nomissing)
 
     def test_bad_weights(self):
-        # shape must match patterns
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(
-                weights=default_missing_pattern[:5, :]
-            )._validate_input(X_nomissing)
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(
-                weights=default_missing_pattern[:, :5]
-            )._validate_input(X_nomissing)
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(
-                weights=default_missing_pattern[:5, :5]
-            )._validate_input(X_nomissing)
+        bad_patterns = [
+            # shape must match num vars
+            [{"incomplete_vars": [0], "weights": list(range(2))}],
+            [{"incomplete_vars": [0], "weights": list(range(15))}],
+            # MCAR should have weights all 0s
+            [
+                {
+                    "incomplete_vars": [0],
+                    "mechanism": "MCAR",
+                    "weights": default_missing_pattern[0],
+                }
+            ],
+            # cannot get default weights for mar+mnar
+            [{"incomplete_vars": [0], "mechanism": "mar+mnar"}],
+            # dict form: too many weights
+            [
+                {
+                    "incomplete_vars": [0],
+                    "mechanism": "mar+mnar",
+                    "weights": {i: 1 for i in range(15)},
+                }
+            ],
+            # dict form: bad indices
+            [{"incomplete_vars": [0], "mechanism": "mar+mnar", "weights": {15: 1}}],
+            # dict form: bad name
+            [
+                {
+                    "incomplete_vars": [0],
+                    "mechanism": "mar+mnar",
+                    "weights": {"burger": 1},
+                }
+            ],
+        ]
 
-        # MCAR should have weights all 0s
-        with self.assertRaises(AssertionError):
-            MultivariateAmputation(
-                mechanisms="MCAR", weights=default_missing_pattern
-            )._validate_input(X_nomissing)
+        for patterns in bad_patterns:
+            with self.assertRaises(AssertionError):
+                MultivariateAmputation(patterns=patterns)._validate_input(X_nomissing)
 
 
 if __name__ == "__main__":
