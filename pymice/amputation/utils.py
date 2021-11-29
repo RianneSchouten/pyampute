@@ -84,11 +84,14 @@ def is_numeric(X: Union[ArrayLike, Matrix]) -> bool:
     return is_numeric_dtype(X)
 
 
+# TODO: test
 def enforce_numeric(X: Union[ArrayLike, Matrix]) -> Matrix:
     if isinstance(X, pd.DataFrame):
-        X = X.apply(pd.to_numeric, errors="coerce")
+        X = X.apply(pd.to_numeric, errors="coerce").dropna(axis=1, how="all")
     elif isinstance(X, np.ndarray):
         X = np.array(list(map(pd.to_numeric, X)))
+        all_nan_cols = np.isnan(X).all(axis=0)
+        X = X[:, ~all_nan_cols]
     else:
         X = pd.to_numeric(X, errors="coerce")
 

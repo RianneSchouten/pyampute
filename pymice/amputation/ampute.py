@@ -24,10 +24,6 @@ from pymice.amputation.utils import (
     standardize_uppercase,
 )
 
-# TODO: Odds
-
-# TODO: Add fit and transform separately
-
 
 class MultivariateAmputation(TransformerMixin):
     """Generating multivariate missingness patterns in complete datasets
@@ -41,7 +37,7 @@ class MultivariateAmputation(TransformerMixin):
     complete_data : matrix with shape (n, m)
         Dataset with no missing values for vars involved in amputation.
         n rows (samples) and m columns (features).
-        Values involved in amputation should be numeric, or will be forced.
+        Values involved in amputation should be numeric, or will be forced, and any columns that aren't fully numeric will be dropped.
         Categorical variables should have been transformed to dummies.
 
     prop : float [0,1] : 0.5
@@ -131,7 +127,6 @@ class MultivariateAmputation(TransformerMixin):
     Notes
     -----
     Something on difference ampute in R and Python
-    #TODO: any more detailed explanations
 
     References
     ----------
@@ -210,7 +205,6 @@ class MultivariateAmputation(TransformerMixin):
             # if we have not reached the desired proportion
             # we adjust either the upper or lower range
             # this way works for self.score_to_probability_func[i] = 'SIGMOID-RIGHT'
-            # TODO: discuss about this working for custom and other ways
             # need to check for the other types
             # in the next iteration, a new b is then calculated and used
             if (current_prop - self.prop) > 0:
@@ -426,7 +420,6 @@ class MultivariateAmputation(TransformerMixin):
         # RELIES ON: patterns
         # force numpy
         self.freqs = np.array(self.freqs)
-        # TODO: recalculate frequencies to sum to 1?
 
         # RELIES ON: patterns
         # just standardize to upper case
@@ -635,7 +628,10 @@ class MultivariateAmputation(TransformerMixin):
         # vars involved in amputation have scores computed and need to be
         #   complete and numeric
         # A var (column) is involved if for any pattern (row) it has a weight.
-        vars_involved_in_ampute = (self.weights != 0).any(axis=0)
+        # We don't care about numeric restraint for MCAR
+        vars_involved_in_ampute = (self.weights[self.mechanisms != "MCAR"] != 0).any(
+            axis=0
+        )
 
         ##################
         #      DATA      #
