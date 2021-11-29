@@ -3,12 +3,12 @@ from distutils.core import setup
 
 setup(
     name="pymice",
-    version="1.0",
+    version="0.0.1",
     description="Imputation suite based on R MICE package.",
     author=["Rianne Schouten", "Davina Zamanzadeh"],
     author_email=["riannemargarethaschouten", "davzaman@gmail.com"],
     packages=["pymice"],
-    requires=[
+    install_requires=[
         # "rich",  # nice stack traces + printing
         "pandas",
         "numpy",
@@ -16,5 +16,6 @@ setup(
         "matplotlib",
         "scikit-learn",
         "sphinx",
+        "pydata-sphinx-theme",
     ],
 )

@@ -8,7 +8,7 @@ patch where an object is looked up, not where it is defined
 from unittest.mock import patch
 """
 
-from pymice.amputation.ampute import MultivariateAmputation
+from amputation.ampute import MultivariateAmputation
 
 seed = 0
 columns = ["age", "weight", "ismale", "fries_s", "fries_m", "fries_l"]

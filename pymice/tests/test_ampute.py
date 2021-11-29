@@ -1,7 +1,7 @@
 import numpy as np
 import unittest
 
-from pymice.amputation.ampute import MultivariateAmputation
+from amputation.ampute import MultivariateAmputation
 
 # test that all mechanisms work
 class TestAmpute(unittest.TestCase):

@@ -5,7 +5,7 @@ import numpy as np
 from math import pow
 from scipy.stats import chi2, ttest_ind
 
-from pymice.amputation.utils import Matrix
+from amputation.utils import Matrix
 
 # load test data
 data_mar = pd.read_table("data/missingdata.csv", sep="\t")
