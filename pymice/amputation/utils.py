@@ -1,7 +1,7 @@
 """ Utils mainly to write code agnostic to numpy or pandas.  """
 # Author: Davina Zamanzadeh <davzaman@gmail.com>
 
-from typing import Callable, List, Union
+from typing import Callable, List, Optional, Union
 import logging
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
@@ -84,16 +84,29 @@ def is_numeric(X: Union[ArrayLike, Matrix]) -> bool:
     return is_numeric_dtype(X)
 
 
-# TODO: test
-def enforce_numeric(X: Union[ArrayLike, Matrix]) -> Matrix:
-    if isinstance(X, pd.DataFrame):
-        X = X.apply(pd.to_numeric, errors="coerce").dropna(axis=1, how="all")
-    elif isinstance(X, np.ndarray):
+def enforce_numeric(
+    X: Union[ArrayLike, Matrix], vars_to_enforce: Optional[List[Union[str, int]]] = None
+) -> Matrix:
+    if isinstance(X, np.ndarray):
+        logging.warn(
+            "Numpy does not support heterogeneous ndarrays."
+            " While enforcing variables involved in imputation to numeric,"
+            " we have to enforce the whole ndarray passed in."
+        )
         X = np.array(list(map(pd.to_numeric, X)))
         all_nan_cols = np.isnan(X).all(axis=0)
         X = X[:, ~all_nan_cols]
-    else:
-        X = pd.to_numeric(X, errors="coerce")
+    else:  # pd_df, or native python array
+        # enforce pd df if native python list
+        X = pd.DataFrame(X)
+        if vars_to_enforce is not None:
+            X[vars_to_enforce] = (
+                X[vars_to_enforce]
+                .apply(pd.to_numeric, errors="coerce")
+                .dropna(axis=1, how="all")
+            )
+        else:
+            X = X.apply(pd.to_numeric, errors="coerce").dropna(axis=1, how="all")
 
     return X
 

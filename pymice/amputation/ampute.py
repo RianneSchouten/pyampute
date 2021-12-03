@@ -253,7 +253,7 @@ class MultivariateAmputation(TransformerMixin):
             "Enforcing data to be numeric since calculation of weights"
             " requires numeric data."
         )
-        data_group = enforce_numeric(data_group)
+        data_group = enforce_numeric(data_group, self.vars_involved_in_ampute)
         # standardize data or not
         if self.std:
             data_group = stats.zscore(data_group)
@@ -629,9 +629,9 @@ class MultivariateAmputation(TransformerMixin):
         #   complete and numeric
         # A var (column) is involved if for any pattern (row) it has a weight.
         # We don't care about numeric restraint for MCAR
-        vars_involved_in_ampute = (self.weights[self.mechanisms != "MCAR"] != 0).any(
-            axis=0
-        )
+        self.vars_involved_in_ampute = (
+            self.weights[self.mechanisms != "MCAR"] != 0
+        ).any(axis=0)
 
         ##################
         #      DATA      #
@@ -640,9 +640,9 @@ class MultivariateAmputation(TransformerMixin):
         # enforce numpy just for checking
         X_check = X.values if isinstance(X, DataFrame) else X
         assert not isnan(
-            X_check[:, vars_involved_in_ampute]
+            X_check[:, self.vars_involved_in_ampute]
         ).any(), "Features involved in amputation must be complete, but contains NaNs."
-        if not is_numeric(X_check[:, vars_involved_in_ampute]):
+        if not is_numeric(X_check[:, self.vars_involved_in_ampute]):
             logging.warn(
                 "Features involved in amputation found to be non-numeric."
                 " They will be forced to numeric upon calculating sum scores."
