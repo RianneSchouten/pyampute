@@ -32,97 +32,97 @@ class MultivariateAmputation(TransformerMixin):
     m = number of features/vars.
     k = number of patterns.
 
-    Parameters: <param name> : <type/shape> : <default value>
+    Parameters
     ----------
-    complete_data : matrix with shape (n, m)
+    complete_data
+        Matrix with shape `(n, m)`.
         Dataset with no missing values for vars involved in amputation.
         n rows (samples) and m columns (features).
         Values involved in amputation should be numeric, or will be forced, and any columns that aren't fully numeric will be dropped.
         Categorical variables should have been transformed to dummies.
 
-    prop : float [0,1] : 0.5
+    prop : float, default : 0.5
         Proportion of missingness as a decimal or percent.
 
-    patterns : list of k dictionaries : 1 pattern: {
-        "incomplete_vars": random 50% of vars,
-        "mechanism": MAR,
-        "score-to-prob": sigmoid-right
-        "freq": 1
-    }
-        If there are too many patterns:
-            subsequent data subset (for pattern) will be empty, no amputation will occur
+    patterns : List[Dict], default: DEFAULTS
+        
+        List of `k` dictionaries.
+        If there are too many patterns, the subsequent data subset (for pattern) will be empty, and *no amputation will occur*.
         Each dictionary has the following key-value pairs (required unless [optional]):
-        - incomplete_vars : list-like of var/col {indices (ints) or names (strs)}
-                          : array of 50% randomly chosen indices (range 0:m-1)
-            Indicates variables that should be amputed.
-            observed_vars = list-like(complement of incomplete_vars).
-        - weights [optional, required if MAR+MNAR]
-                : list-like of m floats [0,1] OR
-                  dict {index/name: weight} for each var influencing missingness
-                : if mechanism == MCAR: all 0's
-                                  MAR: observed_vars weight 1
-                                  MNAR: incomplete_vars weight 1.
-                                  MAR+MNAR: ILLEGAL (not allowed)
-            Specify size of effect of each specified var on missing vars.
-                - negative (decrease effect)
-                - 0 (no role in missingness) If dict, unspecified vars have weight 0.
-                - positive (increase effect).
-            Missing score for sample i in pattern k = innerproduct(weights, sample[i]).
-        - mechanism [optional] : string : MAR
-            Choices: [MCAR, MAR, MNAR, MAR+MNAR] case insensitive.
-            MNAR+MAR is only possible by passing a custom weight array.
-        - freq [optional] : float [0,1] : all patterns with equal frequency (1/k)
-            Relative occurence of a pattern with respect to other patterns.
-            All frequencies across k dicts/patterns must sum to 1.
-            Either specify for all patterns, or none for the default.
-            For example (k = 3 patterns), freq := [0.4, 0.4, 0.2] =>
-                of all samples with missing values,
-                40% should have pattern 1, 40% pattern 2. and 20% pattern 3.
-        - score_to_probability_func [optional]
-            : str or fn[list-like floats [-inf, inf] -> list-like floats [0, 1]]
-            : sigmoid-right
-            Converts standardized weighted scores for each sample
-                (in a data subset corresponding to pattern k)
-                to probability of missingness.
-            Choices for string: sigmoid-[RIGHT, LEFT, MID, TAIL], case insensitive.
-                Applies sigmoid function with a logit cutoff per pattern.
-                Dictates a [high, low, average, extreme] score
-                    (respectively) has a high probability of amputation.
-            Fn will be shifted to ensure correct joint missingness probabilities.
+            - `incomplete_vars` : list-like of var/col {indices (ints) or names (strs)}
+                **Default**: array of 50% randomly chosen indices (range 0:m-1).
 
-    std : boolean : True
+                Indicates variables that should be amputed.
+                ``observed_vars = list-like(complement of incomplete_vars)``.
+            - `weights` [optional, required if MAR+MNAR] : List-like of m floats [0,1] OR dict {index/name: weight} for each var influencing missingness.
+                **Default**: if mechanism ==
+                    - **MCAR**: all 0's
+                    - **MAR**: observed_vars weight 1
+                    - **MNAR**: incomplete_vars weight 1.
+                    - **MAR+MNAR**: ILLEGAL (not allowed)
+
+                Specify size of effect of each specified var on missing vars.
+                    - negative (decrease effect)
+                    - 0 (no role in missingness) If dict, unspecified vars have weight 0.
+                    - positive (increase effect).
+                Missing score for sample ``i`` in pattern ``k`` is ``innerproduct(weights, sample[i])``.
+            - `mechanism` [optional] : string : MAR
+                Choices: [MCAR, MAR, MNAR, MAR+MNAR] case insensitive.
+                MNAR+MAR is only possible by passing a custom weight array.
+            - `freq` [optional] : float [0,1] : all patterns with equal frequency (1/k)
+                Relative occurence of a pattern with respect to other patterns.
+                All frequencies across k dicts/patterns must sum to 1.
+                Either specify for all patterns, or none for the default.
+                For example (k = 3 patterns), freq := [0.4, 0.4, 0.2] => of all samples with missing values, 40% should have pattern 1, 40% pattern 2. and 20% pattern 3.
+            - `score_to_probability_func` [optional] : str or fn[list-like floats [-inf, inf] -> list-like floats [0, 1]] : sigmoid-right
+                Converts standardized weighted scores for each sample (in a data subset corresponding to pattern k) to probability of missingness.
+
+                - Choices for string: sigmoid-[RIGHT, LEFT, MID, TAIL], case insensitive.
+                    Applies sigmoid function with a logit cutoff per pattern.
+                    Dictates a [high, low, average, extreme] score (respectively) has a high probability of amputation.
+                Fn will be shifted to ensure correct joint missingness probabilities.
+
+    std : boolean, default : True
         Whether or not to standardize data before computing scores.
         Don't standardize if passing both train and test (prevent leaking).
 
-    lower_range : float : -3
+    lower_range : float, default : -3
         Lower limit in range to search for b, the horizontal shift
         of the inputs to the sigmoid function in order to assign
         a probability for a value to be missing.
 
-    upper_range : float : 3
+    upper_range : float, default : 3
         Upper limit in range to search for b, the horizontal shift
         of the inputs to the sigmoid function in order to assign
         a probability for a value to be missing.
 
-    max_dif_with_target : float : 0.001
+    max_dif_with_target : float, default : 0.001
         The allowable error between the desired percent missing data (prop)
         and and calculated joint missing probability after assigning a
         probability for values to be missing.
 
-    max_iter : integer : 100
+    max_iter : int, default : 100
         Max number of iterations for binary search when searching for b,
         the horizontal shift of the inputs (weighted sum scores) to the
         sigmoid function.
 
-    seed: optinal int : None
+    seed: int, optional
         If you want reproducible results during amputation set an integer seed.
         If you don't set it, a random number will be produced every time.
 
 
     Attributes
     ----------
-    incomplete_data :  matrix with shape (n, m)
-        Dataset with missing values.
+    DEFAULTS :  Dict[str, str]
+        .. code-block::
+            :caption: Default pattern.
+
+            {
+                "incomplete_vars": random 50% of vars,
+                "mechanism": "MAR",
+                "score-to-prob": "sigmoid-right"
+                "freq": 1
+            }
 
     Notes
     -----
@@ -655,13 +655,16 @@ class MultivariateAmputation(TransformerMixin):
 
         Parameters
         ----------
-        X : matrix of shape (n_samples, m_features)
+        X : Matrix
+            Matrix of shape `(n_samples, m_features)`
             Complete input data, where "n_samples" is the number of samples and
             "m_features" is the number of features.
 
         Returns
         -------
-        X_incomplete : matrix of shape (n_samples, m_features)
+        X_incomplete : Matrix
+            Matrix of shape `(n_samples, m_features)`.
+            Incomplete dataset masked according to parameters.
         """
 
         # sets defaults, adjusts vars, and runs checks

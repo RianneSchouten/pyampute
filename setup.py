@@ -15,7 +15,9 @@ setup(
         "scipy",
         "matplotlib",
         "scikit-learn",
-        "sphinx",
-        "pydata-sphinx-theme",
+        "",
     ],
+    extras_require={
+        "docs": ["sphinx", "pydata-sphinx-theme", "sphinx-autodoc-typehints"]
+    },
 )

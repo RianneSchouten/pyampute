@@ -216,53 +216,42 @@
 <p>Transformer for generating multivariate missingness in complete datasets</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pymice.amputation.ampute.MultivariateAmputation">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymice.amputation.ampute.</span></span><span class="sig-name descname"><span class="pre">MultivariateAmputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_range</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">-</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_range</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dif_with_target</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymice.amputation.ampute.</span></span><span class="sig-name descname"><span class="pre">MultivariateAmputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dif_with_target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
 <p>Generating multivariate missingness patterns in complete datasets</p>
 <p>n = number of samples.
 m = number of features/vars.
 k = number of patterns.</p>
-<dl class="simple">
-<dt>complete_data<span class="classifier">matrix with shape (n, m)</span></dt><dd><p>Dataset with no missing values for vars involved in amputation.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>complete_data</strong> – Matrix with shape <cite>(n, m)</cite>.
+Dataset with no missing values for vars involved in amputation.
 n rows (samples) and m columns (features).
 Values involved in amputation should be numeric, or will be forced, and any columns that aren’t fully numeric will be dropped.
-Categorical variables should have been transformed to dummies.</p>
-</dd>
-<dt>prop<span class="classifier">float [0,1]</span><span class="classifier">0.5</span></dt><dd><p>Proportion of missingness as a decimal or percent.</p>
-</dd>
-<dt>patterns<span class="classifier">list of k dictionaries</span><span class="classifier">1 pattern: {</span></dt><dd><p>“incomplete_vars”: random 50% of vars,
-“mechanism”: MAR,
-“score-to-prob”: sigmoid-right
-“freq”: 1</p>
-</dd>
-</dl>
-<dl>
-<dt>}</dt><dd><dl class="simple">
-<dt>If there are too many patterns:</dt><dd><p>subsequent data subset (for pattern) will be empty, no amputation will occur</p>
-</dd>
-</dl>
-<p>Each dictionary has the following key-value pairs (required unless [optional]):
-- incomplete_vars : list-like of var/col {indices (ints) or names (strs)}</p>
+Categorical variables should have been transformed to dummies.</p></li>
+<li><p><strong>prop</strong> (<em>float</em><em>, </em><em>default : 0.5</em>) – Proportion of missingness as a decimal or percent.</p></li>
+<li><p><strong>patterns</strong> (<em>List</em><em>[</em><em>Dict</em><em>]</em><em>, </em><em>default: DEFAULTS</em>) – <p>List of <cite>k</cite> dictionaries.
+If there are too many patterns, the subsequent data subset (for pattern) will be empty, and <em>no amputation will occur</em>.
+Each dictionary has the following key-value pairs (required unless [optional]):</p>
 <blockquote>
-<div><blockquote>
-<div><p>: array of 50% randomly chosen indices (range 0:m-1)</p>
-</div></blockquote>
-<p>Indicates variables that should be amputed.
-observed_vars = list-like(complement of incomplete_vars).</p>
-</div></blockquote>
-<ul>
+<div><ul>
 <li><dl>
-<dt>weights [optional, required if MAR+MNAR]</dt><dd><blockquote>
-<div><dl class="simple">
-<dt>: list-like of m floats [0,1] OR</dt><dd><p>dict {index/name: weight} for each var influencing missingness</p>
-</dd>
-<dt>: if mechanism == MCAR: all 0’s</dt><dd><p>MAR: observed_vars weight 1
-MNAR: incomplete_vars weight 1.
-MAR+MNAR: ILLEGAL (not allowed)</p>
+<dt><cite>incomplete_vars</cite><span class="classifier">list-like of var/col {indices (ints) or names (strs)}</span></dt><dd><p><strong>Default</strong>: array of 50% randomly chosen indices (range 0:m-1).</p>
+<p>Indicates variables that should be amputed.
+<code class="docutils literal notranslate"><span class="pre">observed_vars</span> <span class="pre">=</span> <span class="pre">list-like(complement</span> <span class="pre">of</span> <span class="pre">incomplete_vars)</span></code>.</p>
 </dd>
 </dl>
-</div></blockquote>
-<dl class="simple">
+</li>
+<li><dl>
+<dt><cite>weights</cite> [optional, required if MAR+MNAR]<span class="classifier">List-like of m floats [0,1] OR dict {index/name: weight} for each var influencing missingness.</span></dt><dd><dl class="simple">
+<dt><strong>Default</strong>: if mechanism ==</dt><dd><ul class="simple">
+<li><p><strong>MCAR</strong>: all 0’s</p></li>
+<li><p><strong>MAR</strong>: observed_vars weight 1</p></li>
+<li><p><strong>MNAR</strong>: incomplete_vars weight 1.</p></li>
+<li><p><strong>MAR+MNAR</strong>: ILLEGAL (not allowed)</p></li>
+</ul>
+</dd>
 <dt>Specify size of effect of each specified var on missing vars.</dt><dd><ul class="simple">
 <li><p>negative (decrease effect)</p></li>
 <li><p>0 (no role in missingness) If dict, unspecified vars have weight 0.</p></li>
@@ -270,80 +259,77 @@ MAR+MNAR: ILLEGAL (not allowed)</p>
 </ul>
 </dd>
 </dl>
-<p>Missing score for sample i in pattern k = innerproduct(weights, sample[i]).</p>
+<p>Missing score for sample <code class="docutils literal notranslate"><span class="pre">i</span></code> in pattern <code class="docutils literal notranslate"><span class="pre">k</span></code> is <code class="docutils literal notranslate"><span class="pre">innerproduct(weights,</span> <span class="pre">sample[i])</span></code>.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>mechanism [optional]<span class="classifier">string</span><span class="classifier">MAR</span></dt><dd><p>Choices: [MCAR, MAR, MNAR, MAR+MNAR] case insensitive.
+<dt><cite>mechanism</cite> [optional]<span class="classifier">string</span><span class="classifier">MAR</span></dt><dd><p>Choices: [MCAR, MAR, MNAR, MAR+MNAR] case insensitive.
 MNAR+MAR is only possible by passing a custom weight array.</p>
 </dd>
 </dl>
 </li>
-<li><dl>
-<dt>freq [optional]<span class="classifier">float [0,1]</span><span class="classifier">all patterns with equal frequency (1/k)</span></dt><dd><p>Relative occurence of a pattern with respect to other patterns.
+<li><dl class="simple">
+<dt><cite>freq</cite> [optional]<span class="classifier">float [0,1]</span><span class="classifier">all patterns with equal frequency (1/k)</span></dt><dd><p>Relative occurence of a pattern with respect to other patterns.
 All frequencies across k dicts/patterns must sum to 1.
 Either specify for all patterns, or none for the default.
-For example (k = 3 patterns), freq := [0.4, 0.4, 0.2] =&gt;</p>
-<blockquote>
-<div><p>of all samples with missing values,
-40% should have pattern 1, 40% pattern 2. and 20% pattern 3.</p>
-</div></blockquote>
+For example (k = 3 patterns), freq := [0.4, 0.4, 0.2] =&gt; of all samples with missing values, 40% should have pattern 1, 40% pattern 2. and 20% pattern 3.</p>
 </dd>
 </dl>
 </li>
 <li><dl>
-<dt>score_to_probability_func [optional]</dt><dd><p>: str or fn[list-like floats [-inf, inf] -&gt; list-like floats [0, 1]]
-: sigmoid-right
-Converts standardized weighted scores for each sample</p>
-<blockquote>
-<div><p>(in a data subset corresponding to pattern k)
-to probability of missingness.</p>
-</div></blockquote>
-<dl>
+<dt><cite>score_to_probability_func</cite> [optional]<span class="classifier">str or fn[list-like floats [-inf, inf] -&gt; list-like floats [0, 1]]</span><span class="classifier">sigmoid-right</span></dt><dd><p>Converts standardized weighted scores for each sample (in a data subset corresponding to pattern k) to probability of missingness.</p>
+<ul class="simple">
+<li><dl class="simple">
 <dt>Choices for string: sigmoid-[RIGHT, LEFT, MID, TAIL], case insensitive.</dt><dd><p>Applies sigmoid function with a logit cutoff per pattern.
-Dictates a [high, low, average, extreme] score</p>
-<blockquote>
-<div><p>(respectively) has a high probability of amputation.</p>
-</div></blockquote>
+Dictates a [high, low, average, extreme] score (respectively) has a high probability of amputation.</p>
 </dd>
 </dl>
+</li>
+</ul>
 <p>Fn will be shifted to ensure correct joint missingness probabilities.</p>
 </dd>
 </dl>
 </li>
 </ul>
-</dd>
-<dt>std<span class="classifier">boolean</span><span class="classifier">True</span></dt><dd><p>Whether or not to standardize data before computing scores.
-Don’t standardize if passing both train and test (prevent leaking).</p>
-</dd>
-<dt>lower_range<span class="classifier">float</span><span class="classifier">-3</span></dt><dd><p>Lower limit in range to search for b, the horizontal shift
+</div></blockquote>
+</p></li>
+<li><p><strong>std</strong> (<em>boolean</em><em>, </em><em>default : True</em>) – Whether or not to standardize data before computing scores.
+Don’t standardize if passing both train and test (prevent leaking).</p></li>
+<li><p><strong>lower_range</strong> (<em>float</em><em>, </em><em>default : -3</em>) – Lower limit in range to search for b, the horizontal shift
 of the inputs to the sigmoid function in order to assign
-a probability for a value to be missing.</p>
-</dd>
-<dt>upper_range<span class="classifier">float</span><span class="classifier">3</span></dt><dd><p>Upper limit in range to search for b, the horizontal shift
+a probability for a value to be missing.</p></li>
+<li><p><strong>upper_range</strong> (<em>float</em><em>, </em><em>default : 3</em>) – Upper limit in range to search for b, the horizontal shift
 of the inputs to the sigmoid function in order to assign
-a probability for a value to be missing.</p>
-</dd>
-<dt>max_dif_with_target<span class="classifier">float</span><span class="classifier">0.001</span></dt><dd><p>The allowable error between the desired percent missing data (prop)
+a probability for a value to be missing.</p></li>
+<li><p><strong>max_dif_with_target</strong> (<em>float</em><em>, </em><em>default : 0.001</em>) – The allowable error between the desired percent missing data (prop)
 and and calculated joint missing probability after assigning a
-probability for values to be missing.</p>
-</dd>
-<dt>max_iter<span class="classifier">integer</span><span class="classifier">100</span></dt><dd><p>Max number of iterations for binary search when searching for b,
+probability for values to be missing.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>default : 100</em>) – Max number of iterations for binary search when searching for b,
 the horizontal shift of the inputs (weighted sum scores) to the
-sigmoid function.</p>
-</dd>
-<dt>seed: optinal int<span class="classifier">None</span></dt><dd><p>If you want reproducible results during amputation set an integer seed.
-If you don’t set it, a random number will be produced every time.</p>
+sigmoid function.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>optional</em>) – If you want reproducible results during amputation set an integer seed.
+If you don’t set it, a random number will be produced every time.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pymice.amputation.ampute.MultivariateAmputation.incomplete_data">
-<span class="sig-name descname"><span class="pre">incomplete_data</span></span><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation.incomplete_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dataset with missing values.</p>
+<dt class="sig sig-object py" id="pymice.amputation.ampute.MultivariateAmputation.DEFAULTS">
+<span class="sig-name descname"><span class="pre">DEFAULTS</span></span><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation.DEFAULTS" title="Permalink to this definition">¶</a></dt>
+<dd><div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Default pattern.</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;incomplete_vars&quot;</span><span class="p">:</span> <span class="n">random</span> <span class="mi">50</span><span class="o">%</span> <span class="n">of</span> <span class="nb">vars</span><span class="p">,</span>
+    <span class="s2">&quot;mechanism&quot;</span><span class="p">:</span> <span class="s2">&quot;MAR&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;score-to-prob&quot;</span><span class="p">:</span> <span class="s2">&quot;sigmoid-right&quot;</span>
+    <span class="s2">&quot;freq&quot;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>matrix with shape (n, m)</p>
+<dd class="field-odd"><p>Dict[str, str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -363,24 +349,26 @@ If you don’t set it, a random number will be produced every time.</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pymice.amputation.ampute.MultivariateAmputation.DEFAULTS">
-<span class="sig-name descname"><span class="pre">DEFAULTS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'mechanism':</span> <span class="pre">'MAR',</span> <span class="pre">'score_to_probability_func':</span> <span class="pre">'SIGMOID-RIGHT'}</span></em><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation.DEFAULTS" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">DEFAULTS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'mechanism':</span> <span class="pre">'MAR',</span> <span class="pre">'score_to_probability_func':</span> <span class="pre">'SIGMOID-RIGHT'}</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pymice.amputation.ampute.MultivariateAmputation.fit_transform">
-<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation.fit_transform" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fits amputer on complete data X and returns the incomplete data X</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<em>matrix of shape</em><em> (</em><em>n_samples</em><em>, </em><em>m_features</em><em>)</em>) – Complete input data, where “n_samples” is the number of samples and
+<dd class="field-odd"><p><strong>X</strong> (<em>Matrix</em>) – Matrix of shape <cite>(n_samples, m_features)</cite>
+Complete input data, where “n_samples” is the number of samples and
 “m_features” is the number of features.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>X_incomplete</strong></p>
+<dd class="field-even"><p><strong>X_incomplete</strong> – Matrix of shape <cite>(n_samples, m_features)</cite>.
+Incomplete dataset masked according to parameters.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matrix of shape (n_samples, m_features)</p>
+<dd class="field-odd"><p>Matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -393,37 +381,52 @@ If you don’t set it, a random number will be produced every time.</p>
 <p>Utils mainly to write code agnostic to numpy or pandas.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pymice.amputation.utils.enforce_numeric">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">enforce_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">,</span> </span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pymice.amputation.utils.enforce_numeric" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">enforce_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.enforce_numeric" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymice.amputation.utils.is_numeric">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">is_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">,</span> </span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pymice.amputation.utils.is_numeric" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">is_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.is_numeric" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymice.amputation.utils.isin">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">isin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">,</span> </span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pymice.amputation.utils.isin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">isin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.isin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymice.amputation.utils.isnan">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">isnan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.isnan" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">isnan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.isnan" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymice.amputation.utils.missingness_profile">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">missingness_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.missingness_profile" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">missingness_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.missingness_profile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymice.amputation.utils.setup_logging">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">setup_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'output.log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.setup_logging" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">setup_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.setup_logging" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymice.amputation.utils.shifted_probability_func">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">shifted_probability_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wss_standardized</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_amount</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probability_func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pymice.amputation.utils.shifted_probability_func" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">shifted_probability_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wss_standardized</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_amount</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probability_func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.shifted_probability_func" title="Permalink to this definition">¶</a></dt>
 <dd><dl>
 <dt>Applies shifted custom function or sigmoid (with cutoff) to</dt><dd><p>standardized weighted sum scores to convert to probability.</p>
 </dd>
@@ -435,17 +438,32 @@ Left: To flip regular sigmoid across y axis, make input negative.</p>
 <p>We apply similar tricks for mid and tail, shifting appropriately.</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymice.amputation.utils.sigmoid">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">sigmoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.series.Series</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pymice.amputation.utils.sigmoid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">sigmoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymice.amputation.utils.standardize_uppercase">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">standardize_uppercase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pymice.amputation.utils.standardize_uppercase" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">standardize_uppercase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.standardize_uppercase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standardize string to upper case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

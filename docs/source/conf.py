@@ -33,8 +33,16 @@ release = "0.0.1"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-# https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html#getting-started
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx.ext.autosummary"]
+# https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
+extensions = [
+    "sphinx.ext.autodoc",
+    # https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html#type-annotations
+    # https://numpydoc.readthedocs.io/en/latest/format.html#documenting-classes
+    "sphinx.ext.napoleon",  # use google or numpy rst format
+    "sphinx.ext.autosummary",  # need api.rst (add to index.rst)
+    # https://github.com/agronholm/sphinx-autodoc-typehints
+    "sphinx_autodoc_typehints",  # so I can autoinject type hints to docs
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
