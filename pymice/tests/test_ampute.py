@@ -16,7 +16,12 @@ class TestAmpute(unittest.TestCase):
 
         for mechanism in ["MAR", "MNAR", "MCAR"]:
             current_mechanisms = np.repeat(mechanism, 2)
-            ma = MultivariateAmputation(mechanisms=current_mechanisms)
+            ma = MultivariateAmputation(
+                patterns=[
+                    {"incomplete_vars": [i], "mechanism": mechanism}
+                    for i, mechanism in enumerate(current_mechanisms)
+                ]
+            )
             incomplete_data = ma.fit_transform(X)
             self.assertEqual(incomplete_data.shape, X.shape)
 
@@ -29,7 +34,9 @@ class TestAmpute(unittest.TestCase):
             )  # expect: around 500
 
             # check if it also works if len(mechanisms) = 1
-            ma = MultivariateAmputation(mechanisms=mechanism)
+            ma = MultivariateAmputation(
+                patterns=[{"incomplete_vars": [0], "mechanism": mechanism}]
+            )
             incomplete_data = ma.fit_transform(X)
             self.assertTrue(
                 np.all(count_missing_values_per_column > (0.4 * 0.5 * n))
@@ -45,15 +52,20 @@ class TestAmpute(unittest.TestCase):
         X = np.random.randn(n, 2)
 
         # define some arguments
-        my_patterns = np.matrix("1 0; 0 1; 0 1")
+        my_incomplete_vars = [np.array([0]), np.array([1]), np.array([1])]
         my_freqs = np.array((0.3, 0.2, 0.5))
-        my_weights = np.matrix("4 1; 0 1; 1 0")
+        my_weights = [np.array([4, 1]), np.array([0, 1]), np.array([1, 0])]
         my_prop = 0.3
 
+        patterns = [
+            {"incomplete_vars": incomplete_vars, "freq": freq, "weights": weights}
+            for incomplete_vars, freq, weights in zip(
+                my_incomplete_vars, my_freqs, my_weights
+            )
+        ]
+
         # run ampute
-        ma = MultivariateAmputation(
-            prop=my_prop, patterns=my_patterns, freqs=my_freqs, weights=my_weights
-        )
+        ma = MultivariateAmputation(prop=my_prop, patterns=patterns)
         incomplete_data = ma.fit_transform(X)
         print(incomplete_data)
         self.assertEqual(incomplete_data.shape, X.shape)
@@ -66,17 +78,17 @@ class TestAmpute(unittest.TestCase):
             np.absolute(
                 (my_prop * len(X)) - np.sum(np.sum(np.isnan(incomplete_data), axis=0))
             ),
-            (0.01 * n),
+            100,
         )
         self.assertLess(
             np.absolute(
-                (0.7 * my_prop * len(X)) - np.sum(np.isnan(incomplete_data), axis=0)[0]
+                (0.3 * my_prop * len(X)) - np.sum(np.isnan(incomplete_data), axis=0)[0]
             ),
-            (0.02 * n),
+            100,
         )
         self.assertLess(
             np.absolute(
-                (0.3 * my_prop * len(X)) - np.sum(np.isnan(incomplete_data), axis=0)[1]
+                (0.7 * my_prop * len(X)) - np.sum(np.isnan(incomplete_data), axis=0)[1]
             ),
-            (0.02 * n),
+            100,
         )

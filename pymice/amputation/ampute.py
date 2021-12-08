@@ -2,16 +2,16 @@
 # Author: Rianne Schouten <riannemargarethaschouten@gmail.com>
 # Co-Author: Davina Zamanzadeh <davzaman@gmail.com>
 
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 import logging
 import numpy as np
-from pandas import DataFrame
+from pandas import DataFrame, read_csv
 from sklearn.base import TransformerMixin
 from scipy import stats
 from math import isclose
 
 # Local
-from pymice.amputation.utils import (
+from amputation.utils import (
     ArrayLike,
     Matrix,
     isin,
@@ -20,9 +20,10 @@ from pymice.amputation.utils import (
     enforce_numeric,
     setup_logging,
     missingness_profile,
-    shifted_probability_func,
     standardize_uppercase,
+    sigmoid,
 )
+from amputation.utils import LOOKUP_TABLE_PATH
 
 
 class MultivariateAmputation(TransformerMixin):
@@ -137,7 +138,14 @@ class MultivariateAmputation(TransformerMixin):
         10.1080/00949655.2018.1491577
     """
 
-    DEFAULTS = {"score_to_probability_func": "SIGMOID-RIGHT", "mechanism": "MAR"}
+    DEFAULTS = {
+        "score_to_probability_func": "SIGMOID-RIGHT",
+        "mechanism": "MAR",
+        "lower_range": -3,
+        "upper_range": 3,
+        "max_iter": 100,
+        "max_diff_with_target": 0.001,
+    }
 
     def __init__(
         self,
@@ -146,7 +154,7 @@ class MultivariateAmputation(TransformerMixin):
         std: bool = True,
         lower_range: float = -3,
         upper_range: float = 3,
-        max_dif_with_target: float = 0.001,
+        max_diff_with_target: float = 0.001,
         max_iter: int = 100,
         seed: Optional[int] = None,
     ):
@@ -155,15 +163,55 @@ class MultivariateAmputation(TransformerMixin):
         self.std = std
         self.lower_range = lower_range
         self.upper_range = upper_range
-        self.max_dif_with_target = max_dif_with_target
+        self.max_diff_with_target = max_diff_with_target
         self.max_iter = max_iter
         self.seed = seed
 
         # The rest are set by _pattern_dict_to_matrix_form()
         setup_logging()
 
+    @staticmethod
+    def _shifted_probability_func(
+        wss_standardized: ArrayLike,
+        shift_amount: float,
+        probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
+    ) -> ArrayLike:
+        """
+        Applies shifted custom function or sigmoid (with cutoff) to
+            standardized weighted sum scores to convert to probability.
+        String: sigmoid-
+            Right: Regular sigmoid pushes larger values to have high probability,
+            Left: To flip regular sigmoid across y axis, make input negative.
+                This pushes smaller values to have high probability.
+            We apply similar tricks for mid and tail, shifting appropriately.
+        """
+
+        if isinstance(probability_func, str):
+            cutoff_transformations = {
+                "SIGMOID-RIGHT": lambda wss_standardized, b: wss_standardized + b,
+                "SIGMOID-LEFT": lambda wss_standardized, b: -wss_standardized + b,
+                "SIGMOID-TAIL": lambda wss_standardized, b: (
+                    np.absolute(wss_standardized) - 0.75 + b
+                ),
+                "SIGMOID-MID": lambda wss_standardized, b: (
+                    -np.absolute(wss_standardized) + 0.75 + b
+                ),
+            }
+
+            return sigmoid(
+                cutoff_transformations[probability_func](wss_standardized, shift_amount)
+            )
+        return probability_func(wss_standardized) + shift_amount
+
+    @staticmethod
     def _binary_search(
-        self, wss_standardized: ArrayLike, pattern_ind: int
+        wss_standardized: ArrayLike,
+        score_to_probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
+        missingness_percent: float,
+        lower_range: float,
+        upper_range: float,
+        max_iter: int,
+        max_diff_with_target: float,
     ) -> Tuple[float, Matrix]:
         """
         Search for the appropriate shift/transformation to the scores before passing
@@ -174,32 +222,29 @@ class MultivariateAmputation(TransformerMixin):
 
         b = 0
         counter = 0
-        lower_range = self.lower_range
-        upper_range = self.upper_range
-
         probs_matrix = None
 
         # start binary search with a maximum amount of tries of max_iter
-        while counter < self.max_iter:
+        while counter < max_iter:
             counter += 1
 
             # in every iteration, the new b is the mid of the lower and upper range
             # the lower and upper range are updated at the end of each iteration
             b = lower_range + (upper_range - lower_range) / 2
-            if counter == self.max_iter:
+            if counter == max_iter:
                 break
 
             # calculate the expected missingness proportion
             # depends on the logit cutoff type, the sum scores and b
-            probs_matrix = shifted_probability_func(
-                wss_standardized, b, self.score_to_probability_func[pattern_ind]
+            probs_matrix = MultivariateAmputation._shifted_probability_func(
+                wss_standardized, b, score_to_probability_func
             )
             current_prop = np.mean(probs_matrix)
 
             # if the expected proportion is close to the target, break
             # the maximum difference can be specified
             # if max_dif_with_target is 0.001, the proportion differs with max 0.1%
-            if np.absolute(current_prop - self.prop) < self.max_dif_with_target:
+            if np.absolute(current_prop - missingness_percent) < max_diff_with_target:
                 break
 
             # if we have not reached the desired proportion
@@ -207,12 +252,46 @@ class MultivariateAmputation(TransformerMixin):
             # this way works for self.score_to_probability_func[i] = 'SIGMOID-RIGHT'
             # need to check for the other types
             # in the next iteration, a new b is then calculated and used
-            if (current_prop - self.prop) > 0:
+            if (current_prop - missingness_percent) > 0:
                 upper_range = b
             else:
                 lower_range = b
 
         return b, probs_matrix
+
+    def _calculate_probabilities_from_wss(
+        self,
+        wss_standardized: ArrayLike,
+        score_to_probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
+        missingness_percent: float,
+        lower_range: float,
+        upper_range: float,
+        max_iter: int,
+        max_diff_with_target: float,
+    ) -> Matrix:
+        if (self.shift_lookup_table is not None) and isinstance(
+            score_to_probability_func, str
+        ):
+            logging.info(
+                "Rounding proportion of missingness to 2 decimal places in order to use lookup table for one of the prespecified score to probability functions."
+            )
+            prop = np.around(self.prop, 2)
+
+            shift = self.shift_lookup_table.loc[score_to_probability_func, str(prop)]
+            return self._shifted_probability_func(
+                wss_standardized, shift, score_to_probability_func
+            )
+
+        # If no lookup table, run binary search
+        return self._binary_search(
+            wss_standardized,
+            score_to_probability_func,
+            missingness_percent,
+            lower_range,
+            upper_range,
+            max_iter,
+            max_diff_with_target,
+        )[1]
 
     def _choose_probabilities(self, wss: ArrayLike, pattern_index: int) -> Matrix:
         """
@@ -232,7 +311,15 @@ class MultivariateAmputation(TransformerMixin):
             # standardize wss
             wss_standardized = stats.zscore(wss)
             # calculate the size of b for the desired missingness proportion
-            b, probs_matrix = self._binary_search(wss_standardized, pattern_index)
+            probs_matrix = self._calculate_probabilities_from_wss(
+                wss_standardized,
+                self.score_to_probability_func[pattern_index],
+                self.prop,
+                self.lower_range,
+                self.upper_range,
+                self.max_iter,
+                self.max_diff_with_target,
+            )
             probs = np.squeeze(np.asarray(probs_matrix))
 
         return probs
@@ -401,6 +488,21 @@ class MultivariateAmputation(TransformerMixin):
             if "freq" in pattern:
                 self.freqs[pattern_idx] = pattern["freq"]
 
+    def _load_shift_lookup_table(self):
+        """
+        Read the lookup table csv from path.
+        Loads the table only once for the shift lookup when computing missing probabilities from scores.
+        This is only useful for prespecified functions (e.g., sigmoid-RIGHT)
+        """
+        if any([isinstance(func, str) for func in self.score_to_probability_func]):
+            try:
+                self.shift_lookup_table = read_csv(LOOKUP_TABLE_PATH, index_col=0)
+            except Exception:
+                logging.warn(
+                    "Failed to load lookup table for a prespecified score to probability function. It is possible /data/lookup.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table."
+                )
+                self.shift_lookup_table = None
+
     def _set_defaults(self):
         """
         Set defaults for args, assuming patterns has been initialized.
@@ -536,7 +638,7 @@ class MultivariateAmputation(TransformerMixin):
 
         # Warnings.
         mar_mask = self.mechanisms == "MAR"
-        if np.equal(
+        if any(mar_mask) and np.equal(
             self.weights[mar_mask].astype(bool), self.observed_var_indicator[mar_mask],
         ).all(axis=None):
             logging.warning(
@@ -544,7 +646,7 @@ class MultivariateAmputation(TransformerMixin):
                 "Did you mean MAR+MNAR?"
             )
         mnar_mask = self.mechanisms == "MNAR"
-        if np.equal(
+        if any(mnar_mask) and np.equal(
             self.weights[mnar_mask].astype(bool),
             (1 - self.observed_var_indicator)[mnar_mask],
         ).all(axis=None):
@@ -617,10 +719,17 @@ class MultivariateAmputation(TransformerMixin):
         # bookkeeping vars for readability
         self.num_patterns = len(self.patterns)
         self.num_features = num_features
-        self.colname_to_idx = {colname: idx for idx, colname in enumerate(X.columns)}
+        self.colname_to_idx = (
+            {colname: idx for idx, colname in enumerate(X.columns)}
+            if isinstance(X, DataFrame)
+            else None
+        )
 
         # converts patterms to matrix form for easy interal processing
         self._pattern_dict_to_matrix_form()
+
+        self._load_shift_lookup_table()
+
         # defaults for the rest of the args (depends on patterns being initialized)
         self._set_defaults()
         self._validate_args()
