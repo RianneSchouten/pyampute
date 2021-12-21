@@ -1,0 +1,17 @@
+---
+title: "Example"
+subtitle: "for Davina"
+date: ""
+output: 
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    theme: spacelab
+    highlight: tango
+---
+
+---
+
+There should be an .html file in the repository, github pages will show that html file.
