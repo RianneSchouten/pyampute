@@ -66,7 +66,7 @@ class MultivariateAmputation(TransformerMixin):
                     - negative (decrease effect)
                     - 0 (no role in missingness) If dict, unspecified vars have weight 0.
                     - positive (increase effect).
-                Missing score for sample ``i`` in pattern ``k`` is ``innerproduct(weights, sample[i])``.
+                Weighted score for sample ``i`` in pattern ``k`` is ``innerproduct(weights, sample[i])``.
             - `mechanism` [optional] : string : MAR
                 Choices: [MCAR, MAR, MNAR, MAR+MNAR] case insensitive.
                 MNAR+MAR is only possible by passing a custom weight array.
@@ -84,28 +84,23 @@ class MultivariateAmputation(TransformerMixin):
                 Fn will be shifted to ensure correct joint missingness probabilities.
 
     std : boolean, default : True
-        Whether or not to standardize data before computing scores.
-        Don't standardize if passing both train and test (prevent leaking).
+        Whether or not to standardize data before computing weighted scores.
+        Standardization ensures that weights can be applied properly.
+        Do not standardize if passing both train and test set (prevent leaking).
 
     lower_range : float, default : -3
-        Lower limit in range to search for b, the horizontal shift
-        of the inputs to the sigmoid function in order to assign
-        a probability for a value to be missing.
+        Lower limit in range when searching for horizontal shift of `score_to_probability_func`.
 
     upper_range : float, default : 3
-        Upper limit in range to search for b, the horizontal shift
-        of the inputs to the sigmoid function in order to assign
-        a probability for a value to be missing.
+        Upper limit in range when searching for horizontal shift of `score_to_probability_func`.
 
     max_dif_with_target : float, default : 0.001
         The allowable error between the desired percent missing data (prop)
-        and and calculated joint missing probability after assigning a
-        probability for values to be missing.
+        and calculated joint missingness probability after assigning a
+        probability for cases to be missing.
 
     max_iter : int, default : 100
-        Max number of iterations for binary search when searching for b,
-        the horizontal shift of the inputs (weighted sum scores) to the
-        sigmoid function.
+        Max number of iterations for binary search when searching for horizontal shift of `score_to_probability_func`.
 
     seed: int, optional
         If you want reproducible results during amputation set an integer seed.
@@ -134,8 +129,13 @@ class MultivariateAmputation(TransformerMixin):
     .. [1] Rianne Margaretha Schouten, Peter Lugtig & Gerko Vink (2018).
     Generating missing values for simulation purposes:
         A multivariate amputation procedure.
-    Journal of Statistical Computation and Simulation, DOI:
+    Journal of Statistical Computation and Simulation, 88:15, 2909-2930, DOI:
         10.1080/00949655.2018.1491577
+    .. [2] Rianne Margaretha Schouten & Gerko Vink (2021). 
+    The dance of the mechanisms: how observed information influences
+        the validity of missingness assumptions.
+    Sociological Methods & Research, 50:3, 1243-1258, DOI:
+        10.1177/0049124118799376
     """
 
     DEFAULTS = {
@@ -183,7 +183,8 @@ class MultivariateAmputation(TransformerMixin):
             Right: Regular sigmoid pushes larger values to have high probability,
             Left: To flip regular sigmoid across y axis, make input negative.
                 This pushes smaller values to have high probability.
-            We apply similar tricks for mid and tail, shifting appropriately.
+            Mid: Values in the center of the score distribution have high probability.
+            Tail: Larger and smaller values have high probabiliy.    
         """
 
         if isinstance(probability_func, str):
@@ -216,7 +217,7 @@ class MultivariateAmputation(TransformerMixin):
         """
         Search for the appropriate shift/transformation to the scores before passing
             through the self.probability_function to result in the desired missingness
-            proportion.  e.g. raw wss will mask 17% of samples in pattern k but you want
+            proportion. For instance, raw wss will mask 17% of samples in pattern k but you want
             40% missing.
         """
 
@@ -224,7 +225,7 @@ class MultivariateAmputation(TransformerMixin):
         counter = 0
         probs_matrix = None
 
-        # start binary search with a maximum amount of tries of max_iter
+        # start binary search with maximum number of iterations of max_iter
         while counter < max_iter:
             counter += 1
 
@@ -235,7 +236,7 @@ class MultivariateAmputation(TransformerMixin):
                 break
 
             # calculate the expected missingness proportion
-            # depends on the logit cutoff type, the sum scores and b
+            # depends on the logit cutoff type, the sumscores and b
             probs_matrix = MultivariateAmputation._shifted_probability_func(
                 wss_standardized, b, score_to_probability_func
             )
@@ -326,7 +327,7 @@ class MultivariateAmputation(TransformerMixin):
 
     def _calculate_sumscores(self, data_group: Matrix, pattern_ind: int) -> ArrayLike:
         """
-        Creates a vector of weighted sum score for each sample in the data subset
+        Creates a vector of weighted sum scores for each sample in the data subset
         corresponding to pattern k by computing the inner product of
             self.weights and the raw values of the samples in that subset.
 
@@ -396,10 +397,10 @@ class MultivariateAmputation(TransformerMixin):
         pattern_idx: int,
     ) -> ArrayLike:
         """
-            Fills an array of length m (for each feature) with fill_value
-                wherever indicated by indices_or_names.
-            Column names will be mapped to their corresponding indices.
-            """
+        Fills an array of length m (for each feature) with fill_value
+            wherever indicated by indices_or_names.
+        Column names will be mapped to their corresponding indices.
+        """
         # init zeros so unmentioned vars have no effect
         matrix_row_entry = np.zeros(shape=self.num_features, dtype=dtype)
         # force to np array to act as indexer
