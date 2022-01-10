@@ -98,7 +98,7 @@ def missingness_profile(X: Matrix):
 
     # By column
     feature_missing = pd.Series(nans.sum(axis=0))
-    percent_feature_missing = pd.Series(percentify(feature_missing, 1))
+    percent_feature_missing = pd.Series(percentify(feature_missing, 0))
     print(
         pd.concat(
             [feature_missing, percent_feature_missing],
