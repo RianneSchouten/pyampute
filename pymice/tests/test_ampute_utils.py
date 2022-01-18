@@ -56,3 +56,7 @@ class TestEnforceNumeric(unittest.TestCase):
         self.assertTrue(enforce_all.equals(numeric_idx))
         self.assertTrue(numeric_strname.equals(numeric_idx))
         self.assertTrue(numeric_strname.equals(correct))
+
+
+if __name__ == "__main__":
+    unittest.main()

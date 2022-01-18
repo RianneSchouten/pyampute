@@ -213,7 +213,7 @@ class MultivariateAmputation(TransformerMixin):
         upper_range: float,
         max_iter: int,
         max_diff_with_target: float,
-    ) -> Tuple[float, Matrix]:
+    ) -> Tuple[float, ArrayLike]:
         """
         Search for the appropriate shift/transformation to the scores before passing
             through the self.probability_function to result in the desired missingness
@@ -223,7 +223,7 @@ class MultivariateAmputation(TransformerMixin):
 
         b = 0
         counter = 0
-        probs_matrix = None
+        probs_array = None
 
         # start binary search with maximum number of iterations of max_iter
         while counter < max_iter:
@@ -237,10 +237,10 @@ class MultivariateAmputation(TransformerMixin):
 
             # calculate the expected missingness proportion
             # depends on the logit cutoff type, the sumscores and b
-            probs_matrix = MultivariateAmputation._shifted_probability_func(
+            probs_array = MultivariateAmputation._shifted_probability_func(
                 wss_standardized, b, score_to_probability_func
             )
-            current_prop = np.mean(probs_matrix)
+            current_prop = np.mean(probs_array)
 
             # if the expected proportion is close to the target, break
             # the maximum difference can be specified
@@ -258,7 +258,7 @@ class MultivariateAmputation(TransformerMixin):
             else:
                 lower_range = b
 
-        return b, probs_matrix
+        return b, probs_array
 
     def _calculate_probabilities_from_wss(
         self,
@@ -269,7 +269,7 @@ class MultivariateAmputation(TransformerMixin):
         upper_range: float,
         max_iter: int,
         max_diff_with_target: float,
-    ) -> Matrix:
+    ) -> ArrayLike:
         if (self.shift_lookup_table is not None) and isinstance(
             score_to_probability_func, str
         ):
@@ -294,7 +294,7 @@ class MultivariateAmputation(TransformerMixin):
             max_diff_with_target,
         )[1]
 
-    def _choose_probabilities(self, wss: ArrayLike, pattern_index: int) -> Matrix:
+    def _choose_probabilities(self, wss: ArrayLike, pattern_index: int) -> ArrayLike:
         """
         Assigns missingness probabilities for each sample in the data subset
             corresponding to pattern k (pattern_index) using the standardized wss.
@@ -312,7 +312,7 @@ class MultivariateAmputation(TransformerMixin):
             # standardize wss
             wss_standardized = stats.zscore(wss)
             # calculate the size of b for the desired missingness proportion
-            probs_matrix = self._calculate_probabilities_from_wss(
+            probs_array = self._calculate_probabilities_from_wss(
                 wss_standardized,
                 self.score_to_probability_func[pattern_index],
                 self.prop,
@@ -321,7 +321,7 @@ class MultivariateAmputation(TransformerMixin):
                 self.max_iter,
                 self.max_diff_with_target,
             )
-            probs = np.squeeze(np.asarray(probs_matrix))
+            probs = np.squeeze(np.asarray(probs_array))
 
         return probs
 
