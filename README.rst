@@ -6,7 +6,7 @@ pymice
 
 A Python library for generating missing values in complete datasets (i.e. amputation) and exploration of incomplete datasets. 
 
-Check out the `documentation_`!
+Check out the `documentation`_!
 
 .. _documentation: https://rianneschouten.github.io/pymice/build/html/index.html
 
@@ -26,19 +26,20 @@ Compared to the implementation in ``mice:ampute`` in **R**, ``pymice.amputation.
 .. _blog post: https://rianneschouten.github.io/pymice/build/html/index.html
 .. _example: https://rianneschouten.github.io/pymice/build/html/index.html
 
-exploration.mdpatterns
+exploration.md_patterns
 ----------------------
 
 Extra exploration functions are available to explore incomplete datasets. 
 
-With `mdPatterns`, a quick overview of missingness patterns can be created::
+The ``mdPatterns`` class is an implementation of ``mice:md.pattern`` in **R** and gives a quick overview of the missingness patterns::
 
-from pymice.exploration.mdpattern import mdPatterns
-my_pat = mdPatterns(inc_data)
-my_pat.summary()
-my_pat.visualization()
+.. code-block:: python
 
-.. code-block:: rst
+   from pymice.exploration.mdpattern import mdPatterns
+   my_pat = mdPatterns(inc_data)
+   my_pat.summary()
+   my_pat.visualization()
+
 
 installation
 ------------
