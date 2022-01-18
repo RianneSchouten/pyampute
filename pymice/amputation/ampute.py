@@ -1,3 +1,5 @@
+# Author: Rianne Schouten <r.m.schouten@tue.nl; riannemargarethaschouten@gmail.com>
+
 """Transformer for generating multivariate missingness in complete datasets"""
 # Author: Rianne Schouten <riannemargarethaschouten@gmail.com>
 # Co-Author: Davina Zamanzadeh <davzaman@gmail.com>

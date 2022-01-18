@@ -14,7 +14,6 @@ amputation.ampute
 -----------------
 
 The MultivariateAmputation class is an implementation of the multivariate amputation methodology by `Schouten, Lugtig and Vink (2018)`_. It is designed as an sklearn TranformerMixin class to allow for easy integration with pipelines. 
-
 .. _Schouten, Lugtig and Vink (2018): https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577
 
 Compared to the implementation in ``mice:ampute`` in **R**, ``pymice.amputation.ampute`` has a few extra functionalities:
