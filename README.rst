@@ -1,21 +1,37 @@
-pymice: mice in Python
-======================
+pymice
+======
 
 .. role:: pyth(code)
   :language: python
 
-The aim of library :pyth:`pymice` is to offer the large collection of missing data methods to the Python community.
+A Python library for generating missing values in complete datasets (i.e. amputation) and exploration of incomplete datasets. 
 
-The intent is to create three packages of functions:
+Check out the [documentation](https://rianneschouten.github.io/pymice/build/html/index.html)!
 
-1. missing data exploration: offer functions to inspect missing data and its characteristics
-2. multivariate amputation: implement the methodology of mice::ampute in Python
-3. multiple imputation: implement the methodology of mice in Python
+amputation.ampute
+=================
 
-At the moment, the package contains class :pyth:`McarTests`. This class of functions consists of two functions to inspect whether the nonresponse has a MCAR missingness mechanism. Little’s MCAR test is implemented in :pyth:`mcar_test` and for each pair of variables, t-tests can be performed with function :pyth:`mcar_t_tests`.
+The MultivariateAmputation class is an implementation of the multivariate amputation methodology by Schouten, Lugtig and Vink (2018). It is designed as an sklearn TranformerMixin class to allow for easy integration with pipelines. 
 
-Obviously, a lot of development has still to be done.
+Compared to the implementation in `mice:ampute` in **R**, `pymice.amputation.ampute` has a few extra functionalities:
 
-My contact details are here_
+1. The function's arguments are more intuitive. In this [blog post](https://rianneschouten.github.io/pymice/build/html/index.html), we provide a mapping.
+2. The method allows for custom probability functions, see this [example](https://rianneschouten.github.io/pymice/build/html/index.html).
+3. The function allows for non-numerical data features, as long as they are not used as observed data in MAR amputation.
 
-.. _here: https://rianneschouten.github.io/#contact
+exploration.mdpatterns
+======================
+
+Extra exploration functions are available to explore incomplete datasets. 
+
+With `mdPatterns`, a quick overview of missingness patterns can be created.
+
+```
+from pymice.exploration.mdpattern import mdPatterns
+my_pat = mdPatterns(inc_data)
+my_pat.summary()
+my_pat.visualization()
+```
+
+installation
+============
