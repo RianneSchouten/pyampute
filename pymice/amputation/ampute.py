@@ -42,7 +42,6 @@ class MultivariateAmputation(TransformerMixin):
         Dataset with no missing values for vars involved in amputation.
         n rows (samples) and m columns (features).
         Values involved in amputation should be numeric, or will be forced, and any columns that aren't fully numeric will be dropped.
-        Categorical variables should have been transformed to dummies.
 
     prop : float, default : 0.5
         Proportion of missingness as a decimal or percent.
@@ -753,6 +752,18 @@ class MultivariateAmputation(TransformerMixin):
         self.vars_involved_in_ampute = (
             self.weights[self.mechanisms != "MCAR"] != 0
         ).any(axis=0)
+        # get binary variables involved in amputation
+        iterate_columns = X.values.T if isinstance(X, DataFrame) else X.T
+        binary_vars_mask = (
+            np.array([len(np.unique(col)) for col in iterate_columns]) == 2
+        )
+        binary_vars_involved_in_ampute = np.where(
+            self.vars_involved_in_ampute & binary_vars_mask
+        )
+        if len(binary_vars_involved_in_ampute) > 0:
+            logging.warn(
+                f"Binary variables (at indices {binary_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score). This can result in a subset with candidates that all have the same (or almost the same) weighted sum scores. This creates problems when using the sigmoid function for the score_to_probability_func. Currently our solution is as follows: if there is just one candidate with a sum score 0, we will ampute it. If there is one candidate with a nonzero sum score, or multiple candidates with the same score, we evenly apply the same amount of missingness (as if MCAR)."
+            )
 
         ##################
         #      DATA      #
