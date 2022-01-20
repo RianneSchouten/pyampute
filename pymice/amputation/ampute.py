@@ -611,6 +611,10 @@ class MultivariateAmputation(TransformerMixin):
         ).all(), "Frequencies must be between 0 and 1 inclusive."
         # there's imprecision in float, so it might be 0.9999999
         assert isclose(sum(self.freqs), 1), "Frequencies should sum to 1."
+        if self.freqs * self.num_samples <= 7:
+            logging.warn(
+                "Low proportion of frequency can result in subsets with 0 or few candidates. Subsets with 0 candidates will be skipped. Under MCAR, subsets with few candidates will be amputed as normal."
+            )
 
         ##################
         #   MECHANISMS   #
@@ -694,6 +698,10 @@ class MultivariateAmputation(TransformerMixin):
             "Either specify a freq for all patterns or specify none "
             "for equal frequency (1/k) for all patterns."
         )
+        if len(self.patterns) / self.num_samples >= 0.7:
+            logging.warn(
+                "Too many patterns can result in subsets with 0 or few candidates. Subsets with 0 candidates will be skipped. Under MCAR, subsets with few candidates will be amputed as normal."
+            )
         # check each dict has the required entries (via superset check)
         required_keys = {
             "incomplete_vars",
@@ -722,6 +730,7 @@ class MultivariateAmputation(TransformerMixin):
         # bookkeeping vars for readability
         self.num_patterns = len(self.patterns)
         self.num_features = num_features
+        self.num_samples = X.shape[0]
         self.colname_to_idx = (
             {colname: idx for idx, colname in enumerate(X.columns)}
             if isinstance(X, DataFrame)
@@ -784,13 +793,12 @@ class MultivariateAmputation(TransformerMixin):
 
         # split complete_data in groups
         # the number of groups is defined by the number of patterns
-        num_samples = X.shape[0]
         X_incomplete = X.copy()
-        X_indices = np.arange(num_samples)
+        X_indices = np.arange(self.num_samples)
         # set seed for choice, if None it will be random.
         np.random.seed(self.seed)
         assigned_group_number = np.random.choice(
-            a=self.num_patterns, size=num_samples, p=self.freqs
+            a=self.num_patterns, size=self.num_samples, p=self.freqs
         )
 
         # start a loop over each pattern
