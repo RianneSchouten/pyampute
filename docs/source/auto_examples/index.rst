@@ -12,6 +12,27 @@ Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="An example about custom probability function">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_custom_probability_function_thumb.png
+     :alt: An example about custom probability function
+
+     :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_custom_probability_function
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Main title of example">
 
 .. only:: html

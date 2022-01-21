@@ -8,4 +8,5 @@ Here you can find some examples.
 
    auto_examples/plot_introduction
    auto_examples/plot_multiple_imputation
+   auto_examples/plot_custom_probability_function
 
