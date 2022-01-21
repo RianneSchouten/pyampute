@@ -6,18 +6,13 @@
 Welcome to pymice's documentation!
 ==================================
 
+Here some short introduction and explanation.
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   intro
-   modules
-   api
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   installation
+   pymice
+   examples
+   blogposts
+   about

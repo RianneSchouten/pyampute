@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>pymice.amputation package &#8212; pymice 0.0.1 documentation</title>
+    <title>pymice.amputation.ampute module &#8212; pymice 0.0.1 documentation</title>
     
     <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -25,6 +25,10 @@
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     
     <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
@@ -32,10 +36,11 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pymice.imputation package" href="pymice.imputation.html" />
-    <link rel="prev" title="pymice package" href="pymice.html" />
+    <link rel="next" title="pymice.exploration module" href="pymice.exploration.html" />
+    <link rel="prev" title="Package pymice" href="pymice.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -71,20 +76,26 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="intro.html">
-  Introduction
+ <a class="reference internal nav-link" href="installation.html">
+  Installation
  </a>
 </li>
 
 <li class="toctree-l1 current active nav-item">
- <a class="reference internal nav-link" href="modules.html">
-  pymice
+ <a class="reference internal nav-link" href="pymice.html">
+  Package pymice
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="api.html">
-  API
+ <a class="reference internal nav-link" href="examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="about.html">
+  About
  </a>
 </li>
 
@@ -119,32 +130,15 @@
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="pymice.html">
-   pymice package
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   pymice.amputation.ampute module
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     pymice.amputation package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pymice.imputation.html">
-     pymice.imputation package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pymice.tests.html">
-     pymice.tests package
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pymice.exploration.html">
+   pymice.exploration module
+  </a>
  </li>
 </ul>
 
@@ -163,34 +157,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#submodules">
-   Submodules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pymice.amputation.ampute">
-   pymice.amputation.ampute module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pymice.amputation.utils">
-   pymice.amputation.utils module
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pymice.amputation">
-   Module contents
-  </a>
- </li>
-</ul>
-
+    
 </nav>
               </div>
               
@@ -210,13 +179,8 @@
               
               <div>
                 
-  <section id="pymice-amputation-package">
-<h1>pymice.amputation package<a class="headerlink" href="#pymice-amputation-package" title="Permalink to this headline">¶</a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="module-pymice.amputation.ampute">
-<span id="pymice-amputation-ampute-module"></span><h2>pymice.amputation.ampute module<a class="headerlink" href="#module-pymice.amputation.ampute" title="Permalink to this headline">¶</a></h2>
+  <section id="module-pymice.amputation.ampute">
+<span id="pymice-amputation-ampute-module"></span><h1>pymice.amputation.ampute module<a class="headerlink" href="#module-pymice.amputation.ampute" title="Permalink to this headline">¶</a></h1>
 <p>Transformer for generating multivariate missingness in complete datasets</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pymice.amputation.ampute.MultivariateAmputation">
@@ -232,8 +196,7 @@ k = number of patterns.</p>
 <li><p><strong>complete_data</strong> – Matrix with shape <cite>(n, m)</cite>.
 Dataset with no missing values for vars involved in amputation.
 n rows (samples) and m columns (features).
-Values involved in amputation should be numeric, or will be forced, and any columns that aren’t fully numeric will be dropped.
-Categorical variables should have been transformed to dummies.</p></li>
+Values involved in amputation should be numeric, or will be forced, and any columns that aren’t fully numeric will be dropped.</p></li>
 <li><p><strong>prop</strong> (<em>float</em><em>, </em><em>default : 0.5</em>) – Proportion of missingness as a decimal or percent.</p></li>
 <li><p><strong>patterns</strong> (<em>List</em><em>[</em><em>Dict</em><em>]</em><em>, </em><em>default: DEFAULTS</em>) – <p>List of <cite>k</cite> dictionaries.
 If there are too many patterns, the subsequent data subset (for pattern) will be empty, and <em>no amputation will occur</em>.
@@ -386,80 +349,6 @@ Incomplete dataset masked according to parameters.</p>
 </dd></dl>
 
 </section>
-<section id="module-pymice.amputation.utils">
-<span id="pymice-amputation-utils-module"></span><h2>pymice.amputation.utils module<a class="headerlink" href="#module-pymice.amputation.utils" title="Permalink to this headline">¶</a></h2>
-<p>Utils mainly to write code agnostic to numpy or pandas.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="pymice.amputation.utils.enforce_numeric">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">enforce_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vars_to_enforce</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.enforce_numeric" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pymice.amputation.utils.is_numeric">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">is_numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.is_numeric" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pymice.amputation.utils.isin">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">isin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.isin" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pymice.amputation.utils.isnan">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">isnan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.isnan" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pymice.amputation.utils.missingness_profile">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">missingness_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.missingness_profile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pymice.amputation.utils.setup_logging">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">setup_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.setup_logging" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pymice.amputation.utils.sigmoid">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">sigmoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.sigmoid" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pymice.amputation.utils.standardize_uppercase">
-<span class="sig-prename descclassname"><span class="pre">pymice.amputation.utils.</span></span><span class="sig-name descname"><span class="pre">standardize_uppercase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.utils.standardize_uppercase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standardize string to upper case.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-pymice.amputation">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pymice.amputation" title="Permalink to this headline">¶</a></h2>
-</section>
-</section>
 
 
               </div>
@@ -471,13 +360,13 @@ Incomplete dataset masked according to parameters.</p>
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">pymice package</p>
+            <p class="prev-next-title">Package pymice</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="pymice.imputation.html" title="next page">
+    <a class='right-next' id="next-link" href="pymice.exploration.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pymice.imputation package</p>
+        <p class="prev-next-title">pymice.exploration module</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

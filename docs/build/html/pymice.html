@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>pymice package &#8212; pymice 0.0.1 documentation</title>
+    <title>Package pymice &#8212; pymice 0.0.1 documentation</title>
     
     <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -25,6 +25,10 @@
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     
     <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
@@ -32,10 +36,11 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pymice.amputation package" href="pymice.amputation.html" />
-    <link rel="prev" title="pymice" href="modules.html" />
+    <link rel="next" title="pymice.amputation.ampute module" href="pymice.amputation.html" />
+    <link rel="prev" title="From source" href="source.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -71,20 +76,26 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="intro.html">
-  Introduction
+ <a class="reference internal nav-link" href="installation.html">
+  Installation
  </a>
 </li>
 
 <li class="toctree-l1 current active nav-item">
- <a class="reference internal nav-link" href="modules.html">
-  pymice
+ <a class="current reference internal nav-link" href="#">
+  Package pymice
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="api.html">
-  API
+ <a class="reference internal nav-link" href="examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="about.html">
+  About
  </a>
 </li>
 
@@ -118,33 +129,16 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
-   pymice package
+    <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pymice.amputation.html">
+   pymice.amputation.ampute module
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pymice.amputation.html">
-     pymice.amputation package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pymice.imputation.html">
-     pymice.imputation package
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pymice.tests.html">
-     pymice.tests package
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pymice.exploration.html">
+   pymice.exploration module
+  </a>
  </li>
 </ul>
 
@@ -163,24 +157,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#subpackages">
-   Subpackages
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#module-pymice">
-   Module contents
-  </a>
- </li>
-</ul>
-
+    
 </nav>
               </div>
               
@@ -200,40 +179,19 @@
               
               <div>
                 
-  <section id="pymice-package">
-<h1>pymice package<a class="headerlink" href="#pymice-package" title="Permalink to this headline">¶</a></h1>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+  <section id="package-pymice">
+<h1>Package pymice<a class="headerlink" href="#package-pymice" title="Permalink to this headline">¶</a></h1>
+<p>Here some general sentence.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pymice.amputation.html">pymice.amputation package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pymice.amputation.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pymice.amputation.html#module-pymice.amputation.ampute">pymice.amputation.ampute module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pymice.amputation.html#module-pymice.amputation.utils">pymice.amputation.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pymice.amputation.html#module-pymice.amputation">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pymice.imputation.html">pymice.imputation package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pymice.imputation.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pymice.imputation.html#pymice-imputation-plot-multiple-imputation-module">pymice.imputation.plot_multiple_imputation module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pymice.imputation.html#module-contents">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pymice.tests.html">pymice.tests package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pymice.tests.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pymice.tests.html#module-pymice.tests.test_ampute">pymice.tests.test_ampute module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pymice.tests.html#module-pymice.tests.test_inputs">pymice.tests.test_inputs module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pymice.tests.html#pymice-tests-test-mcar-module">pymice.tests.test_mcar module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pymice.tests.html#module-pymice.tests">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymice.amputation.html">pymice.amputation.ampute module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymice.exploration.html">pymice.exploration module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pymice.exploration.html#module-pymice.exploration.md_patterns">pymice.exploration.md_patterns module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymice.exploration.html#module-pymice.exploration.mcar_statistical_tests">pymice.exploration.mcar_statistical_tests module</a></li>
 </ul>
 </li>
 </ul>
 </div>
-</section>
-<section id="module-pymice">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pymice" title="Permalink to this headline">¶</a></h2>
-<p>Library with functions to explore, generate and solve missing data problems</p>
-</section>
 </section>
 
 
@@ -242,17 +200,17 @@
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="modules.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="source.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">pymice</p>
+            <p class="prev-next-title">From source</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="pymice.amputation.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pymice.amputation package</p>
+        <p class="prev-next-title">pymice.amputation.ampute module</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

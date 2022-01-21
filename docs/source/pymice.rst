@@ -1,20 +1,12 @@
-pymice package
+Package pymice
 ==============
 
-Subpackages
------------
+Here some general sentence.
 
 .. toctree::
    :maxdepth: 4
 
    pymice.amputation
-   pymice.imputation
-   pymice.tests
+   pymice.exploration
 
-Module contents
----------------
 
-.. automodule:: pymice
-   :members:
-   :undoc-members:
-   :show-inheritance:

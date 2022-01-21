@@ -24,6 +24,10 @@
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     
     <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
@@ -31,6 +35,7 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -68,20 +73,32 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="intro.html">
-  Introduction
+ <a class="reference internal nav-link" href="installation.html">
+  Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="modules.html">
-  pymice
+ <a class="reference internal nav-link" href="pymice.html">
+  Package pymice
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="api.html">
-  API
+ <a class="reference internal nav-link" href="examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="blogposts.html">
+  Blogposts
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="about.html">
+  About us
  </a>
 </li>
 
@@ -144,27 +161,16 @@
 
 <div class="genindex-jumpbox">
  <a href="#D"><strong>D</strong></a>
- | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
- | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#P"><strong>P</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#T"><strong>T</strong></a>
  
 </div>
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pymice.amputation.html#id0">DEFAULTS (pymice.amputation.ampute.MultivariateAmputation attribute)</a>, <a href="pymice.amputation.html#pymice.amputation.ampute.MultivariateAmputation.DEFAULTS">[1]</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="E">E</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pymice.amputation.html#pymice.amputation.utils.enforce_numeric">enforce_numeric() (in module pymice.amputation.utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -177,16 +183,10 @@
   </ul></td>
 </tr></table>
 
-<h2 id="I">I</h2>
+<h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pymice.amputation.html#pymice.amputation.utils.is_numeric">is_numeric() (in module pymice.amputation.utils)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pymice.amputation.html#pymice.amputation.utils.isin">isin() (in module pymice.amputation.utils)</a>
-</li>
-      <li><a href="pymice.amputation.html#pymice.amputation.utils.isnan">isnan() (in module pymice.amputation.utils)</a>
+      <li><a href="pymice.exploration.html#pymice.exploration.mcar_statistical_tests.McarTest.littles_mcar_test">littles_mcar_test() (pymice.exploration.mcar_statistical_tests.McarTest static method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -194,25 +194,21 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pymice.amputation.html#pymice.amputation.utils.missingness_profile">missingness_profile() (in module pymice.amputation.utils)</a>
+      <li><a href="pymice.exploration.html#pymice.exploration.mcar_statistical_tests.McarTest.mcar_t_tests">mcar_t_tests() (pymice.exploration.mcar_statistical_tests.McarTest static method)</a>
+</li>
+      <li><a href="pymice.exploration.html#pymice.exploration.mcar_statistical_tests.McarTest">McarTest (class in pymice.exploration.mcar_statistical_tests)</a>
+</li>
+      <li><a href="pymice.exploration.html#pymice.exploration.md_patterns.mdPattern">mdPattern (class in pymice.exploration.md_patterns)</a>
 </li>
       <li>
     module
 
       <ul>
-        <li><a href="pymice.html#module-pymice">pymice</a>
-</li>
-        <li><a href="pymice.amputation.html#module-pymice.amputation">pymice.amputation</a>
-</li>
         <li><a href="pymice.amputation.html#module-pymice.amputation.ampute">pymice.amputation.ampute</a>
 </li>
-        <li><a href="pymice.amputation.html#module-pymice.amputation.utils">pymice.amputation.utils</a>
+        <li><a href="pymice.exploration.html#module-pymice.exploration.mcar_statistical_tests">pymice.exploration.mcar_statistical_tests</a>
 </li>
-        <li><a href="pymice.tests.html#module-pymice.tests">pymice.tests</a>
-</li>
-        <li><a href="pymice.tests.html#module-pymice.tests.test_ampute">pymice.tests.test_ampute</a>
-</li>
-        <li><a href="pymice.tests.html#module-pymice.tests.test_inputs">pymice.tests.test_inputs</a>
+        <li><a href="pymice.exploration.html#module-pymice.exploration.md_patterns">pymice.exploration.md_patterns</a>
 </li>
       </ul></li>
   </ul></td>
@@ -226,20 +222,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
-    pymice
-
-      <ul>
-        <li><a href="pymice.html#module-pymice">module</a>
-</li>
-      </ul></li>
-      <li>
-    pymice.amputation
-
-      <ul>
-        <li><a href="pymice.amputation.html#module-pymice.amputation">module</a>
-</li>
-      </ul></li>
-      <li>
     pymice.amputation.ampute
 
       <ul>
@@ -247,99 +229,21 @@
 </li>
       </ul></li>
       <li>
-    pymice.amputation.utils
+    pymice.exploration.mcar_statistical_tests
 
       <ul>
-        <li><a href="pymice.amputation.html#module-pymice.amputation.utils">module</a>
+        <li><a href="pymice.exploration.html#module-pymice.exploration.mcar_statistical_tests">module</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
-    pymice.tests
+    pymice.exploration.md_patterns
 
       <ul>
-        <li><a href="pymice.tests.html#module-pymice.tests">module</a>
+        <li><a href="pymice.exploration.html#module-pymice.exploration.md_patterns">module</a>
 </li>
       </ul></li>
-      <li>
-    pymice.tests.test_ampute
-
-      <ul>
-        <li><a href="pymice.tests.html#module-pymice.tests.test_ampute">module</a>
-</li>
-      </ul></li>
-      <li>
-    pymice.tests.test_inputs
-
-      <ul>
-        <li><a href="pymice.tests.html#module-pymice.tests.test_inputs">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pymice.tests.html#pymice.tests.test_ampute.TestAmpute.setUp">setUp() (pymice.tests.test_ampute.TestAmpute method)</a>
-
-      <ul>
-        <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestBadArgs.setUp">(pymice.tests.test_inputs.TestBadArgs method)</a>
-</li>
-        <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestDefaults.setUp">(pymice.tests.test_inputs.TestDefaults method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pymice.amputation.html#pymice.amputation.utils.setup_logging">setup_logging() (in module pymice.amputation.utils)</a>
-</li>
-      <li><a href="pymice.amputation.html#pymice.amputation.utils.sigmoid">sigmoid() (in module pymice.amputation.utils)</a>
-</li>
-      <li><a href="pymice.amputation.html#pymice.amputation.utils.standardize_uppercase">standardize_uppercase() (in module pymice.amputation.utils)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestDefaults.test_adjusting_inputs">test_adjusting_inputs() (pymice.tests.test_inputs.TestDefaults method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestBadArgs.test_bad_data">test_bad_data() (pymice.tests.test_inputs.TestBadArgs method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestBadArgs.test_bad_freqs">test_bad_freqs() (pymice.tests.test_inputs.TestBadArgs method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestBadArgs.test_bad_incomplete_vars">test_bad_incomplete_vars() (pymice.tests.test_inputs.TestBadArgs method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestBadArgs.test_bad_mechanisms">test_bad_mechanisms() (pymice.tests.test_inputs.TestBadArgs method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestBadArgs.test_bad_prop">test_bad_prop() (pymice.tests.test_inputs.TestBadArgs method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestBadArgs.test_bad_score_to_probabiliyt_func">test_bad_score_to_probabiliyt_func() (pymice.tests.test_inputs.TestBadArgs method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestBadArgs.test_bad_weights">test_bad_weights() (pymice.tests.test_inputs.TestBadArgs method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestDefaults.test_mechanism_case_coverage">test_mechanism_case_coverage() (pymice.tests.test_inputs.TestDefaults method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_ampute.TestAmpute.test_mechanisms">test_mechanisms() (pymice.tests.test_ampute.TestAmpute method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestDefaults.test_minimal_defaults">test_minimal_defaults() (pymice.tests.test_inputs.TestDefaults method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestDefaults.test_optional_args">test_optional_args() (pymice.tests.test_inputs.TestDefaults method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_ampute.TestAmpute.test_specific_situation">test_specific_situation() (pymice.tests.test_ampute.TestAmpute method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestDefaults.test_weights_dict">test_weights_dict() (pymice.tests.test_inputs.TestDefaults method)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_ampute.TestAmpute">TestAmpute (class in pymice.tests.test_ampute)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestBadArgs">TestBadArgs (class in pymice.tests.test_inputs)</a>
-</li>
-      <li><a href="pymice.tests.html#pymice.tests.test_inputs.TestDefaults">TestDefaults (class in pymice.tests.test_inputs)</a>
-</li>
   </ul></td>
 </tr></table>
 

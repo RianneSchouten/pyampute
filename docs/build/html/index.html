@@ -25,6 +25,10 @@
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     
     <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
@@ -32,9 +36,10 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction" href="intro.html" />
+    <link rel="next" title="Installation" href="installation.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -70,20 +75,32 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="intro.html">
-  Introduction
+ <a class="reference internal nav-link" href="installation.html">
+  Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="modules.html">
-  pymice
+ <a class="reference internal nav-link" href="pymice.html">
+  Package pymice
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="api.html">
-  API
+ <a class="reference internal nav-link" href="examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="blogposts.html">
+  Blogposts
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="about.html">
+  About us
  </a>
 </li>
 
@@ -133,24 +150,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Welcome to pymice’s documentation!
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#indices-and-tables">
-   Indices and tables
-  </a>
- </li>
-</ul>
-
+    
 </nav>
               </div>
               
@@ -172,25 +174,37 @@
                 
   <section id="welcome-to-pymice-s-documentation">
 <h1>Welcome to pymice’s documentation!<a class="headerlink" href="#welcome-to-pymice-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Here some short introduction and explanation.</p>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">pymice</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pymice.html">pymice package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypi.html">Python Package Index (PyPI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conda.html">Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">From source</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pymice.html">Package pymice</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pymice.amputation.html">pymice.amputation.ampute module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymice.exploration.html">pymice.exploration module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_introduction.html">Main title of example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_multiple_imputation.html">Imputing missing values using multiple imputation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blogposts.html">Blogposts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mapping.html">A mapping from ampute() in R to pyampute()</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About us</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#rianne-schouten">Rianne Schouten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#davina-zamanzadeh">Davina Zamanzadeh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#prabhant-singh">Prabhant Singh</a></li>
+</ul>
+</li>
 </ul>
 </div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
 </section>
 
 
@@ -199,10 +213,10 @@
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='right-next' id="next-link" href="intro.html" title="next page">
+    <a class='right-next' id="next-link" href="installation.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Introduction</p>
+        <p class="prev-next-title">Installation</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
