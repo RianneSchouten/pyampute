@@ -1,5 +1,3 @@
-# Author: Rianne Schouten <r.m.schouten@tue.nl; riannemargarethaschouten@gmail.com>
-
 """Transformer for generating multivariate missingness in complete datasets"""
 # Author: Rianne Schouten <riannemargarethaschouten@gmail.com>
 # Co-Author: Davina Zamanzadeh <davzaman@gmail.com>
@@ -34,6 +32,8 @@ class MultivariateAmputation(TransformerMixin):
     n = number of samples.
     m = number of features/vars.
     k = number of patterns.
+
+    Read more about this and this here. And put reference somewhere.
 
     Parameters
     ----------
@@ -120,23 +120,13 @@ class MultivariateAmputation(TransformerMixin):
                 "score-to-prob": "sigmoid-right"
                 "freq": 1
             }
+   
+    Methods
+    -------
+    fit_transform(X)
 
-    Notes
-    -----
-    Something on difference ampute in R and Python
-
-    References
-    ----------
-    .. [1] Rianne Margaretha Schouten, Peter Lugtig & Gerko Vink (2018).
-    Generating missing values for simulation purposes:
-        A multivariate amputation procedure.
-    Journal of Statistical Computation and Simulation, 88:15, 2909-2930, DOI:
-        10.1080/00949655.2018.1491577
-    .. [2] Rianne Margaretha Schouten & Gerko Vink (2021). 
-    The dance of the mechanisms: how observed information influences
-        the validity of missingness assumptions.
-    Sociological Methods & Research, 50:3, 1243-1258, DOI:
-        10.1177/0049124118799376
+    Examples
+    --------
     """
 
     DEFAULTS = {

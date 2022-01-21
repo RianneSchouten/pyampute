@@ -76,9 +76,9 @@ Some explanation
     Traceback (most recent call last):
       File "C:\Users\20200059\Documents\Github\pymice\examples\plot_introduction.py", line 31, in <module>
         incomplete_data = mads.fit_transform(com_dataset)
-      File "C:\Users\20200059\Documents\Github\pymice\pymice\amputation\ampute.py", line 817, in fit_transform
+      File "C:\Users\20200059\Documents\Github\pymice\pymice\amputation\ampute.py", line 807, in fit_transform
         X = self._validate_input(X)
-      File "C:\Users\20200059\Documents\Github\pymice\pymice\amputation\ampute.py", line 700, in _validate_input
+      File "C:\Users\20200059\Documents\Github\pymice\pymice\amputation\ampute.py", line 690, in _validate_input
         if len(self.patterns) / self.num_samples >= 0.7:
     AttributeError: 'MultivariateAmputation' object has no attribute 'num_samples'
 
@@ -108,7 +108,7 @@ References
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.016 seconds)
+   **Total running time of the script:** ( 0 minutes  0.017 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_introduction.py:

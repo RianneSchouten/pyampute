@@ -94,8 +94,14 @@
 </li>
 
 <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="blogposts.html">
+  Blogposts
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="about.html">
-  About
+  About us
  </a>
 </li>
 
@@ -190,6 +196,7 @@
 <p>n = number of samples.
 m = number of features/vars.
 k = number of patterns.</p>
+<p>Read more about this and this here. And put reference somewhere.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -278,8 +285,8 @@ If you don’t set it, a random number will be produced every time.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pymice.amputation.ampute.MultivariateAmputation.DEFAULTS">
 <span class="sig-name descname"><span class="pre">DEFAULTS</span></span><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation.DEFAULTS" title="Permalink to this definition">¶</a></dt>
-<dd><div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">Default pattern.</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<dd><div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Default pattern.</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;incomplete_vars&quot;</span><span class="p">:</span> <span class="n">random</span> <span class="mi">50</span><span class="o">%</span> <span class="n">of</span> <span class="nb">vars</span><span class="p">,</span>
     <span class="s2">&quot;mechanism&quot;</span><span class="p">:</span> <span class="s2">&quot;MAR&quot;</span><span class="p">,</span>
@@ -296,39 +303,20 @@ If you don’t set it, a random number will be produced every time.</p></li>
 </dl>
 </dd></dl>
 
-<p class="rubric">Notes</p>
-<p>Something on difference ampute in R and Python</p>
-<p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
-<dd><p>Rianne Margaretha Schouten, Peter Lugtig &amp; Gerko Vink (2018).</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Generating missing values for simulation purposes:</dt><dd><p>A multivariate amputation procedure.</p>
-</dd>
-<dt>Journal of Statistical Computation and Simulation, 88:15, 2909-2930, DOI:</dt><dd><p>10.1080/00949655.2018.1491577</p>
-</dd>
-</dl>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets">2</span></dt>
-<dd><p>Rianne Margaretha Schouten &amp; Gerko Vink (2021).</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>The dance of the mechanisms: how observed information influences</dt><dd><p>the validity of missingness assumptions.</p>
-</dd>
-<dt>Sociological Methods &amp; Research, 50:3, 1243-1258, DOI:</dt><dd><p>10.1177/0049124118799376</p>
-</dd>
-</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymice.amputation.ampute.MultivariateAmputation.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation.fit_transform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Examples</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id0">
 <span class="sig-name descname"><span class="pre">DEFAULTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'lower_range':</span> <span class="pre">-3,</span> <span class="pre">'max_diff_with_target':</span> <span class="pre">0.001,</span> <span class="pre">'max_iter':</span> <span class="pre">100,</span> <span class="pre">'mechanism':</span> <span class="pre">'MAR',</span> <span class="pre">'score_to_probability_func':</span> <span class="pre">'SIGMOID-RIGHT',</span> <span class="pre">'upper_range':</span> <span class="pre">3}</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymice.amputation.ampute.MultivariateAmputation.fit_transform">
-<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymice.amputation.ampute.MultivariateAmputation.fit_transform" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fits amputer on complete data X and returns the incomplete data X</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

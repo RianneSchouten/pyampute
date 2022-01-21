@@ -94,8 +94,14 @@
 </li>
 
 <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="blogposts.html">
+  Blogposts
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="about.html">
-  About
+  About us
  </a>
 </li>
 
@@ -201,15 +207,56 @@
 <span id="pymice-exploration-md-patterns-module"></span><h2>pymice.exploration.md_patterns module<a class="headerlink" href="#module-pymice.exploration.md_patterns" title="Permalink to this headline">¶</a></h2>
 <p>Some title</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="pymice.exploration.md_patterns.mdPattern">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymice.exploration.md_patterns.</span></span><span class="sig-name descname"><span class="pre">mdPattern</span></span><a class="headerlink" href="#pymice.exploration.md_patterns.mdPattern" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pymice.exploration.md_patterns.mdPatterns">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pymice.exploration.md_patterns.</span></span><span class="sig-name descname"><span class="pre">mdPatterns</span></span><a class="headerlink" href="#pymice.exploration.md_patterns.mdPatterns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>some comments</p>
+<p>some comments
+Initialize with nothing, then run get_patterns</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>parameters?</strong> (<em>What if there are no global</em>) – </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>incomplete_data</strong> – Matrix with shape <cite>(n, m)</cite>.
+Dataset with missing values</p></li>
+<li><p><strong>missing_values</strong> – The placeholder for the missing values as needed by MissingIndicator</p></li>
+</ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymice.exploration.md_patterns.mdPatterns.get_patterns">
+<span class="sig-name descname"><span class="pre">get_patterns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymice.exploration.md_patterns.mdPatterns.get_patterns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Examples</p>
+<p>X = np.random.randn(100, 3)
+mask1 = np.random.binomial(n=1, size=X.shape[0], p=0.5)
+mask2 = np.random.binomial(n=1, size=X.shape[0], p=0.5)
+X[mask1==1, 0] = np.nan
+X[mask2==1, 1] = np.nan
+mypat = mp.mdPatterns()
+mdpatterns = mypat.get_patterns(X)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">get_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Some comments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>Matrix</em>) – Matrix of shape <cite>(n_samples, m_features)</cite>
+Incomplete input data, where “n_samples” is the number of samples and
+“m_features” is the number of features.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>md_patterns</em></p></li>
+<li><p><strong>plot_md_patterns</strong> (<em>when show_plot is True</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
