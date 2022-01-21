@@ -18,6 +18,6 @@ setup(
         "",
     ],
     extras_require={
-        "docs": ["sphinx", "pydata-sphinx-theme", "sphinx-autodoc-typehints"]
+        "docs": ["sphinx", "pydata-sphinx-theme", "sphinx-autodoc-typehints", "sphinx-gallery"]
     },
 )
