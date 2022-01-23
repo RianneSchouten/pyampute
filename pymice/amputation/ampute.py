@@ -11,7 +11,7 @@ from scipy import stats
 from math import isclose
 
 # Local
-from amputation.utils import (
+from pymice.amputation.utils import (
     ArrayLike,
     Matrix,
     isin,
@@ -23,7 +23,7 @@ from amputation.utils import (
     standardize_uppercase,
     sigmoid,
 )
-from amputation.utils import LOOKUP_TABLE_PATH
+from pymice.amputation.utils import LOOKUP_TABLE_PATH
 
 
 class MultivariateAmputation(TransformerMixin):
