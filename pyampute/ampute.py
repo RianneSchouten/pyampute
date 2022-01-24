@@ -25,6 +25,9 @@ from .utils import (
     sigmoid,
 )
 
+THRESHOLD_MIN_NUM_CANDIDATES = 10
+THRESHOLD_MIN_NUM_UNIQUE_WSS = 5
+
 
 class MultivariateAmputation(TransformerMixin):
     """Generating multivariate missingness patterns in complete datasets
@@ -326,6 +329,14 @@ class MultivariateAmputation(TransformerMixin):
             whether or not to apply pattern k to sample i in the data subset.
         """
 
+        if len(data_group) <= THRESHOLD_MIN_NUM_CANDIDATES:
+            logging.warn(
+                f"Subset for pattern {pattern_ind} is small. "
+                "Too many patterns can result in subsets with 0 or few candidates. "
+                "Subsets with 0 candidates will be skipped. "
+                "Under MCAR, subsets with few candidates will be amputed as normal."
+            )
+
         # transform only vars involved in amputation to numeric to compute weights
         # does not transform the original datset
         logging.info(
@@ -342,6 +353,14 @@ class MultivariateAmputation(TransformerMixin):
         # in case of MAR, MNAR, the mechanisms is determined by the weights
         wss = np.dot(data_group, self.weights[pattern_ind, :].T)
 
+        if len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
+            logging.warn(
+                f"Candidates for pattern {pattern_ind} all have almost the same weighted sum scores. "
+                "It is possible this is due to the use of binary variables in amputation. "
+                "This creates problems when using the sigmoid function for the score_to_probability_func. "
+                "Currently our solution is as follows: if there is just one candidate with a sum score 0, we will ampute it. "
+                "If there is one candidate with a nonzero sum score, or multiple candidates with the same score, we evenly apply the same amount of missingness (as if MCAR)."
+            )
         return wss
 
     def _get_default_pattern(self, m_features: int) -> List[Dict[str, Any]]:
@@ -688,10 +707,7 @@ class MultivariateAmputation(TransformerMixin):
             "Either specify a freq for all patterns or specify none "
             "for equal frequency (1/k) for all patterns."
         )
-        if len(self.patterns) / self.num_samples >= 0.7:
-            logging.warn(
-                "Too many patterns can result in subsets with 0 or few candidates. Subsets with 0 candidates will be skipped. Under MCAR, subsets with few candidates will be amputed as normal."
-            )
+
         # check each dict has the required entries (via superset check)
         required_keys = {
             "incomplete_vars",
@@ -769,9 +785,6 @@ class MultivariateAmputation(TransformerMixin):
             logging.warn(
                 f"Binary variables (at indices {binary_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR). "
                 "This can result in a subset with candidates that all have the same (or almost the same) weighted sum scores. "
-                "This creates problems when using the sigmoid function for the score_to_probability_func. "
-                "Currently our solution is as follows: if there is just one candidate with a sum score 0, we will ampute it. "
-                "If there is one candidate with a nonzero sum score, or multiple candidates with the same score, we evenly apply the same amount of missingness (as if MCAR)."
             )
         categorical_vars_mask = []  # TODO
         categorical_vars_involved_in_ampute = np.where(
