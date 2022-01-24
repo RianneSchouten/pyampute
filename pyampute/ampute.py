@@ -11,7 +11,8 @@ from scipy import stats
 from math import isclose
 
 # Local
-from amputation.utils import (
+from .utils import (
+    LOOKUP_TABLE_PATH,
     ArrayLike,
     Matrix,
     isin,
@@ -23,7 +24,6 @@ from amputation.utils import (
     standardize_uppercase,
     sigmoid,
 )
-from amputation.utils import LOOKUP_TABLE_PATH
 
 
 class MultivariateAmputation(TransformerMixin):
@@ -674,14 +674,15 @@ class MultivariateAmputation(TransformerMixin):
         # This must come first so we can check patterns
         assert X is not None, "No dataset passed, cannot be None."
         assert len(X.shape) == 2, "Dataset must be 2 dimensional."
-        num_features = X.shape[1]
+        self.num_features = X.shape[1]
+        self.num_samples = X.shape[0]
 
         ##################
         #    PATTERNS    #
         ##################
         if self.patterns is None or len(self.patterns) == 0:
             logging.info("No patterns passed, setting default pattern.")
-            self.patterns = self._get_default_pattern(num_features)
+            self.patterns = self._get_default_pattern(self.num_features)
         freq_keys = ["freq" in pattern for pattern in self.patterns]
         assert all(freq_keys) or not any(freq_keys), (
             "Either specify a freq for all patterns or specify none "
@@ -706,7 +707,7 @@ class MultivariateAmputation(TransformerMixin):
         # The dictionary form checks happens later
         assert all(
             [
-                len(pattern["weights"]) == num_features
+                len(pattern["weights"]) == self.num_features
                 for pattern in self.patterns
                 if "weights" in pattern
                 and (
@@ -718,8 +719,6 @@ class MultivariateAmputation(TransformerMixin):
 
         # bookkeeping vars for readability
         self.num_patterns = len(self.patterns)
-        self.num_features = num_features
-        self.num_samples = X.shape[0]
         self.colname_to_idx = (
             {colname: idx for idx, colname in enumerate(X.columns)}
             if isinstance(X, DataFrame)

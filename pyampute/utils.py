@@ -1,7 +1,7 @@
 """ Utils mainly to write code agnostic to numpy or pandas.  """
 # Author: Davina Zamanzadeh <davzaman@gmail.com>
 
-from typing import Callable, List, Optional, Union
+from typing import List, Optional, Union
 import logging
 import pandas as pd
 from pandas.api.types import is_numeric_dtype

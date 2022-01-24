@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 
 
-from amputation.ampute import MultivariateAmputation
-from amputation.utils import LOOKUP_TABLE_PATH
+from .ampute import MultivariateAmputation
+from .utils import LOOKUP_TABLE_PATH
 
 
 def generate_shift_lookup_table(
