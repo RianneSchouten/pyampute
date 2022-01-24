@@ -619,10 +619,6 @@ class MultivariateAmputation(TransformerMixin):
         ).all(), "Frequencies must be between 0 and 1 inclusive."
         # there's imprecision in float, so it might be 0.9999999
         assert isclose(sum(self.freqs), 1), "Frequencies should sum to 1."
-        if self.freqs * self.num_samples <= 7:
-            logging.warn(
-                "Low proportion of frequency can result in subsets with 0 or few candidates. Subsets with 0 candidates will be skipped. Under MCAR, subsets with few candidates will be amputed as normal."
-            )
 
         ##################
         #   MECHANISMS   #
@@ -786,7 +782,7 @@ class MultivariateAmputation(TransformerMixin):
                 f"Binary variables (at indices {binary_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR). "
                 "This can result in a subset with candidates that all have the same (or almost the same) weighted sum scores. "
             )
-        categorical_vars_mask = []  # TODO
+        categorical_vars_mask = True  # TODO
         categorical_vars_involved_in_ampute = np.where(
             self.vars_involved_in_ampute & categorical_vars_mask
         )
