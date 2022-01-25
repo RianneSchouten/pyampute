@@ -510,7 +510,9 @@ class MultivariateAmputation(TransformerMixin):
                 self.shift_lookup_table = read_csv(LOOKUP_TABLE_PATH, index_col=0)
             except Exception:
                 logging.warn(
-                    "Failed to load lookup table for a prespecified score to probability function. It is possible /data/lookup.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table."
+                    "Failed to load lookup table for a prespecified score to probability function. "
+                    f"It is possible /data/{LOOKUP_TABLE_PATH}.csv is missing, in the wrong location, or corrupted. "
+                    "Try rerunning /amputation/scripts.py to regenerate the lookup table."
                 )
                 self.shift_lookup_table = None
 

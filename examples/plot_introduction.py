@@ -17,7 +17,7 @@ import numpy as np
 
 m = 1000
 n = 10
-com_dataset = np.zeros((m,n))
+com_dataset = np.zeros((m, n))
 
 # %%
 # Multivariate Amputation
@@ -25,14 +25,14 @@ com_dataset = np.zeros((m,n))
 #
 # Some explanation
 
-from pymice.amputation.ampute import MultivariateAmputation
+from pyampute.ampute import MultivariateAmputation
 
 mads = MultivariateAmputation()
 incomplete_data = mads.fit_transform(com_dataset)
 
 # %%
 
-from pymice.exploration.md_patterns import mdPatterns
+from pyampute.exploration.md_patterns import mdPatterns
 
 mdp = mdPatterns()
 plot = mdp._get_patterns(incomplete_data)
