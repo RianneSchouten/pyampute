@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to pyampute's documentation!
-==================================
+====================================
 
 Here some short introduction and explanation.
 

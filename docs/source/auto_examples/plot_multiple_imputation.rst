@@ -139,7 +139,7 @@ Error.
 .. code-block:: pytb
 
     Traceback (most recent call last):
-      File "C:\Users\20200059\Documents\Github\pymice\examples\plot_multiple_imputation.py", line 67, in <module>
+      File "C:\Users\20200059\Documents\Github\pyampute\examples\plot_multiple_imputation.py", line 67, in <module>
         from sklearn.impute import ChainedImputer
     ImportError: cannot import name 'ChainedImputer' from 'sklearn.impute' (c:\users\20200059\appdata\local\programs\python\python38\lib\site-packages\sklearn\impute\__init__.py)
 
@@ -548,7 +548,7 @@ Error.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.332 seconds)
+   **Total running time of the script:** ( 0 minutes  0.416 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_multiple_imputation.py:
