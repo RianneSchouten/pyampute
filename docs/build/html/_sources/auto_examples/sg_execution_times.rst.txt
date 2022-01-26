@@ -5,12 +5,12 @@
 
 Computation times
 =================
-**00:00.129** total execution time for **auto_examples** files:
+**00:07.032** total execution time for **auto_examples** files:
 
 +-------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_multiple_imputation.py` (``plot_multiple_imputation.py``)                 | 00:00.122 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_introduction.py` (``plot_introduction.py``)                               | 00:05.666 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_introduction.py` (``plot_introduction.py``)                               | 00:00.007 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_multiple_imputation.py` (``plot_multiple_imputation.py``)                 | 00:01.332 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py` (``plot_custom_probability_function.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py` (``plot_custom_probability_function.py``) | 00:00.033 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------+-----------+--------+

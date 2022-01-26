@@ -2,7 +2,7 @@
 import unittest
 import pandas as pd
 
-from exploration.mcar_statistical_tests import McarTest
+from pyampute.exploration.mcar_statistical_tests import McarTest
 
 
 # load test data

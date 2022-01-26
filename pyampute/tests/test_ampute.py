@@ -1,7 +1,7 @@
 import numpy as np
 import unittest
 
-from amputation.ampute import MultivariateAmputation
+from pyampute.ampute import MultivariateAmputation
 
 # test that all mechanisms work
 class TestAmpute(unittest.TestCase):

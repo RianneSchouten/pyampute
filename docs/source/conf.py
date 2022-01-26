@@ -15,14 +15,14 @@ import sys
 
 # path to the module code for autodoc
 sys.path.insert(0, os.path.abspath("../.."))
-sys.path.insert(0, os.path.abspath("../../pymice"))
+sys.path.insert(0, os.path.abspath("../../pyampute"))
 
 
 # -- Project information -----------------------------------------------------
 
-project = "pymice"
-copyright = "2021, Rianne Schouten & Davina Zamanzadeh"
-author = "Rianne Schouten & Davina Zamanzadeh"
+project = "pyampute"
+copyright = "2021, Rianne Schouten, Davina Zamanzadeh, & Prabhant Singh"
+author = "Rianne Schouten, Davina Zamanzadeh, & Prabhant Singh"
 
 # The full version, including alpha/beta/rc tags
 release = "0.0.1"
@@ -44,12 +44,14 @@ extensions = [
     "sphinx_autodoc_typehints",  # so I can autoinject type hints to docs
     "sphinx_gallery.gen_gallery",
     'sphinx.ext.imgmath', # for math in rst files
-    'sphinx.ext.mathjax' # for matrices in rst files
+    'sphinx.ext.mathjax', # for matrices in rst files
+    # https://sphinx-gallery.github.io/stable/index.html
+    "sphinx_gallery.gen_gallery",
 ]
 
 sphinx_gallery_conf = {
-    'examples_dirs': '../../examples',
-    'gallery_dirs': 'auto_examples',
+    "examples_dirs": "../../examples",
+    "gallery_dirs": "auto_examples",
 }
 
 # Add any paths that contain templates here, relative to this directory.

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import unittest
 
-from amputation.utils import enforce_numeric
+from pyampute.utils import enforce_numeric
 
 
 class TestEnforceNumeric(unittest.TestCase):

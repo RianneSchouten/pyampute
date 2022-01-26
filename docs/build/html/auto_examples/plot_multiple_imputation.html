@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Imputing missing values using multiple imputation &#8212; pymice 0.0.1 documentation</title>
+    <title>Imputing missing values using multiple imputation &#8212; pyampute 0.0.1 documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -39,7 +39,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="An example about custom probability function" href="plot_custom_probability_function.html" />
+    <link rel="next" title="Amputing with a Custom Probability Function" href="plot_custom_probability_function.html" />
     <link rel="prev" title="Main title of example" href="plot_introduction.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -59,7 +59,7 @@
     
     
 <a class="navbar-brand" href="../index.html">
-<p class="title">pymice</p>
+<p class="title">pyampute</p>
 </a>
 
     
@@ -82,12 +82,12 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../pymice.html">
-  Package pymice
+ <a class="reference internal nav-link" href="../pyampute.html">
+  Package pyampute
  </a>
 </li>
 
-<li class="toctree-l1 nav-item">
+<li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -135,7 +135,24 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="plot_introduction.html">
+   Main title of example
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Imputing missing values using multiple imputation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="plot_custom_probability_function.html">
+   Amputing with a Custom Probability Function
+  </a>
+ </li>
+</ul>
+
   </div>
 </nav>
               </div>
@@ -237,7 +254,7 @@ Error.</p>
 <span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">ChainedImputer</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span> <span class="k">as</span> <span class="n">mse</span>
 
-<span class="kn">from</span> <span class="nn">amputation</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
+<span class="kn">from</span> <span class="nn">pyampute.ampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
 
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
@@ -663,7 +680,7 @@ Error.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.122 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.332 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-multiple-imputation-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/bc363b373646ff530bef73deec5c8b84/plot_multiple_imputation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_multiple_imputation.py</span></code></a></p>
@@ -691,7 +708,7 @@ Error.</p>
     <a class='right-next' id="next-link" href="plot_custom_probability_function.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">An example about custom probability function</p>
+        <p class="prev-next-title">Amputing with a Custom Probability Function</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -709,7 +726,7 @@ Error.</p>
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2021, Rianne Schouten &amp; Davina Zamanzadeh.<br>
+    &copy; Copyright 2021, Rianne Schouten, Davina Zamanzadeh, &amp; Prabhant Singh.<br>
 </p>
     </div>
     
