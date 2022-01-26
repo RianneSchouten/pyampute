@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>A mapping from ampute() in R to pyampute() &#8212; pymice 0.0.1 documentation</title>
+    <title>A mapping from R-function ampute to pyampute &#8212; pymice 0.0.1 documentation</title>
     
     <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -138,7 +138,18 @@
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   A mapping from ampute() in R to pyampute()
+   A mapping from R-function
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     ampute
+    </span>
+   </code>
+   to
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pyampute
+    </span>
+   </code>
   </a>
  </li>
 </ul>
@@ -158,9 +169,71 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-fundament-patterns">
+   The fundament: patterns
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-patterns-matrix-in-ampute">
+     The patterns matrix in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       ampute
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#specifying-patterns-in-pyampute">
+     Specifying patterns in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pyampute
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#missing-data-mechanisms">
+   Missing data mechanisms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#weighted-sum-scores-weights">
+   Weighted sum scores: weights
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#proportion-and-frequency">
+   Proportion and frequency
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#missingness-types-or-score-to-probability-func">
+   Missingness types or score_to_probability_func
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#this-is-a-subheader">
+   This is a subheader
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -180,9 +253,197 @@
               
               <div>
                 
-  <section id="a-mapping-from-ampute-in-r-to-pyampute">
-<h1>A mapping from ampute() in R to pyampute()<a class="headerlink" href="#a-mapping-from-ampute-in-r-to-pyampute" title="Permalink to this headline">¶</a></h1>
+  <section id="a-mapping-from-r-function-ampute-to-pyampute">
+<h1><a class="toc-backref" href="#id8">A mapping from R-function <code class="docutils literal notranslate"><span class="pre">ampute</span></code> to <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a><a class="headerlink" href="#a-mapping-from-r-function-ampute-to-pyampute" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="overview">
+<p class="topic-title">Overview</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#a-mapping-from-r-function-ampute-to-pyampute" id="id8">A mapping from R-function <code class="docutils literal notranslate"><span class="pre">ampute</span></code> to <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a></p>
+<ul>
+<li><p><a class="reference internal" href="#the-fundament-patterns" id="id9">The fundament: patterns</a></p>
+<ul>
+<li><p><a class="reference internal" href="#the-patterns-matrix-in-ampute" id="id10">The patterns matrix in <code class="docutils literal notranslate"><span class="pre">ampute</span></code></a></p></li>
+<li><p><a class="reference internal" href="#specifying-patterns-in-pyampute" id="id11">Specifying patterns in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#missing-data-mechanisms" id="id12">Missing data mechanisms</a></p></li>
+<li><p><a class="reference internal" href="#weighted-sum-scores-weights" id="id13">Weighted sum scores: weights</a></p></li>
+<li><p><a class="reference internal" href="#proportion-and-frequency" id="id14">Proportion and frequency</a></p></li>
+<li><p><a class="reference internal" href="#missingness-types-or-score-to-probability-func" id="id15">Missingness types or score_to_probability_func</a></p></li>
+<li><p><a class="reference internal" href="#this-is-a-subheader" id="id16">This is a subheader</a></p></li>
+<li><p><a class="reference internal" href="#references" id="id17">References</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Multivariate amputation has been proposed by <a class="reference internal" href="#schouten2018" id="id1"><span>[Schouten2018]</span></a> and implemented in function <code class="docutils literal notranslate"><span class="pre">ampute</span></code> in statistical language <code class="docutils literal notranslate"><span class="pre">R</span></code> in package <code class="docutils literal notranslate"><span class="pre">mice</span></code>. Since then, the amputation methodology has been used and cited by many.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, we now provide the same methodology for Python users, and more. Compared to <code class="docutils literal notranslate"><span class="pre">ampute</span></code>, the input arguments of <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> are more intuitive and faster to specify. A quick explanation of <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>’s arguments can be found in the <a class="reference external" href="https://rianneschouten.github.io/pymice/build/html/pymice.amputation.html">documentation</a>.</p>
+<p>For the R-function, a detailed explanation of how the multivariate amputation methodology relates to the input arguments is provided in a <a class="reference external" href="https://rianneschouten.github.io/mice_ampute/vignette/ampute.html">vignette</a>. This blogpost therefore has two purposes:</p>
+<ol class="arabic simple">
+<li><p>For R users, we provide a mapping from the input arguments of <code class="docutils literal notranslate"><span class="pre">ampute</span></code> to those of <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>.</p></li>
+<li><p>For Python users, we further explain how the input arguments of <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> can be used to generate any desired form of missing data.</p></li>
+</ol>
+<section id="the-fundament-patterns">
+<h2><a class="toc-backref" href="#id9">The fundament: patterns</a><a class="headerlink" href="#the-fundament-patterns" title="Permalink to this headline">¶</a></h2>
+<p>Key in multivariate amputation is the specification of missing data patterns. A missing data pattern is a combination of missing values on certain variables and observed values on the other variables. Knowing the missing data patterns in an incomplete dataset can be very helpful for understanding possible explanations for the occurrence of those missing values.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, an overview of missing data patterns in an incomplete dataset can be obtained with class <code class="docutils literal notranslate"><span class="pre">mdPatterns</span></code>. For instance, the <a class="reference external" href="https://github.com/RianneSchouten/pymice/tree/master/data">nhanes2</a> dataset has 4 missing data patterns:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyampute.md_patterns</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="n">mypat</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">mdPatterns</span><span class="p">()</span>
+<span class="n">mdpatterns</span> <span class="o">=</span> <span class="n">mypat</span><span class="o">.</span><span class="n">get_patterns</span><span class="p">(</span><span class="n">nhanes2</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="_images/mdpatterns_nhanes2.png"><img alt="alternate text" src="_images/mdpatterns_nhanes2.png" style="width: 200px;" /></a>
+<figcaption>
+<p><span class="caption-text">Missing data patterns of incomplete dataset nhanes2</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Here, blue and red correspond to observed and missing values respectively. The numbers on the left indicate the number of rows in the dataset that follow a specific missing data pattern. For instance, there are 3 rows with observed values on variables age, hyp and bmi and a missing value on variable chl. In this dataset, there are no rows with observed values on age and hyp and missing values on bmi and chl. That combination does not exist.</p>
+<p>All aspects of multivariate amputation are connected to the missingness patterns. Per pattern, one decides the missing data mechanism, the frequency, the weights of the variables that guide the amputation and the missingness type. Considering this, the input arguments of <code class="docutils literal notranslate"><span class="pre">ampute</span></code> and <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> differ as follows.</p>
+<div class="topic">
+<p class="topic-title">Difference between <code class="docutils literal notranslate"><span class="pre">ampute</span></code> and <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></p>
+<p>In <code class="docutils literal notranslate"><span class="pre">ampute</span></code>, the patterns, mechanisms, weights, frequencies and types are defined in distinct arguments, and they should all describe the same number of patterns. For instance, the first row in the patterns matrix should correspond to the first row in the weights matrix, and to the first value in the frequency vector, etcetera.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, one specifies one dictionary per pattern. That dictionary contains information about the pattern and the corresponding mechanism, weights, frequency and type. One can then easily add or remove patterns.</p>
+</div>
+<p>Let’s discuss in more detail.</p>
+<section id="the-patterns-matrix-in-ampute">
+<h3><a class="toc-backref" href="#id10">The patterns matrix in <code class="docutils literal notranslate"><span class="pre">ampute</span></code></a><a class="headerlink" href="#the-patterns-matrix-in-ampute" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">ampute</span></code>, patterns are specified with a binary matrix of size <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/> by <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> where <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/> indicates the number of patterns and <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> indicates the number of variables. A cell in the patterns matrix equals <code class="docutils literal notranslate"><span class="pre">0</span></code> if in that patterns variable <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> should be amputed and <code class="docutils literal notranslate"><span class="pre">1</span></code> otherwise.</p>
+<p>The patterns matrix of <a class="reference external" href="https://github.com/RianneSchouten/pymice/tree/master/data">nhanes2</a> would look as follows:</p>
+<div class="math">
+<p><img src="_images/math/e8a99740abba4b2dcf3c4c082dd1601d2e5f1bbe.png" alt="patterns = \begin{bmatrix}
+        1 &amp; 1 &amp; 1 &amp; 0 \\
+        1 &amp; 1 &amp; 0 &amp; 0 \\
+        1 &amp; 0 &amp; 0 &amp; 1 \\
+        1 &amp; 0 &amp; 0 &amp; 0
+    \end{bmatrix}"/></p>
+</div><p>Without further specification, by default <code class="docutils literal notranslate"><span class="pre">ampute</span></code> generates the number of patterns equal to the number of variables in the dataset. Then, in every pattern, just one variable is amputed. For instance, if we would ampute a complete version of nhanes2, the default patterns matrix in <code class="docutils literal notranslate"><span class="pre">ampute</span></code> would be:</p>
+<div class="math">
+<p><img src="_images/math/f343c143c85d5eba6196589b82c0de73c52ca3a5.png" alt="default = \begin{bmatrix}
+        0 &amp; 1 &amp; 1 &amp; 1 \\
+        1 &amp; 0 &amp; 1 &amp; 1 \\
+        1 &amp; 1 &amp; 0 &amp; 1 \\
+        1 &amp; 1 &amp; 1 &amp; 0
+    \end{bmatrix}"/></p>
+</div></section>
+<section id="specifying-patterns-in-pyampute">
+<h3><a class="toc-backref" href="#id11">Specifying patterns in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a><a class="headerlink" href="#specifying-patterns-in-pyampute" title="Permalink to this headline">¶</a></h3>
+<p>As noted before, in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> we make all specifications per pattern. In case of multiple patterns, the user specifies a list of dictionaries. For <a class="reference external" href="https://github.com/RianneSchouten/pymice/tree/master/data">nhanes2</a>, the input would be:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyampute.pyampute</span> <span class="k">as</span> <span class="nn">ampute</span>
+<span class="n">mads</span> <span class="o">=</span> <span class="n">ampute</span><span class="o">.</span><span class="n">MultivariateAmputation</span><span class="p">(</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]}</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This may seem cumbersome at first, but it will allow for easy modification of a single pattern why keeping the others intact. We will further discuss this when talking about mechanisms, weights, frequency and types.</p>
+<p>We have furthermore adapted the default. In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, by default we generate one missing data pattern with missing values on a random selection of 50% of the variables. We expect this default to be possible for many types of datasets, whereas in <code class="docutils literal notranslate"><span class="pre">ampute</span></code> an error occurs if the number of variables is relatively high compared to the desired (or default) missingness proportion.</p>
+</section>
+</section>
+<section id="missing-data-mechanisms">
+<h2><a class="toc-backref" href="#id12">Missing data mechanisms</a><a class="headerlink" href="#missing-data-mechanisms" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="weighted-sum-scores-weights">
+<h2><a class="toc-backref" href="#id13">Weighted sum scores: weights</a><a class="headerlink" href="#weighted-sum-scores-weights" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="proportion-and-frequency">
+<h2><a class="toc-backref" href="#id14">Proportion and frequency</a><a class="headerlink" href="#proportion-and-frequency" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="missingness-types-or-score-to-probability-func">
+<h2><a class="toc-backref" href="#id15">Missingness types or score_to_probability_func</a><a class="headerlink" href="#missingness-types-or-score-to-probability-func" title="Permalink to this headline">¶</a></h2>
 <p>Here a blogpost about a mapping.</p>
+<p>One asterisk for <em>italics</em> and two for <strong>bolding</strong> and backticks for <code class="docutils literal notranslate"><span class="pre">code</span> <span class="pre">samples</span></code>.</p>
+<p><a class="reference external" href="https://rianneschouten.github.io/pymice">A link is provided by backticks</a> and you can define it later.</p>
+<p>Later we will discuss something in the <a class="reference internal" href="#this-is-a-subheader">This is a subheader</a></p>
+</section>
+<section id="this-is-a-subheader">
+<h2><a class="toc-backref" href="#id16">This is a subheader</a><a class="headerlink" href="#this-is-a-subheader" title="Permalink to this headline">¶</a></h2>
+<p>The default color coding is Python:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mads</span> <span class="o">&lt;-</span> <span class="n">MultivariateAmputation</span><span class="p">(</span><span class="n">patterns</span> <span class="o">=</span> <span class="p">)</span>
+<span class="n">incompl_data</span> <span class="o">&lt;-</span> <span class="n">mads</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">compl_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you want to change the color coding for R code, you have to do:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">mads</span> <span class="o">&lt;-</span> <span class="nf">ampute</span><span class="p">(</span><span class="n">compl_data</span><span class="p">,</span> <span class="n">patterns</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">),</span><span class="n">nrow</span><span class="o">=</span><span class="m">2</span><span class="p">,</span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">))</span>
+<span class="n">incompl_data</span> <span class="o">&lt;-</span> <span class="n">mads</span><span class="o">$</span><span class="n">data</span>
+</pre></div>
+</div>
+<p>Patterns and weights are specified in matrices. Consider a dataset with 3 variables; V1, V2 and V3.
+Assume you want to create two missing data patterns. In the first, you create missingness in V1, in the second you create missingness in V1 and V2.
+The patterns matrix will be:</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>V1</p></td>
+<td><p>V2</p></td>
+<td><p>V3</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>Or with csv code;</p>
+<table class="colwidths-given table" id="id6">
+<caption><span class="caption-text">a title</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>V1</p></th>
+<th class="head"><p>V2</p></th>
+<th class="head"><p>V3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>If we denote a weight as <img class="math" src="_images/math/b17690fc896faa8d151aa4a2dd8d2fd16a34b439.png" alt="w_{ij}"/>, a weighted sum score is then given as</p>
+<div class="math">
+<p><img src="_images/math/c63a38f3582b6c1c2e246f672eeeee67f20e2918.png" alt="n_{\mathrm{offset}} = \sum_{k=0}^{N-1} s_k n_k"/></p>
+</div><p>And we may want to add a figure</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="_images/scheme.png"><img alt="alternate text" src="_images/scheme.png" style="width: 600px; height: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">figure are like images but with a caption</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>A citation is defined at the bottom of the page and referenced as <a class="reference internal" href="#schouten2018" id="id3"><span>[Schouten2018]</span></a> and <a class="reference internal" href="#schouten2021" id="id4"><span>[Schouten2021]</span></a></p>
+</section>
+<section id="references">
+<h2><a class="toc-backref" href="#id17">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<dl class="citation">
+<dt class="label" id="schouten2018"><span class="brackets">Schouten2018</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>)</span></dt>
+<dd><p>Rianne M. Schouten, Peter Lugtig and Gerko Vink, etc.</p>
+</dd>
+<dt class="label" id="schouten2021"><span class="brackets"><a class="fn-backref" href="#id4">Schouten2021</a></span></dt>
+<dd><p>Rianne M. Schouten and Gerko Vink, etc.</p>
+</dd>
+</dl>
+</section>
 </section>
 
 
