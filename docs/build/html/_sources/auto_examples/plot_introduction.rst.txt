@@ -64,8 +64,8 @@ Some explanation
 
     from pyampute.ampute import MultivariateAmputation
 
-    mads = MultivariateAmputation()
-    incomplete_data = mads.fit_transform(com_dataset)
+    ma = MultivariateAmputation()
+    incomplete_data = ma.fit_transform(com_dataset)
 
 
 
@@ -75,7 +75,7 @@ Some explanation
 
     Traceback (most recent call last):
       File "C:\Users\20200059\Documents\Github\pyampute\examples\plot_introduction.py", line 31, in <module>
-        incomplete_data = mads.fit_transform(com_dataset)
+        incomplete_data = ma.fit_transform(com_dataset)
       File "C:\Users\20200059\Documents\Github\pyampute\pyampute\ampute.py", line 845, in fit_transform
         chosen_candidates = np.random.binomial(
       File "mtrand.pyx", line 3351, in numpy.random.mtrand.RandomState.binomial
@@ -108,7 +108,7 @@ References
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.032 seconds)
+   **Total running time of the script:** ( 0 minutes  0.017 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_introduction.py:
