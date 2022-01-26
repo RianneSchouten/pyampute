@@ -2,7 +2,7 @@
 from distutils.core import setup
 
 setup(
-    name="pymice",
+    name="pyampute",
     version="0.0.1",
     description="Amputation suite based on the R MICE package.",
     author=["Rianne Schouten", "Davina Zamanzadeh", "Prabhant Singh"],

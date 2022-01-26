@@ -15,14 +15,14 @@ import sys
 
 # path to the module code for autodoc
 sys.path.insert(0, os.path.abspath("../.."))
-sys.path.insert(0, os.path.abspath("../../pymice"))
+sys.path.insert(0, os.path.abspath("../../pyampute"))
 
 
 # -- Project information -----------------------------------------------------
 
-project = "pymice"
-copyright = "2021, Rianne Schouten & Davina Zamanzadeh"
-author = "Rianne Schouten & Davina Zamanzadeh"
+project = "pyampute"
+copyright = "2021, Rianne Schouten, Davina Zamanzadeh, & Prabhant Singh"
+author = "Rianne Schouten, Davina Zamanzadeh, & Prabhant Singh"
 
 # The full version, including alpha/beta/rc tags
 release = "0.0.1"

@@ -1,4 +1,4 @@
-Package pymice
+Package pyampute
 ==============
 
 Here some general sentence.
@@ -6,7 +6,7 @@ Here some general sentence.
 .. toctree::
    :maxdepth: 4
 
-   pymice.amputation
-   pymice.exploration
+   pyampute.ampute
+   pyampute.exploration
 
 

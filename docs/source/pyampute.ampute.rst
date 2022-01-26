@@ -1,7 +1,7 @@
-pymice.amputation.ampute module
+pyampute.ampute module
 ===============================
 
-.. automodule:: pymice.amputation.ampute
+.. automodule:: pyampute.ampute
    :members:
    :undoc-members:
    :show-inheritance:
