@@ -9,6 +9,7 @@ from unittest.mock import patch
 """
 
 from pyampute.ampute import MultivariateAmputation
+from pyampute.exploration.md_patterns import MdPatterns
 
 seed = 0
 columns = ["age", "weight", "ismale", "fries_s", "fries_m", "fries_l"]
@@ -64,6 +65,12 @@ class TestDefaults(unittest.TestCase):
         X_amputed = minimal.fit_transform(X_nomissing)
         # TODO: 66% missing per var and 33% data missing, is that what we want?
         # self.assertAlmostEqual(np.isnan(X_amputed).mean(), 0.5)
+        # test with mdPatterns, something like:
+        # mdp = mdPatterns()
+        # patterns = mdp.get_patterns(X_amputed, show_plot = False, show_patterns = False)
+        # assert that nrows = 2
+        # assert that second row contains about 50% of the cases
+        # assert that second row contains about 3/6 1s (but there is randomness here, maybe use seed?)
 
     def test_adjusting_inputs(self):
         with self.subTest("Adjust Primitive Defaults"):
