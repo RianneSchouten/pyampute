@@ -4,7 +4,7 @@ import unittest
 
 # Local imports
 from pyampute.ampute import MultivariateAmputation
-from pyampute.exploration.md_patterns import MdPatterns
+from pyampute.exploration.md_patterns import mdPatterns
 
 seed = 0
 columns = ["age", "weight", "ismale", "fries_s", "fries_m", "fries_l"]
@@ -30,17 +30,6 @@ standard = {
     "val_test_size": 0.5,
     "test_size": 0.5,
 }
-
-default_missing_pattern = np.array(
-    [
-        [0, 1, 1, 1, 1, 1],
-        [1, 0, 1, 1, 1, 1],
-        [1, 1, 0, 1, 1, 1],
-        [1, 1, 1, 0, 1, 1],
-        [1, 1, 1, 1, 0, 1],
-        [1, 1, 1, 1, 1, 0],
-    ]
-)
 
 
 class TestDefaults(unittest.TestCase):
@@ -295,7 +284,7 @@ class TestBadArgs(unittest.TestCase):
                 {
                     "incomplete_vars": [0],
                     "mechanism": "MCAR",
-                    "weights": default_missing_pattern[0],
+                    "weights": [0, 1, 1, 1, 1, 1],
                 }
             ],
             # cannot get default weights for mar+mnar

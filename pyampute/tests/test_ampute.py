@@ -93,6 +93,26 @@ class TestAmpute(unittest.TestCase):
             100,
         )
 
+    def test_seed(self):
+        # create complete data
+        n = 1000
+        X = np.random.randn(n, 2)
+        default = MultivariateAmputation()  # no seed set by default
+        # should produce different values
+        self.assertFalse(
+            np.array_equal(
+                default.fit_transform(X), default.fit_transform(X), equal_nan=True
+            )
+        )
+
+        default = MultivariateAmputation(seed=4)  # seed set
+        # should produce same values
+        self.assertTrue(
+            np.array_equal(
+                default.fit_transform(X), default.fit_transform(X), equal_nan=True
+            )
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
