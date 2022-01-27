@@ -199,23 +199,121 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#proportion-and-frequency">
+   Proportion and frequency
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#proportion-and-frequency-in-ampute">
+     Proportion and frequency in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       ampute
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#proportion-and-frequency-in-pyampute">
+     Proportion and frequency in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pyampute
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#missing-data-mechanisms">
    Missing data mechanisms
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mechanisms-in-ampute">
+     Mechanisms in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       ampute
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mechanisms-in-pyampute">
+     Mechanisms in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pyampute
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#weighted-sum-scores-weights">
    Weighted sum scores: weights
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#proportion-and-frequency">
-   Proportion and frequency
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#weights-in-ampute">
+     Weights in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       ampute
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#weights-in-pyampute">
+     Weights in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pyampute
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#missingness-types-or-score-to-probability-func">
    Missingness types or score_to_probability_func
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#types-in-ampute">
+     Types in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       ampute
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#score-to-probability-func-in-pyampute">
+     Score_to_probability_func in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pyampute
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#full-specification-for-pyampute">
+   Full specification for
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pyampute
+    </span>
+   </code>
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -250,28 +348,7 @@
               <div>
                 
   <section id="a-mapping-from-r-function-ampute-to-pyampute">
-<h1><a class="toc-backref" href="#id8">A mapping from R-function <code class="docutils literal notranslate"><span class="pre">ampute</span></code> to <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a><a class="headerlink" href="#a-mapping-from-r-function-ampute-to-pyampute" title="Permalink to this headline">¶</a></h1>
-<div class="contents topic" id="overview">
-<p class="topic-title">Overview</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#a-mapping-from-r-function-ampute-to-pyampute" id="id8">A mapping from R-function <code class="docutils literal notranslate"><span class="pre">ampute</span></code> to <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a></p>
-<ul>
-<li><p><a class="reference internal" href="#the-fundament-patterns" id="id9">The fundament: patterns</a></p>
-<ul>
-<li><p><a class="reference internal" href="#the-patterns-matrix-in-ampute" id="id10">The patterns matrix in <code class="docutils literal notranslate"><span class="pre">ampute</span></code></a></p></li>
-<li><p><a class="reference internal" href="#specifying-patterns-in-pyampute" id="id11">Specifying patterns in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#missing-data-mechanisms" id="id12">Missing data mechanisms</a></p></li>
-<li><p><a class="reference internal" href="#weighted-sum-scores-weights" id="id13">Weighted sum scores: weights</a></p></li>
-<li><p><a class="reference internal" href="#proportion-and-frequency" id="id14">Proportion and frequency</a></p></li>
-<li><p><a class="reference internal" href="#missingness-types-or-score-to-probability-func" id="id15">Missingness types or score_to_probability_func</a></p></li>
-<li><p><a class="reference internal" href="#this-is-a-subheader" id="id16">This is a subheader</a></p></li>
-<li><p><a class="reference internal" href="#references" id="id17">References</a></p></li>
-</ul>
-</li>
-</ul>
-</div>
+<h1>A mapping from R-function <code class="docutils literal notranslate"><span class="pre">ampute</span></code> to <code class="docutils literal notranslate"><span class="pre">pyampute</span></code><a class="headerlink" href="#a-mapping-from-r-function-ampute-to-pyampute" title="Permalink to this headline">¶</a></h1>
 <p>Multivariate amputation has been proposed by <a class="reference internal" href="#schouten2018" id="id1"><span>[Schouten2018]</span></a> and implemented in function <code class="docutils literal notranslate"><span class="pre">ampute</span></code> in statistical language <code class="docutils literal notranslate"><span class="pre">R</span></code> in package <code class="docutils literal notranslate"><span class="pre">mice</span></code>. Since then, the amputation methodology has been used and cited by many.</p>
 <p>With <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, we now provide the same methodology for Python users, and more. Compared to <code class="docutils literal notranslate"><span class="pre">ampute</span></code>, the input arguments of <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> are more intuitive and faster to specify. A quick explanation of <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>’s arguments can be found in the <a class="reference external" href="https://rianneschouten.github.io/pymice/build/html/pymice.amputation.html">documentation</a>.</p>
 <p>For the R-function, a detailed explanation of how the multivariate amputation methodology relates to the input arguments is provided in a <a class="reference external" href="https://rianneschouten.github.io/mice_ampute/vignette/ampute.html">vignette</a>. This blogpost therefore has two purposes:</p>
@@ -280,7 +357,7 @@
 <li><p>For Python users, we further explain how the input arguments of <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> can be used to generate any desired form of missing data.</p></li>
 </ol>
 <section id="the-fundament-patterns">
-<h2><a class="toc-backref" href="#id9">The fundament: patterns</a><a class="headerlink" href="#the-fundament-patterns" title="Permalink to this headline">¶</a></h2>
+<h2>The fundament: patterns<a class="headerlink" href="#the-fundament-patterns" title="Permalink to this headline">¶</a></h2>
 <p>Key in multivariate amputation is the specification of missing data patterns. A missing data pattern is a combination of missing values on certain variables and observed values on the other variables. Knowing the missing data patterns in an incomplete dataset can be very helpful for understanding possible explanations for the occurrence of those missing values.</p>
 <p>In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, an overview of missing data patterns in an incomplete dataset can be obtained with class <code class="docutils literal notranslate"><span class="pre">mdPatterns</span></code>. For instance, the <a class="reference external" href="https://github.com/RianneSchouten/pymice/tree/master/data">nhanes2</a> dataset has 4 missing data patterns:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyampute.md_patterns</span> <span class="k">as</span> <span class="nn">mp</span>
@@ -288,10 +365,10 @@
 <span class="n">mdpatterns</span> <span class="o">=</span> <span class="n">mypat</span><span class="o">.</span><span class="n">get_patterns</span><span class="p">(</span><span class="n">nhanes2</span><span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-center" id="id5">
+<figure class="align-center" id="id8">
 <a class="reference internal image-reference" href="_images/mdpatterns_nhanes2.png"><img alt="alternate text" src="_images/mdpatterns_nhanes2.png" style="width: 200px;" /></a>
 <figcaption>
-<p><span class="caption-text">Missing data patterns of incomplete dataset nhanes2</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Missing data patterns of incomplete dataset nhanes2</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Here, blue and red correspond to observed and missing values respectively. The numbers on the left indicate the number of rows in the dataset that follow a specific missing data pattern. For instance, there are 3 rows with observed values on variables age, hyp and bmi and a missing value on variable chl. In this dataset, there are no rows with observed values on age and hyp and missing values on bmi and chl. That combination does not exist.</p>
@@ -303,7 +380,7 @@
 </div>
 <p>Let’s discuss in more detail.</p>
 <section id="the-patterns-matrix-in-ampute">
-<h3><a class="toc-backref" href="#id10">The patterns matrix in <code class="docutils literal notranslate"><span class="pre">ampute</span></code></a><a class="headerlink" href="#the-patterns-matrix-in-ampute" title="Permalink to this headline">¶</a></h3>
+<h3>The patterns matrix in <code class="docutils literal notranslate"><span class="pre">ampute</span></code><a class="headerlink" href="#the-patterns-matrix-in-ampute" title="Permalink to this headline">¶</a></h3>
 <p>In <code class="docutils literal notranslate"><span class="pre">ampute</span></code>, patterns are specified with a binary matrix of size <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/> by <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> where <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/> indicates the number of patterns and <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> indicates the number of variables. A cell in the patterns matrix equals <code class="docutils literal notranslate"><span class="pre">0</span></code> if in that patterns variable <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> should be amputed and <code class="docutils literal notranslate"><span class="pre">1</span></code> otherwise.</p>
 <p>The patterns matrix of <a class="reference external" href="https://github.com/RianneSchouten/pymice/tree/master/data">nhanes2</a> would look as follows:</p>
 <div class="math">
@@ -323,7 +400,7 @@
     \end{bmatrix}"/></p>
 </div></section>
 <section id="specifying-patterns-in-pyampute">
-<h3><a class="toc-backref" href="#id11">Specifying patterns in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a><a class="headerlink" href="#specifying-patterns-in-pyampute" title="Permalink to this headline">¶</a></h3>
+<h3>Specifying patterns in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code><a class="headerlink" href="#specifying-patterns-in-pyampute" title="Permalink to this headline">¶</a></h3>
 <p>As noted before, in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> we make all specifications per pattern. In case of multiple patterns, the user specifies a list of dictionaries. For <a class="reference external" href="https://github.com/RianneSchouten/pymice/tree/master/data">nhanes2</a>, the input would be:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyampute</span> <span class="k">as</span> <span class="nn">ampute</span>
 <span class="n">mads</span> <span class="o">=</span> <span class="n">ampute</span><span class="o">.</span><span class="n">MultivariateAmputation</span><span class="p">(</span>
@@ -337,27 +414,144 @@
 </pre></div>
 </div>
 <p>This may seem cumbersome at first, but it will allow for easy modification of a single pattern why keeping the others intact. We will further discuss this when talking about mechanisms, weights, frequency and types.</p>
-<p>We have furthermore adapted the default. In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, by default we generate one missing data pattern with missing values on a random selection of 50% of the variables. We expect this default to be possible for many types of datasets, whereas in <code class="docutils literal notranslate"><span class="pre">ampute</span></code> an error occurs if the number of variables is relatively high compared to the desired (or default) missingness proportion.</p>
+<p>We have furthermore adapted the default. In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, by default we generate one missing data pattern with missing values on a random selection of 50% of the variables. We expect this default to be possible for many different datasets, whereas in <code class="docutils literal notranslate"><span class="pre">ampute</span></code> an error occurs if the number of variables is high compared to the desired (or default) missingness proportion.</p>
+</section>
+</section>
+<section id="proportion-and-frequency">
+<h2>Proportion and frequency<a class="headerlink" href="#proportion-and-frequency" title="Permalink to this headline">¶</a></h2>
+<p>Naturally, it is important to specify the proportion of missing values. In multivariate amputation, we control that proportion with two input arguments:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">prop</span></code> determines the proportion of incomplete data rows</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">freq</span></code> determines how those incomplete rows are divided over the :math`k` patterns.</p></li>
+</ol>
+<section id="proportion-and-frequency-in-ampute">
+<h3>Proportion and frequency in <code class="docutils literal notranslate"><span class="pre">ampute</span></code><a class="headerlink" href="#proportion-and-frequency-in-ampute" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">ampute</span></code>, <code class="docutils literal notranslate"><span class="pre">prop</span></code> is a float (or integer) and <code class="docutils literal notranslate"><span class="pre">freq</span></code> is a vector of floats of length :math`k`. Thus, <code class="docutils literal notranslate"><span class="pre">prop</span> <span class="pre">=</span> <span class="pre">0.3</span></code> indicates that 30% of the rows should be amputed. Then, <code class="docutils literal notranslate"><span class="pre">freq</span> <span class="pre">=</span> <span class="pre">c(0.1,</span> <span class="pre">0.1,</span> <span class="pre">0.2,</span> <span class="pre">0.6)</span></code> indicates that 10% of those incomplete rows should have pattern 1, 10% should have pattern 2, 20% should have pattern 3 and 60% should have pattern 4. In this way, you can define how the missing values are divided over your dataset.</p>
+</section>
+<section id="proportion-and-frequency-in-pyampute">
+<h3>Proportion and frequency in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code><a class="headerlink" href="#proportion-and-frequency-in-pyampute" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, the definitions of proportion and frequency are very similar to those in <code class="docutils literal notranslate"><span class="pre">ampute</span></code>. The only difference is that <code class="docutils literal notranslate"><span class="pre">prop</span></code> is a global input argument that is specified outside the patterns input, whereas <code class="docutils literal notranslate"><span class="pre">freq</span></code> is specified per pattern, and can therefore be integrated in the dictionaries. That looks as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ma</span> <span class="o">=</span> <span class="n">ampute</span><span class="o">.</span><span class="n">MultivariateAmputation</span><span class="p">(</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">}</span>
+    <span class="p">],</span>
+    <span class="n">prop</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>It is important to realize that all incomplete rows should follow at least one of the patterns, and therefore the frequency values should sum to 1.</p>
 </section>
 </section>
 <section id="missing-data-mechanisms">
-<h2><a class="toc-backref" href="#id12">Missing data mechanisms</a><a class="headerlink" href="#missing-data-mechanisms" title="Permalink to this headline">¶</a></h2>
+<h2>Missing data mechanisms<a class="headerlink" href="#missing-data-mechanisms" title="Permalink to this headline">¶</a></h2>
+<p>In missing data methodology, we categorize missing data problems into three categories (cf. <a class="reference internal" href="#rubin1976" id="id3"><span>[Rubin1976]</span></a>):</p>
+<ol class="arabic simple">
+<li><p>Data is Missing Completely At Random (MCAR) if the probability of being incomplete is the same for every row in the dataset.</p></li>
+<li><p>Data is Missing At Random (MAR) if the probability of being incomplete depends on the observed values.</p></li>
+<li><p>Data is Missing Not At Random (MNAR) if the probability of being incomplete is unobserved. That could mean the probability depends on the missing values themselves, or it means the probability depends on a source outside the data.</p></li>
+</ol>
+<p>Which of the three missing data mechanisms apply (or can be assumed) greatly determines the effect of missing values on the outcome of any data analysis or model. For more information and examples, we gladly refer to <a class="reference internal" href="#schouten2021" id="id4"><span>[Schouten2021]</span></a> or <a class="reference internal" href="#vanbuuren2018" id="id5"><span>[VanBuuren2018]</span></a>.</p>
+<section id="mechanisms-in-ampute">
+<h3>Mechanisms in <code class="docutils literal notranslate"><span class="pre">ampute</span></code><a class="headerlink" href="#mechanisms-in-ampute" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">ampute</span></code>, mechanisms are defined using a string or a vector of strings that equals the number of patterns. Thus, <code class="docutils literal notranslate"><span class="pre">mech</span> <span class="pre">=</span> <span class="pre">&quot;MAR&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">mech</span> <span class="pre">=</span> <span class="pre">c(&quot;MAR&quot;,</span> <span class="pre">&quot;MCAR&quot;,</span> <span class="pre">&quot;MAR&quot;,</span> <span class="pre">&quot;MNAR&quot;)</span></code> (for four patterns).</p>
+</section>
+<section id="mechanisms-in-pyampute">
+<h3>Mechanisms in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code><a class="headerlink" href="#mechanisms-in-pyampute" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, we specify the mechanism with a string per pattern. Here, it is not necessary to define a mechanism for every pattern. If left open, the MAR default will be used.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ma</span> <span class="o">=</span> <span class="n">ampute</span><span class="o">.</span><span class="n">MultivariateAmputation</span><span class="p">(</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;mechanism&#39;</span><span class="p">:</span> <span class="s2">&quot;MCAR&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;mechanism&#39;</span><span class="p">:</span> <span class="s2">&quot;MNAR&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]}</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The missing data mechanisms are strongly related to the concept of <em>weighted sum scores</em>, which will be discussed in the next section. In case one chooses a MCAR, MAR or MNAR mechanism, these choices will be translated into a default set of weights. One may also want to determine a custom set of weights, which may also result in MAR or MNAR missingness. In that case, the mechanism does not have to explicitly be specified.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, we added an option of setting the mechanism to be a mixture of MAR and MNAR missingness. For that pattern, weights <em>have to</em> be provided. We will now discuss the exact meaning of these weights.</p>
+</section>
 </section>
 <section id="weighted-sum-scores-weights">
-<h2><a class="toc-backref" href="#id13">Weighted sum scores: weights</a><a class="headerlink" href="#weighted-sum-scores-weights" title="Permalink to this headline">¶</a></h2>
+<h2>Weighted sum scores: weights<a class="headerlink" href="#weighted-sum-scores-weights" title="Permalink to this headline">¶</a></h2>
+<p>In multivariate amputation, we not only control which variables are missing together (by means of a pattern), but also which variables determine the amputation together (in case of MAR and MNAR). For instance, with a MAR mechanism, one may want multiple variables to influence the amputation process, because that means that the observed information of all those variables need to be used for imputation, which can be challenging.</p>
+<p>Whether or not a data row is amputed is determined by the combination of a weighted sum score and a probability distribution. For row <img class="math" src="_images/math/5aa339d4daf45a810dda332e3c80a0698e526e04.png" alt="i"/> in <img class="math" src="_images/math/ca0c7dde3db364e23197932ce519c482ab18128d.png" alt="\{1,2,...,n\}"/>, the weighted sum score is calculated as follows:</p>
+<div class="math">
+<p><img src="_images/math/f8b03f48e82f10430ab67826523d573f9ac965ba.png" alt="wss_i = w_1 y_{i1} + w_2 y_{i2} + ... + w_m y_{1m},"/></p>
+</div><p>where <img class="math" src="_images/math/52cb7e0ee86d8a0b7ff7e68a1db495bd058d8198.png" alt="w_j"/> is the weight for variable <img class="math" src="_images/math/6a8df899b8438e953a83fa21abcbff20f7e5bbdf.png" alt="y_j"/> with <img class="math" src="_images/math/e3fc28292267f066fee7718c64f4bbfece521f24.png" alt="j"/> in <img class="math" src="_images/math/625374112b82899c752009609b54115aac0bbe62.png" alt="\{1,2,...,m\}"/>. By setting certain weights to 0, we have full control over whether a mechanism is MAR, MNAR or a combination of both.</p>
+<p>By default, a MAR mechanism will translate into zero weights for the incomplete variables and weights of 1 for the complete variables. For MNAR, zero weights are given to the complete variables and 1s to the incomplete variables. Consequently, by default, all variables in the weighted sum score are equally weighted.</p>
+<section id="weights-in-ampute">
+<h3>Weights in <code class="docutils literal notranslate"><span class="pre">ampute</span></code><a class="headerlink" href="#weights-in-ampute" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">ampute</span></code>, weights are specified in a matrix that has the same size as the patterns matrix; <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/> by <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/>. In other words, the weights for pattern 1 are specified in the first row of the weights matrix, the weights for the second pattern in the second row, etcetera.</p>
 </section>
-<section id="proportion-and-frequency">
-<h2><a class="toc-backref" href="#id14">Proportion and frequency</a><a class="headerlink" href="#proportion-and-frequency" title="Permalink to this headline">¶</a></h2>
+<section id="weights-in-pyampute">
+<h3>Weights in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code><a class="headerlink" href="#weights-in-pyampute" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, weights are per pattern. That gives the flexibility to manually define weights for some patterns, but use the default settings for other patterns. Weights can be specified using an array or a dictionary.</p>
+<p>For instance, consider the following specification:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ma</span> <span class="o">=</span> <span class="n">ampute</span><span class="o">.</span><span class="n">MultivariateAmputation</span><span class="p">(</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;weights&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]}},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;mechanism&#39;</span><span class="p">:</span> <span class="s2">&quot;MCAR&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;weights&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;2&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, for the first pattern, we specify weights using an array. Non-zero weights are given to the second and third variables; hyp and bmi. Since in pattern 1 both these variables are not amputed, this will lead to a MAR mechanism. However, it differs from a default MAR mechanism, which would be <code class="docutils literal notranslate"><span class="pre">[1,1,1,0]</span></code>, in two ways:</p>
+<ol class="arabic simple">
+<li><p>Variable age is not weighted, even though it is a complete variable in pattern 1</p></li>
+<li><p>The effect of variable hyp is 4 times as large as the effect of variable bmi.</p></li>
+</ol>
+<p>For the fourth pattern, we specify weights using a dictionary. Here, variables hyp and bmi are weighted. Both these variables are amputed, and therefore these weights correspond to a MNAR mechanism. Note that variable hyp has a negative effect on the weighted sum score; a higher value on hyp will result in a lower weighted sum score, whereas a higher value on bmi will result in a higher weighted sum score. In this way you can control which data rows should be amputed (and where the resulting bias exists).</p>
+<p>Note that whether or not the effect of one variable is really higher than the effect of the other variable depends on the scale of these variables as well. Therefore, both <code class="docutils literal notranslate"><span class="pre">ampute</span></code> and <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> by default standardize the dataset before calculating weighted sum scores. One can turn this off by <code class="docutils literal notranslate"><span class="pre">std</span> <span class="pre">=</span> <span class="pre">False</span></code>.</p>
+</section>
 </section>
 <section id="missingness-types-or-score-to-probability-func">
-<h2><a class="toc-backref" href="#id15">Missingness types or score_to_probability_func</a><a class="headerlink" href="#missingness-types-or-score-to-probability-func" title="Permalink to this headline">¶</a></h2>
+<h2>Missingness types or score_to_probability_func<a class="headerlink" href="#missingness-types-or-score-to-probability-func" title="Permalink to this headline">¶</a></h2>
+<p>At this point in the amputation process, all data rows will have been assigned a weighted sum score. Consequently, these scores are used to determine which cases should be amputed. We do that by means of a probability function that maps the weighted sum scores to a probability of being amputed. The multivariate amputation methodology knows four types of probability functions.</p>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="_images/types.pdf"><img alt="alternate text" src="_images/types.pdf" style="width: 200px;" /></a>
+<figcaption>
+<p><span class="caption-text">Four types of probability functions</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>First, weighted sum scores are standardized. Then, the probability function is shifted such that the desired <code class="docutils literal notranslate"><span class="pre">prop</span></code> will be reached. And then the probability function will be applied.</p>
+<section id="types-in-ampute">
+<h3>Types in <code class="docutils literal notranslate"><span class="pre">ampute</span></code><a class="headerlink" href="#types-in-ampute" title="Permalink to this headline">¶</a></h3>
+<p>Similar like <code class="docutils literal notranslate"><span class="pre">mech</span></code> and <code class="docutils literal notranslate"><span class="pre">freq</span></code>, in <code class="docutils literal notranslate"><span class="pre">ampute</span></code> the missingness types are specified with a vector that should have length :math`k`: <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">c(&quot;LEFT&quot;,</span> <span class="pre">&quot;RIGHT&quot;,</span> <span class="pre">&quot;MID&quot;,</span> <span class="pre">&quot;TAIL&quot;)</span></code>.</p>
+</section>
+<section id="score-to-probability-func-in-pyampute">
+<h3>Score_to_probability_func in <code class="docutils literal notranslate"><span class="pre">pyampute</span></code><a class="headerlink" href="#score-to-probability-func-in-pyampute" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, we have renamed the input argument to make the meaning of the argument more clear. Similar as the specifications for weights and mechanism, a probability function can be chosen per pattern.</p>
+<p>In addition, <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> allows for the specification of a custom probability function. This can be any function that maps values in the range :math`[-inf,inf] rightarrow [0,1]`. In the example <a class="reference external" href="file:///C:/Users/20200059/Documents/Github/pyampute/docs/build/html/auto_examples/plot_custom_probability_function.html">Amputing with a Custom Probability Function</a>, the working will be further demonstrated.</p>
+</section>
+</section>
+<section id="full-specification-for-pyampute">
+<h2>Full specification for <code class="docutils literal notranslate"><span class="pre">pyampute</span></code><a class="headerlink" href="#full-specification-for-pyampute" title="Permalink to this headline">¶</a></h2>
+<p>Altogether, we could do something as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ma</span> <span class="o">=</span> <span class="n">ampute</span><span class="o">.</span><span class="n">MultivariateAmputation</span><span class="p">(</span>
+    <span class="n">prop</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;mechanism&#39;</span><span class="p">:</span> <span class="s2">&quot;MCAR&quot;</span><span class="p">,</span> <span class="s1">&#39;score_to_probability_func&#39;</span><span class="p">:</span> <span class="s2">&quot;sigmoid-left&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]},</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;weights&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;score_to_probability_func&#39;</span><span class="p">:</span> <span class="s2">&quot;sigmoid-mid&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;mechanism&#39;</span><span class="p">:</span> <span class="s2">&quot;MAR+MNAR&quot;</span><span class="p">,</span> <span class="s1">&#39;weights&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s1">&#39;incomplete_vars&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;mechanism&#39;</span><span class="p">:</span> <span class="s2">&quot;MCAR&quot;</span><span class="p">}</span>
+    <span class="p">],</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <p>Here a blogpost about a mapping.</p>
 <p>One asterisk for <em>italics</em> and two for <strong>bolding</strong> and backticks for <code class="docutils literal notranslate"><span class="pre">code</span> <span class="pre">samples</span></code>.</p>
 <p><a class="reference external" href="https://rianneschouten.github.io/pymice">A link is provided by backticks</a> and you can define it later.</p>
 <p>Later we will discuss something in the <a class="reference internal" href="#this-is-a-subheader">This is a subheader</a></p>
 </section>
 <section id="this-is-a-subheader">
-<h2><a class="toc-backref" href="#id16">This is a subheader</a><a class="headerlink" href="#this-is-a-subheader" title="Permalink to this headline">¶</a></h2>
+<h2>This is a subheader<a class="headerlink" href="#this-is-a-subheader" title="Permalink to this headline">¶</a></h2>
 <p>The default color coding is Python:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mads</span> <span class="o">&lt;-</span> <span class="n">MultivariateAmputation</span><span class="p">(</span><span class="n">patterns</span> <span class="o">=</span> <span class="p">)</span>
 <span class="n">incompl_data</span> <span class="o">&lt;-</span> <span class="n">mads</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">compl_data</span><span class="p">)</span>
@@ -393,8 +587,8 @@ The patterns matrix will be:</p>
 </tbody>
 </table>
 <p>Or with csv code;</p>
-<table class="colwidths-given table" id="id6">
-<caption><span class="caption-text">a title</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<table class="colwidths-given table" id="id10">
+<caption><span class="caption-text">a title</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 25%" />
@@ -421,22 +615,28 @@ The patterns matrix will be:</p>
 <div class="math">
 <p><img src="_images/math/c63a38f3582b6c1c2e246f672eeeee67f20e2918.png" alt="n_{\mathrm{offset}} = \sum_{k=0}^{N-1} s_k n_k"/></p>
 </div><p>And we may want to add a figure</p>
-<figure class="align-center" id="id7">
+<figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="_images/scheme.png"><img alt="alternate text" src="_images/scheme.png" style="width: 600px; height: 300px;" /></a>
 <figcaption>
-<p><span class="caption-text">figure are like images but with a caption</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">figure are like images but with a caption</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>A citation is defined at the bottom of the page and referenced as <a class="reference internal" href="#schouten2018" id="id3"><span>[Schouten2018]</span></a> and <a class="reference internal" href="#schouten2021" id="id4"><span>[Schouten2021]</span></a></p>
+<p>A citation is defined at the bottom of the page and referenced as <a class="reference internal" href="#schouten2018" id="id6"><span>[Schouten2018]</span></a> and <a class="reference internal" href="#schouten2021" id="id7"><span>[Schouten2021]</span></a></p>
 </section>
 <section id="references">
-<h2><a class="toc-backref" href="#id17">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <dl class="citation">
-<dt class="label" id="schouten2018"><span class="brackets">Schouten2018</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>)</span></dt>
+<dt class="label" id="schouten2018"><span class="brackets">Schouten2018</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id6">2</a>)</span></dt>
 <dd><p>Rianne M. Schouten, Peter Lugtig and Gerko Vink, etc.</p>
 </dd>
-<dt class="label" id="schouten2021"><span class="brackets"><a class="fn-backref" href="#id4">Schouten2021</a></span></dt>
+<dt class="label" id="schouten2021"><span class="brackets">Schouten2021</span><span class="fn-backref">(<a href="#id4">1</a>,<a href="#id7">2</a>)</span></dt>
 <dd><p>Rianne M. Schouten and Gerko Vink, etc.</p>
+</dd>
+<dt class="label" id="rubin1976"><span class="brackets"><a class="fn-backref" href="#id3">Rubin1976</a></span></dt>
+<dd><p>Reference to Rubin</p>
+</dd>
+<dt class="label" id="vanbuuren2018"><span class="brackets"><a class="fn-backref" href="#id5">VanBuuren2018</a></span></dt>
+<dd><p>Refernece to van Buuren</p>
 </dd>
 </dl>
 </section>
