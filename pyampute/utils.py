@@ -7,7 +7,7 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype
 import numpy as np
 from os import getcwd
-from os.path import dirname, join
+from os.path import join
 
 ArrayLike = Union[pd.Series, np.array, List]
 Matrix = Union[pd.DataFrame, np.ndarray]
@@ -80,6 +80,7 @@ def enforce_numeric(
             X = X.apply(pd.to_numeric, errors="coerce").dropna(axis=1, how="all")
 
     return X
+
 
 '''
 def missingness_profile(X: Matrix):

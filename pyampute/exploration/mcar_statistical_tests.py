@@ -9,7 +9,7 @@ import pandas as pd
 from math import pow
 from scipy.stats import chi2, ttest_ind
 
-from ..utils import Matrix
+from pyampute.utils import Matrix
 
 
 class McarTest:

@@ -11,7 +11,7 @@ from scipy import stats
 from math import isclose
 
 # Local
-from .utils import (
+from pyampute.utils import (
     LOOKUP_TABLE_PATH,
     ArrayLike,
     Matrix,

@@ -5,11 +5,14 @@ import unittest
 from pyampute.exploration.md_patterns import mdPatterns
 from pyampute.ampute import MultivariateAmputation
 
-nhanes2 = pd.read_csv("data/nhanes2.csv")
 
-class TestEnforceNumeric(unittest.TestCase):
+class TestMdPatterns(unittest.TestCase):
     def setUp(self) -> None:
-        return super().setUp()
+        super().setUp()
+        try:
+            self.nhanes2 = pd.read_csv("data/nhanes2.csv")
+        except:
+            print("CSV file failed to load.")
 
     def test_incomplete_nparray(self):
 
@@ -48,20 +51,27 @@ class TestEnforceNumeric(unittest.TestCase):
         self.assertEqual(patterns.iloc[1, 0], 511)
 
     def test_pd_dataframes(self):
-        
-        mdp = mdPatterns()
-        patterns = mdp.get_patterns(nhanes2, show_plot=False)
 
-        self.assertEqual(patterns.shape, (6,6))
-        self.assertListEqual(patterns.iloc[1:-1,1:-1].values.tolist(), [[1, 1, 1, 0], [1, 1, 0, 1], [1, 0, 0, 1], [1, 0, 0, 0]])
+        mdp = mdPatterns()
+        patterns = mdp.get_patterns(self.nhanes2, show_plot=False)
+
+        self.assertEqual(patterns.shape, (6, 6))
+        self.assertListEqual(
+            patterns.iloc[1:-1, 1:-1].values.tolist(),
+            [[1, 1, 1, 0], [1, 1, 0, 1], [1, 0, 0, 1], [1, 0, 0, 0]],
+        )
 
     def test_proportions(self):
 
         mdp = mdPatterns()
-        patterns = mdp.get_patterns(nhanes2, count_or_proportion="proportion", show_plot=False)
+        patterns = mdp.get_patterns(
+            self.nhanes2, count_or_proportion="proportion", show_plot=False
+        )
 
         self.assertEqual(patterns.iloc[0:-1, 0].astype(float).values.sum(), 1.0)
-        self.assertListEqual(patterns.iloc[-1, 1:].values.tolist(), [0.0, 0.32, 0.36, 0.4, 0.27])
+        self.assertListEqual(
+            patterns.iloc[-1, 1:].values.tolist(), [0.0, 0.32, 0.36, 0.4, 0.27]
+        )
 
 
 if __name__ == "__main__":

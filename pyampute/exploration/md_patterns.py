@@ -2,15 +2,14 @@
 # Author: Rianne Schouten <r.m.schouten@tue.nl>
 # Co-Author: Srinidhi Ilango <s.srinidhi.ilango@student.tue.nl>
 
-from typing import Union
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
-#from pyampute.utils import Matrix
 
-Matrix = Union[pd.DataFrame, np.ndarray]
+from pyampute.utils import Matrix
+
 
 class mdPatterns:
     """
@@ -45,7 +44,8 @@ class mdPatterns:
         self.md_patterns = None
 
     def get_patterns(
-        self, X: Matrix, count_or_proportion: str = "count", show_plot: bool = True) -> pd.DataFrame:
+        self, X: Matrix, count_or_proportion: str = "count", show_plot: bool = True
+    ) -> pd.DataFrame:
         """Some comments
 
         Parameters
@@ -80,7 +80,9 @@ class mdPatterns:
 
         return self.md_patterns
 
-    def _calculate_patterns(self, X: pd.DataFrame, count_or_proportion: str = "count") -> pd.DataFrame:
+    def _calculate_patterns(
+        self, X: pd.DataFrame, count_or_proportion: str = "count"
+    ) -> pd.DataFrame:
         """
         Find all unique missing data patterns and structure it as a pd.DataFrame
         """
@@ -108,11 +110,13 @@ class mdPatterns:
         group_values = group_values.loc[:, cols]
 
         if count_or_proportion == "proportion":
-            group_values.rename(columns={"row_count":"row_prop"}, inplace=True)
-            percents = ((group_values.iloc[0:-1,0]).astype(int) / X.shape[0]).round(2)
-            group_values.iloc[0:-1,0] = percents.astype(str)
-            group_values.iloc[-1,1:-1] = group_values.iloc[-1,1:-1] / X.shape[0]
-            group_values.iloc[-1,-1] = (group_values.iloc[-1,-1] / (X.shape[0]*X.shape[1])).round(2)
+            group_values.rename(columns={"row_count": "row_prop"}, inplace=True)
+            percents = ((group_values.iloc[0:-1, 0]).astype(int) / X.shape[0]).round(2)
+            group_values.iloc[0:-1, 0] = percents.astype(str)
+            group_values.iloc[-1, 1:-1] = group_values.iloc[-1, 1:-1] / X.shape[0]
+            group_values.iloc[-1, -1] = (
+                group_values.iloc[-1, -1] / (X.shape[0] * X.shape[1])
+            ).round(2)
 
         self.md_patterns = group_values
         return self.md_patterns
