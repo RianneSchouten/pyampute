@@ -12,14 +12,14 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Main title of example">
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a very easy example of how the MultivariateAmputation can be used. The input is always ...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_introduction_thumb.png
-     :alt: Main title of example
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_easy_example_thumb.png
+     :alt: Example Usage
 
-     :ref:`sphx_glr_auto_examples_plot_introduction.py`
+     :ref:`sphx_glr_auto_examples_plot_easy_example.py`
 
 .. raw:: html
 
@@ -29,7 +29,28 @@ Examples
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_introduction
+   /auto_examples/plot_easy_example
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Multivariate amputation can be used to evaluate the effect of missing values on the outcome of ...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_simulation_pipeline_thumb.png
+     :alt: Simulation Pipeline
+
+     :ref:`sphx_glr_auto_examples_plot_simulation_pipeline.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_simulation_pipeline
 
 .. raw:: html
 
