@@ -67,7 +67,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.impute import ChainedImputer
 from sklearn.metrics import mean_squared_error as mse
 
-from pyampute.ampute import MultivariateAmputation
+from pyampute import MultivariateAmputation
 
 rng = np.random.RandomState(0)
 

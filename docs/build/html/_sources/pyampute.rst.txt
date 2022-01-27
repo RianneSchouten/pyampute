@@ -1,5 +1,5 @@
 Package pyampute
-==============
+================
 
 Here some general sentence.
 

@@ -2,12 +2,7 @@ import pandas as pd
 import numpy as np
 import unittest
 
-"""
-https://docs.python.org/3/library/unittest.mock.html#where-to-patch
-patch where an object is looked up, not where it is defined
-from unittest.mock import patch
-"""
-
+# Local imports
 from pyampute.ampute import MultivariateAmputation
 from pyampute.exploration.md_patterns import MdPatterns
 
@@ -63,7 +58,6 @@ class TestDefaults(unittest.TestCase):
             )
         )
         X_amputed = minimal.fit_transform(X_nomissing)
-        # TODO: 66% missing per var and 33% data missing, is that what we want?
         # self.assertAlmostEqual(np.isnan(X_amputed).mean(), 0.5)
         # test with mdPatterns, something like:
         # mdp = mdPatterns()
@@ -141,7 +135,6 @@ class TestDefaults(unittest.TestCase):
         )
 
     def test_weights_dict(self):
-        # TODO
         # test names
         patterns = [
             {

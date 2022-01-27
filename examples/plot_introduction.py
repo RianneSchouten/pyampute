@@ -25,7 +25,7 @@ com_dataset = np.zeros((m, n))
 #
 # Some explanation
 
-from pyampute.ampute import MultivariateAmputation
+from pyampute import MultivariateAmputation
 
 ma = MultivariateAmputation()
 incomplete_data = ma.fit_transform(com_dataset)

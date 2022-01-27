@@ -66,16 +66,16 @@ class MultivariateAmputation(TransformerMixin):
                 The weighted score for sample `i` in pattern `k` is the inner product of the `weights` and `sample[i]`.
                 **Note:** weights are required to be defined if the corresponding mechanism is MAR+MNAR.
 
-            **mechanism** (str, {MAR, MCAR, MNAR, MAR+MNAR} case insensitive) --
+            **mechanism** (`str, {MAR, MCAR, MNAR, MAR+MNAR} case insensitive`) --
                 MNAR+MAR is only possible by passing a custom weight array.
 
-            **freq** (*float [0,1], default: all patterns with equal frequency (`1/k`)*) --
+            **freq** (*float [0,1], default: all patterns with equal frequency (1/k)*) --
                 Relative occurence of a pattern with respect to other patterns.
                 All frequencies across `k` dicts/patterns must sum to 1.
                 Either specify for all patterns, or none for the default.
                 For example (`k` = 3 patterns), ``freq := [0.4, 0.4, 0.2]`` means, of all samples with missing values, 40% should have pattern 1, 40% pattern 2. and 20% pattern 3.
 
-            **score_to_probability_func** (Union[str, Callable[ArrayLike[floats] -> ArrayLike[floats]]], {"sigmoid-right", "sigmoid-left", "sigmoid-mid", "sigmoid-tail", Callable}) --
+            **score_to_probability_func** (`Union[str, Callable[ArrayLike[floats] -> ArrayLike[floats]]], {"sigmoid-right", "sigmoid-left", "sigmoid-mid", "sigmoid-tail", Callable}`) --
                 Converts standardized weighted scores for each sample (in a data subset corresponding to pattern k) to probability of missingness.
                 The function will be shifted to ensure correct joint missingness probabilities.
                 Choosing one of the sigmoid options (case insensitive) applies sigmoid function with a logit cutoff per pattern.

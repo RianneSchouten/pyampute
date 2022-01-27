@@ -18,8 +18,7 @@ class mdPatterns:
 
     Parameters
     ----------
-    incomplete_data
-        Matrix with shape `(n, m)`.
+    incomplete_data : Matrix with shape `(n, m)`
         Dataset with missing values
     missing_values
         The placeholder for the missing values as needed by MissingIndicator
@@ -76,7 +75,7 @@ class mdPatterns:
 
         return self.md_patterns
 
-    def _calculate_patterns(self, X: pd.DataFrame):
+    def _calculate_patterns(self, X: pd.DataFrame) -> Matrix:
         """
         this function calculates the md patterns
         """

@@ -17,7 +17,8 @@ X = np.random.randn(n, 2)
 """
 Define custom probability function.
 """
-from pyampute.utils import ArrayLike
+# purely for demonstrative type hints
+from pyampute import ArrayLike
 
 
 # Must produce values between 0 and 1
@@ -53,7 +54,7 @@ patterns = [
 """
 Run ampute.
 """
-from pyampute.ampute import MultivariateAmputation
+from pyampute import MultivariateAmputation
 
 ma = MultivariateAmputation(prop=my_prop, patterns=patterns)
 incomplete_data = ma.fit_transform(X)

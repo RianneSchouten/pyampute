@@ -25,10 +25,10 @@ com_dataset = np.zeros((m, n))
 #
 # Some explanation
 
-from pyampute.ampute import MultivariateAmputation
+from pyampute import MultivariateAmputation
 
-mads = MultivariateAmputation()
-incomplete_data = mads.fit_transform(com_dataset)
+ma = MultivariateAmputation()
+incomplete_data = ma.fit_transform(com_dataset)
 
 # %%
 

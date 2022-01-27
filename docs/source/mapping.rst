@@ -88,7 +88,7 @@ As noted before, in ``pyampute`` we make all specifications per pattern. In case
 
 .. code-block:: python
 
-    import pyampute.pyampute as ampute 
+    import pyampute as ampute 
     mads = ampute.MultivariateAmputation(
         patterns = [
             {'incomplete_vars': [3]},
