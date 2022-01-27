@@ -67,7 +67,6 @@ class TestAmpute(unittest.TestCase):
         # run ampute
         ma = MultivariateAmputation(prop=my_prop, patterns=patterns)
         incomplete_data = ma.fit_transform(X)
-        print(incomplete_data)
         self.assertEqual(incomplete_data.shape, X.shape)
 
         # print(np.sum(np.sum(np.isnan(incomplete_data), axis=0))) # expect: around 3000

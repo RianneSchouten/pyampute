@@ -20,7 +20,6 @@ from .utils import (
     is_numeric,
     enforce_numeric,
     setup_logging,
-    missingness_profile,
     standardize_uppercase,
     sigmoid,
 )
@@ -857,5 +856,4 @@ class MultivariateAmputation(TransformerMixin):
             else:
                 X_incomplete.iloc[chosen_indices, pattern == 0] = np.nan
 
-        missingness_profile(X_incomplete)
         return X_incomplete

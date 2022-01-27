@@ -81,7 +81,7 @@ def enforce_numeric(
 
     return X
 
-
+'''
 def missingness_profile(X: Matrix):
     nans = isnan(X)
 
@@ -106,3 +106,4 @@ def missingness_profile(X: Matrix):
             keys=["Num Features Missing", "%"],
         )
     )
+'''
