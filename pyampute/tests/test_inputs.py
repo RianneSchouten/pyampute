@@ -202,6 +202,14 @@ class TestBadArgs(unittest.TestCase):
         # more than one column required
         with self.assertRaises(AssertionError):
             amputer._validate_input(X_nomissing.iloc[0, :])
+        # data cannot have missing values for vars involved in ampute
+        with self.assertRaises(AssertionError):
+            X = X_nomissing.copy()
+            # first column (first value) missing value
+            X.iloc[0, 0] = np.nan
+            # first column involved in amputation, by default when column 1 is missing column 0 will be assigned a weight of 1
+            amputer = MultivariateAmputation(patterns=[{"incomplete_vars": [1]}])
+            amputer._validate_input(X)
 
     def test_bad_incomplete_vars(self):
         bad_patterns = [
@@ -276,6 +284,8 @@ class TestBadArgs(unittest.TestCase):
 
     def test_bad_weights(self):
         bad_patterns = [
+            # needs to be a list,
+            {"incomplete_vars": [0]},
             # shape must match num vars
             [{"incomplete_vars": [0], "weights": list(range(2))}],
             [{"incomplete_vars": [0], "weights": list(range(15))}],

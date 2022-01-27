@@ -59,7 +59,7 @@ class MultivariateAmputation(TransformerMixin):
                 ``observed_vars`` is the complement of ``incomplete_vars``.
 
             **weights** (Union[ArrayLike[float], Dict[int, float], Dict[str, float]], default: all 0s (MCAR) or `observed_vars` weight 1 (MAR) or `incomplete_vars` weight 1 (MNAR)) --
-                Specifies the size of effect of each specified var on missing vars (*must be between* ``[0,1]``).
+                Specifies the size of effect of each specified var on missing vars.
                 If using an array, you must specify all *m* weights.
                 If using a dictionary, the keys are either indices of vars or column names; unspecified vars will be assumed to have a weight of 0.
                 Negative values have a decrease effect, 0s indicate no role in missingness, unspecified vars have weight 0), and positive values have an increase effect.
@@ -699,6 +699,9 @@ class MultivariateAmputation(TransformerMixin):
         if self.patterns is None or len(self.patterns) == 0:
             logging.info("No patterns passed, setting default pattern.")
             self.patterns = self._get_default_pattern(self.num_features)
+        assert isinstance(self.patterns, list) or isinstance(
+            self.patterns, np.ndarray
+        ), "Patterns should be a list of dictionaries."
         freq_keys = ["freq" in pattern for pattern in self.patterns]
         assert all(freq_keys) or not any(freq_keys), (
             "Either specify a freq for all patterns or specify none "
