@@ -112,6 +112,17 @@ class TestAmpute(unittest.TestCase):
             atol=0.05 * n,
         )
 
+    def test_repeat_pattern(self):
+        n = 1000
+        X = np.random.randn(n, 2)
+        patterns = [
+            {"incomplete_vars": [0], "mechanism": "mcar"},
+            {"incomplete_vars": [0], "mechanism": "mcar"},
+        ]
+        repeat_patterns = MultivariateAmputation(patterns=patterns)
+        repeat_patterns._validate_input(X)
+        # TODO: What to we expect the output to be?
+
     def test_seed(self):
         # create complete data
         n = 1000

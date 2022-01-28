@@ -162,7 +162,6 @@ class TestDefaults(unittest.TestCase):
         )
 
     def test_mechanism_case_coverage(self):
-        # TODO: test for repeat patterns?
         mar_mnar_weights = [0, 0, 0, 0.5, 1, 0]
         patterns = [
             {"incomplete_vars": [0], "mechanism": "mcar"},
