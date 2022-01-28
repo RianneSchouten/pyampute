@@ -2,6 +2,7 @@ import numpy as np
 import unittest
 
 from pyampute.ampute import MultivariateAmputation
+from pyampute.exploration.md_patterns import mdPatterns
 
 # test that all mechanisms work
 class TestAmpute(unittest.TestCase):
@@ -22,27 +23,51 @@ class TestAmpute(unittest.TestCase):
                     for i, mechanism in enumerate(current_mechanisms)
                 ]
             )
-            incomplete_data = ma.fit_transform(X)
-            self.assertEqual(incomplete_data.shape, X.shape)
+            X_amputed = ma.fit_transform(X)
+            self.assertEqual(X_amputed.shape, X.shape)
 
-            count_missing_values_per_column = np.sum(np.isnan(incomplete_data), axis=0)
+            mdp = mdPatterns()
+            patterns = mdp.get_patterns(X_amputed, show_plot=False)
+
             self.assertTrue(
-                np.all(count_missing_values_per_column > (0.4 * 0.5 * n))
+                # each column should have prop*freq missing, 2 patterns so freq for each is 50%
+                np.allclose(
+                    patterns["row_count"].iloc[1:-1].astype(int),
+                    (0.5 * 0.5 * n),
+                    atol=0.05 * n,
+                )
             )  # expect: around 250
-            self.assertGreater(
-                np.sum(count_missing_values_per_column), (0.4 * n)
+            # about half the rows should be missing values
+            self.assertAlmostEqual(
+                patterns.loc["n_missing_values_per_col", "n_missing_values"].astype(
+                    int
+                ),
+                0.5 * n,
+                delta=0.05 * n,
             )  # expect: around 500
 
             # check if it also works if len(mechanisms) = 1
             ma = MultivariateAmputation(
                 patterns=[{"incomplete_vars": [0], "mechanism": mechanism}]
             )
-            incomplete_data = ma.fit_transform(X)
-            self.assertTrue(
-                np.all(count_missing_values_per_column > (0.4 * 0.5 * n))
-            )  # expect: around 250
-            self.assertGreater(
-                np.sum(count_missing_values_per_column), (0.4 * n)
+            X_amputed = ma.fit_transform(X)
+            mdp = mdPatterns()
+            patterns = mdp.get_patterns(X_amputed, show_plot=False)
+            self.assertAlmostEqual(
+                # column 0 should have prop% missing
+                patterns.loc["n_missing_values_per_col", 0],
+                0.5 * n,
+                delta=0.05 * n,
+            )
+            #  column 1 should have none missing
+            self.assertEqual(patterns.loc["n_missing_values_per_col", 1], 0)
+            # about half the rows should be missing values
+            self.assertAlmostEqual(
+                patterns.loc["n_missing_values_per_col", "n_missing_values"].astype(
+                    int
+                ),
+                0.5 * n,
+                delta=0.05 * n,
             )  # expect: around 500
 
     # test one specific situation
@@ -66,30 +91,25 @@ class TestAmpute(unittest.TestCase):
 
         # run ampute
         ma = MultivariateAmputation(prop=my_prop, patterns=patterns)
-        incomplete_data = ma.fit_transform(X)
-        self.assertEqual(incomplete_data.shape, X.shape)
+        X_amputed = ma.fit_transform(X)
+        self.assertEqual(X_amputed.shape, X.shape)
 
         # print(np.sum(np.sum(np.isnan(incomplete_data), axis=0))) # expect: around 3000
         # print(np.sum(np.isnan(incomplete_data), axis=0)[0]) # expect: around 2100
         # print(np.sum(np.isnan(incomplete_data), axis=0)[1]) # expect: around 900
-
-        self.assertLess(
-            np.absolute(
-                (my_prop * len(X)) - np.sum(np.sum(np.isnan(incomplete_data), axis=0))
-            ),
-            100,
+        mdp = mdPatterns()
+        patterns = mdp.get_patterns(X_amputed, show_plot=False)
+        # about 30% rows should be missing values
+        self.assertAlmostEqual(
+            patterns.loc["n_missing_values_per_col", "n_missing_values"].astype(int),
+            0.3 * n,
+            delta=0.05 * n,
         )
-        self.assertLess(
-            np.absolute(
-                (0.3 * my_prop * len(X)) - np.sum(np.isnan(incomplete_data), axis=0)[0]
-            ),
-            100,
-        )
-        self.assertLess(
-            np.absolute(
-                (0.7 * my_prop * len(X)) - np.sum(np.isnan(incomplete_data), axis=0)[1]
-            ),
-            100,
+        # both columns should be missing values
+        np.allclose(
+            patterns.loc["n_missing_values_per_col"].iloc[1:-1].astype(int),
+            [(0.3 * 0.3 * n), (0.3 * (0.2 + 0.5) * n)],
+            atol=0.05 * n,
         )
 
     def test_seed(self):

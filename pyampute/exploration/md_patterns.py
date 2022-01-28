@@ -54,9 +54,8 @@ class mdPatterns:
             Matrix of shape `(n_samples, m_features)`
             Incomplete input data, where "n_samples" is the number of samples and "m_features" is the number of features.
         
-        count_or_proportion : str, default : "count"
+        count_or_proportion : str, {"count", "proportion"}
             Whether the patterns should be given in counts or proportions.
-            Options are {"count", "proportion"}
 
         show_plot : bool, default : True
             Whether the patterns should be shown in a plot.
@@ -119,6 +118,11 @@ class mdPatterns:
             ).round(2)
 
         self.md_patterns = group_values
+        self.md_patterns.index = (
+            ["rows_no_missing"]
+            + list(self.md_patterns.index[1:-1])
+            + ["n_missing_values_per_col"]
+        )
         return self.md_patterns
 
     def _make_plot(self):

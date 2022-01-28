@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import unittest
+from unittest.mock import patch
 
 # Local imports
 from pyampute.ampute import MultivariateAmputation
@@ -37,7 +38,7 @@ class TestDefaults(unittest.TestCase):
         super().setUp()
 
     def test_minimal_defaults(self):
-        minimal = MultivariateAmputation()
+        minimal = MultivariateAmputation(seed=4)
         minimal._validate_input(X_nomissing)
         self.assertTrue(np.array_equal(minimal.freqs, np.array([1]),))
         self.assertTrue(np.array_equal(minimal.mechanisms, np.array(["MAR"])))
@@ -47,13 +48,17 @@ class TestDefaults(unittest.TestCase):
             )
         )
         X_amputed = minimal.fit_transform(X_nomissing)
-        # self.assertAlmostEqual(np.isnan(X_amputed).mean(), 0.5)
-        # test with mdPatterns, something like:
-        # mdp = mdPatterns()
-        # patterns = mdp.get_patterns(X_amputed, show_plot = False, show_patterns = False)
-        # assert that nrows = 2
-        # assert that second row contains about 50% of the cases
-        # assert that second row contains about 3/6 1s (but there is randomness here, maybe use seed?)
+        mdp = mdPatterns()
+        patterns = mdp.get_patterns(X_amputed, show_plot=False)
+        # There should be approximately half the rows missing data (via prop=0.5)
+        self.assertTrue(
+            patterns[1, "row_count"] == X_nomissing.shape[0] // 2
+            or patterns.loc[1, "row_count"] == (X_nomissing.shape[0] // 2 + 1)
+        )
+        # half of the vars should have missing values
+        self.assertTrue(
+            patterns.loc[1, "n_missing_values"] / X_nomissing.shape[1] == 3 / 6
+        )
 
     def test_adjusting_inputs(self):
         with self.subTest("Adjust Primitive Defaults"):
