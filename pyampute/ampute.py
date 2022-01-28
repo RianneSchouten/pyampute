@@ -76,10 +76,11 @@ class MultivariateAmputation(TransformerMixin):
 
             **score_to_probability_func** (`Union[str, Callable[ArrayLike[floats] -> ArrayLike[floats]]], {"sigmoid-right", "sigmoid-left", "sigmoid-mid", "sigmoid-tail", Callable}`) --
                 Converts standardized weighted scores for each sample (in a data subset corresponding to pattern k) to probability of missingness.
-                The function will be shifted to ensure correct joint missingness probabilities.
                 Choosing one of the sigmoid options (case insensitive) applies sigmoid function with a logit cutoff per pattern.
-                Dictates a [high, low, average, extreme] score (respectively) has a high probability of amputation.
+                The simgoid function will dictates that a [high, low, average, extreme] score (respectively) has a high probability of amputation.
+                The sigmoid functions will be shifted to ensure correct joint missingness probabilities.
                 Custom functions must accept arrays with values ``(-inf, inf)`` and output values ``[0,1]``.
+                We will *not* shift custom functions, refer to :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py` for more.
 
     std : boolean, default : True
         Whether or not to standardize data before computing weighted scores.
@@ -262,29 +263,32 @@ class MultivariateAmputation(TransformerMixin):
         max_iter: int,
         max_diff_with_target: float,
     ) -> ArrayLike:
-        if (self.shift_lookup_table is not None) and isinstance(
-            score_to_probability_func, str
-        ):
-            logging.info(
-                "Rounding proportion of missingness to 2 decimal places in order to use lookup table for one of the prespecified score to probability functions."
-            )
-            prop = np.around(self.prop, 2)
+        if isinstance(score_to_probability_func, str):
+            if self.shift_lookup_table is not None:
+                logging.info(
+                    "Rounding proportion of missingness to 2 decimal places in order to use lookup table for one of the prespecified score to probability functions."
+                )
+                prop = np.around(self.prop, 2)
 
-            shift = self.shift_lookup_table.loc[score_to_probability_func, str(prop)]
-            return self._shifted_probability_func(
-                wss_standardized, shift, score_to_probability_func
-            )
+                shift = self.shift_lookup_table.loc[
+                    score_to_probability_func, str(prop)
+                ]
+                return self._shifted_probability_func(
+                    wss_standardized, shift, score_to_probability_func
+                )
+            # If no lookup table, but sigmoid, run binary search
+            return self._binary_search(
+                wss_standardized,
+                score_to_probability_func,
+                missingness_percent,
+                lower_range,
+                upper_range,
+                max_iter,
+                max_diff_with_target,
+            )[1]
 
-        # If no lookup table, run binary search
-        return self._binary_search(
-            wss_standardized,
-            score_to_probability_func,
-            missingness_percent,
-            lower_range,
-            upper_range,
-            max_iter,
-            max_diff_with_target,
-        )[1]
+        # if not sigmoid, no binary search/shift
+        return score_to_probability_func(wss_standardized)
 
     def _choose_probabilities(self, wss: ArrayLike, pattern_index: int) -> ArrayLike:
         """
