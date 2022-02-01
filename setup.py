@@ -11,7 +11,7 @@ setup(
     install_requires=[
         # "rich",  # nice stack traces + printing
         "pandas",
-        "numpy",
+        "numpy>=1.19.0",
         "scipy",
         "matplotlib",
         "scikit-learn",
