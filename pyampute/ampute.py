@@ -5,7 +5,7 @@
 from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 import logging
 import numpy as np
-from pandas import DataFrame, read_csv
+from pandas import DataFrame, read_csv, isnull
 from sklearn.base import TransformerMixin
 from scipy import stats
 from math import isclose
@@ -16,7 +16,6 @@ from pyampute.utils import (
     ArrayLike,
     Matrix,
     isin,
-    isnan,
     is_numeric,
     enforce_numeric,
     setup_logging,
@@ -341,10 +340,6 @@ class MultivariateAmputation(TransformerMixin):
 
         # transform only vars involved in amputation to numeric to compute weights
         # does not transform the original datset
-        logging.info(
-            "Enforcing data to be numeric since calculation of weights"
-            " requires numeric data."
-        )
         data_group = enforce_numeric(data_group, self.vars_involved_in_ampute)
         # standardize data or not
         if self.std:
@@ -651,25 +646,6 @@ class MultivariateAmputation(TransformerMixin):
             ]
         ), "Failed to specify custom weights array for MAR+MNAR pattern."
 
-        # Warnings.
-        mar_mask = self.mechanisms == "MAR"
-        if any(mar_mask) and np.equal(
-            self.weights[mar_mask].astype(bool), self.observed_var_indicator[mar_mask],
-        ).all(axis=None):
-            logging.warning(
-                "Indicated weights for incomplete vars for a pattern with MAR. "
-                "Did you mean MAR+MNAR?"
-            )
-        mnar_mask = self.mechanisms == "MNAR"
-        if any(mnar_mask) and np.equal(
-            self.weights[mnar_mask].astype(bool),
-            (1 - self.observed_var_indicator)[mnar_mask],
-        ).all(axis=None):
-            logging.warning(
-                "Indicated weights for vars that are observed for a pattern with MNAR. "
-                "Did you mean MAR+MNAR?"
-            )
-
         #####################################
         #     SCORE TO PROBABILITY FUNC     #
         #####################################
@@ -767,36 +743,13 @@ class MultivariateAmputation(TransformerMixin):
         assert X.shape[1] > 1, "Dataset passed must contain at least two columns."
         # enforce numpy just for checking
         X_check = X.values if isinstance(X, DataFrame) else X
-        assert not isnan(
+        assert not isnull(
             X_check[:, self.vars_involved_in_ampute]
         ).any(), "Features involved in amputation must be complete, but contains NaNs."
         if not is_numeric(X_check[:, self.vars_involved_in_ampute]):
             logging.warn(
                 "Features involved in amputation found to be non-numeric."
                 " They will be forced to numeric upon calculating sum scores."
-            )
-
-        # get binary variables involved in amputation
-        iterate_columns = X.values.T if isinstance(X, DataFrame) else X.T
-        binary_vars_mask = (
-            np.array([len(np.unique(col)) for col in iterate_columns]) == 2
-        )
-        binary_vars_involved_in_ampute = np.where(
-            self.vars_involved_in_ampute & binary_vars_mask
-        )
-        if len(binary_vars_involved_in_ampute) > 0:
-            logging.warn(
-                f"Binary variables (at indices {binary_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR). "
-                "This can result in a subset with candidates that all have the same (or almost the same) weighted sum scores. "
-            )
-        categorical_vars_mask = True  # TODO
-        categorical_vars_involved_in_ampute = np.where(
-            self.vars_involved_in_ampute & categorical_vars_mask
-        )
-        if len(categorical_vars_involved_in_ampute) > 0:
-            logging.warn(
-                f"Categorical variables (at indices {categorical_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR)."
-                "These will be forced to be numeric upon calculating sum scores."
             )
 
         return X

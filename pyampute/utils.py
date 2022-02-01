@@ -34,14 +34,6 @@ def sigmoid(X: ArrayLike) -> ArrayLike:
     return 1 / (1 + np.exp(-X))
 
 
-def isnan(X: Matrix):
-    # ref: https://stackoverflow.com/a/29530601/1888794
-    if isinstance(X, pd.DataFrame):
-        return X.isnull().values
-    # else np.ndarray
-    return np.isnan(X)
-
-
 def isin(X: Union[ArrayLike, Matrix], list: ArrayLike) -> bool:
     if isinstance(X, pd.DataFrame) or isinstance(X, pd.Series):
         return X.isin(list)
@@ -59,11 +51,6 @@ def enforce_numeric(
     X: Union[ArrayLike, Matrix], vars_to_enforce: Optional[List[Union[str, int]]] = None
 ) -> Matrix:
     if isinstance(X, np.ndarray):
-        logging.warn(
-            "Numpy does not support heterogeneous ndarrays."
-            " While enforcing variables involved in imputation to numeric,"
-            " we have to enforce the whole ndarray passed in."
-        )
         X = np.array(list(map(pd.to_numeric, X)))
         all_nan_cols = np.isnan(X).all(axis=0)
         X = X[:, ~all_nan_cols]
