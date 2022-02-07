@@ -159,6 +159,8 @@ class MultivariateAmputation(TransformerMixin):
         self.max_iter = max_iter
         self.seed = seed
 
+        self.wss_per_pattern = []
+
         # The rest are set by _pattern_dict_to_matrix_form()
         setup_logging()
 
@@ -303,9 +305,11 @@ class MultivariateAmputation(TransformerMixin):
         # Therefore we just use uniform probability of missing per var using self.freqs
         if np.all(wss == 0):
             probs = np.repeat(self.freqs[pattern_index], len(wss))
+            self.wss_per_pattern.append(wss)
         else:  # else we calculate the probabilities based on the wss
             # standardize wss
             wss_standardized = stats.zscore(wss)
+            self.wss_per_pattern.append(wss_standardized)
             # calculate the size of b for the desired missingness proportion
             probs_array = self._calculate_probabilities_from_wss(
                 wss_standardized,
