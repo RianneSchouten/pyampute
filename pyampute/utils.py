@@ -15,11 +15,11 @@ Matrix = Union[pd.DataFrame, np.ndarray]
 LOOKUP_TABLE_PATH = join(getcwd(), "data", "shift_lookup.csv")
 
 
-def setup_logging(log_filename: str = "output.log"):
+def setup_logging(log_filename: str = "output.log", verbose: bool = False):
     # Ref: https://stackoverflow.com/a/46098711/1888794
     # prints to console and saves to File.
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.INFO if verbose else logging.WARNING,
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[logging.FileHandler(log_filename), logging.StreamHandler()],
     )
@@ -67,31 +67,3 @@ def enforce_numeric(
             X = X.apply(pd.to_numeric, errors="coerce").dropna(axis=1, how="all")
 
     return X
-
-
-'''
-def missingness_profile(X: Matrix):
-    nans = isnan(X)
-
-    def percentify(n: int, axis: int) -> float:
-        """Take number and report as a percent of axis."""
-        return n / X.shape[axis] * 100
-
-    # By row
-    entries_missing = nans.any(axis=1).sum()
-    print(
-        "Entries missing a value: "
-        f"{entries_missing} ({percentify(entries_missing, 0)}%)"
-    )
-
-    # By column
-    feature_missing = pd.Series(nans.sum(axis=0))
-    percent_feature_missing = pd.Series(percentify(feature_missing, 0))
-    print(
-        pd.concat(
-            [feature_missing, percent_feature_missing],
-            axis=1,
-            keys=["Num Features Missing", "%"],
-        )
-    )
-'''

@@ -99,6 +99,9 @@ class MultivariateAmputation(TransformerMixin):
 
     max_iter : int, default : 100
         Max number of iterations for binary search when searching for horizontal shift of `score_to_probability_func`.
+    
+    verbose: bool, default : False
+        Toggle on to see INFO level logging information.
 
     seed: int, optional
         If you want reproducible results during amputation set an integer seed.
@@ -148,6 +151,7 @@ class MultivariateAmputation(TransformerMixin):
         upper_range: float = 3,
         max_diff_with_target: float = 0.001,
         max_iter: int = 100,
+        verbose: bool = False,
         seed: Optional[int] = None,
     ):
         self.prop = prop
@@ -160,7 +164,7 @@ class MultivariateAmputation(TransformerMixin):
         self.seed = seed
 
         # The rest are set by _pattern_dict_to_matrix_form()
-        setup_logging()
+        setup_logging(verbose=verbose)
 
     @staticmethod
     def _shifted_probability_func(
@@ -338,7 +342,7 @@ class MultivariateAmputation(TransformerMixin):
         """
 
         if len(data_group) <= THRESHOLD_MIN_NUM_CANDIDATES:
-            logging.warn(
+            logging.warning(
                 f"Subset for pattern {pattern_ind} is small. "
                 "Too many patterns can result in subsets with 0 or few candidates. "
                 "Subsets with 0 candidates will be skipped. "
@@ -347,6 +351,10 @@ class MultivariateAmputation(TransformerMixin):
 
         # transform only vars involved in amputation to numeric to compute weights
         # does not transform the original datset
+        logging.info(
+            "Enforcing data to be numeric since calculation of weights"
+            " requires numeric data."
+        )
         data_group = enforce_numeric(data_group, self.vars_involved_in_ampute)
         # standardize data or not
         if self.std:
@@ -513,7 +521,7 @@ class MultivariateAmputation(TransformerMixin):
             try:
                 self.shift_lookup_table = read_csv(LOOKUP_TABLE_PATH, index_col=0)
             except Exception:
-                logging.warn(
+                logging.warning(
                     "Failed to load lookup table for a prespecified score to probability function. "
                     f"It is possible /data/{LOOKUP_TABLE_PATH}.csv is missing, in the wrong location, or corrupted. "
                     "Try rerunning /amputation/scripts.py to regenerate the lookup table."
@@ -653,6 +661,28 @@ class MultivariateAmputation(TransformerMixin):
             ]
         ), "Failed to specify custom weights array for MAR+MNAR pattern."
 
+        # Warnings.
+        mar_mask = self.mechanisms == "MAR"
+        # If there are weights under MAR that are nonzero for any vars that are incomplete, throw warning
+        if any(mar_mask) and np.equal(
+            self.weights[mar_mask].astype(bool),
+            (1 - self.observed_var_indicator)[mar_mask],
+        ).any(axis=None):
+            logging.warning(
+                "Indicated weights for incomplete vars for a pattern with MAR. "
+                "Did you mean MAR+MNAR?"
+            )
+        mnar_mask = self.mechanisms == "MNAR"
+        # if there are weights under MNAR that are nonzer for any vars that are observed, throw warning
+        if any(mnar_mask) and np.equal(
+            self.weights[mnar_mask].astype(bool),
+            self.observed_var_indicator[mnar_mask],
+        ).any(axis=None):
+            logging.warning(
+                "Indicated weights for vars that are observed for a pattern with MNAR. "
+                "Did you mean MAR+MNAR?"
+            )
+
         #####################################
         #     SCORE TO PROBABILITY FUNC     #
         #####################################
@@ -754,9 +784,31 @@ class MultivariateAmputation(TransformerMixin):
             X_check[:, self.vars_involved_in_ampute]
         ).any(), "Features involved in amputation must be complete, but contains NaNs."
         if not is_numeric(X_check[:, self.vars_involved_in_ampute]):
-            logging.warn(
+            logging.warning(
                 "Features involved in amputation found to be non-numeric."
                 " They will be forced to numeric upon calculating sum scores."
+            )
+        # get binary variables involved in amputation
+        iterate_columns = X.values.T if isinstance(X, DataFrame) else X.T
+        binary_vars_mask = (
+            np.array([len(np.unique(col)) for col in iterate_columns]) == 2
+        )
+        binary_vars_involved_in_ampute = np.where(
+            self.vars_involved_in_ampute & binary_vars_mask
+        )[0]
+        if len(binary_vars_involved_in_ampute) > 0:
+            logging.warning(
+                f"Binary variables (at indices {binary_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR). "
+                "This can result in a subset with candidates that all have the same (or almost the same) weighted sum scores. "
+            )
+        categorical_vars_mask = False  # TODO
+        categorical_vars_involved_in_ampute = np.where(
+            self.vars_involved_in_ampute & categorical_vars_mask
+        )[0]
+        if len(categorical_vars_involved_in_ampute) > 0:
+            logging.warning(
+                f"Categorical variables (at indices {categorical_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR)."
+                "These will be forced to be numeric upon calculating sum scores."
             )
 
         return X
