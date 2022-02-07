@@ -40,8 +40,9 @@ def generate_shift_lookup_table(
                 for percent in percent_missing
             ]
         )
+    percent_missing_2_decimal = ["{:.2f}".format(p) for p in percent_missing]
     lookup_table = pd.DataFrame(
-        shifts, index=score_to_prob_func_names, columns=percent_missing,
+        shifts, index=score_to_prob_func_names, columns=percent_missing_2_decimal,
     )
     lookup_table.to_csv(lookup_table_path)
 
