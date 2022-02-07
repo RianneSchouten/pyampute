@@ -123,7 +123,7 @@ class TestAmpute(unittest.TestCase):
             {"incomplete_vars": [0], "mechanism": "mcar"},
         ]
         repeat_patterns = MultivariateAmputation(patterns=patterns)
-        repeat_patterns._validate_input(X)
+        repeat_patterns.fit(X)
         # TODO: What to we expect the output to be?
 
     def test_seed(self):
