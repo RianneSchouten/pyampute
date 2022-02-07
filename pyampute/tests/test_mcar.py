@@ -11,8 +11,6 @@ data_mcar = pd.read_table("data/missingdata_mcar.csv", sep="\t")
 
 significance_level = 0.05
 
-# TODO: better explain the algorithms for each test / better var names
-
 
 class TestMcarTests(unittest.TestCase):
     """Test for MCAR."""

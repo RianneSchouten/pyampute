@@ -109,10 +109,12 @@ class TestAmpute(unittest.TestCase):
             delta=0.05 * n,
         )
         # both columns should be missing values
-        np.allclose(
-            patterns.loc["n_missing_values_per_col"].iloc[1:-1].astype(int),
-            [(0.3 * 0.3 * n), (0.3 * (0.2 + 0.5) * n)],
-            atol=0.05 * n,
+        self.assertTrue(
+            np.allclose(
+                patterns.loc["n_missing_values_per_col"].iloc[1:-1].astype(int),
+                [(0.3 * 0.3 * n), (0.3 * (0.2 + 0.5) * n)],
+                atol=0.05 * n,
+            )
         )
 
     def test_repeat_pattern(self):
@@ -145,6 +147,79 @@ class TestAmpute(unittest.TestCase):
                 default.fit_transform(X), default.fit_transform(X), equal_nan=True
             )
         )
+
+    def test_sigmoid_score_to_prob_function(self):
+        # create complete data
+        n = 10000
+        X = np.random.randn(n, 2)
+
+        my_score_to_prob_functions = [
+            "sigmoid-right",
+            "sigmoid-left",
+            "sigmoid-mid",
+            "sigmoid-tail",
+        ]
+        my_prop = 0.3
+
+        for score_to_prob_function in my_score_to_prob_functions:
+            patterns = [
+                {
+                    "incomplete_vars": np.array([0]),
+                    "score_to_probability_func": score_to_prob_function,
+                }
+            ]
+
+            # run ampute
+            ma = MultivariateAmputation(prop=my_prop, patterns=patterns)
+            X_amputed = ma.fit_transform(X)
+
+            mdp = mdPatterns()
+            patterns = mdp.get_patterns(X_amputed, show_plot=False)
+            # about 30% rows should be missing values
+            self.assertAlmostEqual(
+                patterns.loc["n_missing_values_per_col", "n_missing_values"].astype(
+                    int
+                ),
+                0.3 * n,
+                delta=0.05 * n,
+            )
+            # first column only should be missing values
+            self.assertTrue(
+                np.allclose(
+                    patterns.loc["n_missing_values_per_col"]
+                    .iloc[1:-1]
+                    .astype(int)
+                    .sort_index(),  # For some reason the patterns can appear out of order
+                    [(0.3 * n), 0],
+                    atol=0.05 * n,
+                )
+            )
+            probs = ma.probs_per_pattern[0]
+            wss = ma.wss_per_pattern[0]
+            if score_to_prob_function == "sigmoid-right":
+                self.assertGreater(
+                    probs[np.argmax(wss)], probs[np.argmin(wss)],
+                )
+            elif score_to_prob_function == "sigmoid-left":
+                self.assertGreater(
+                    probs[np.argmin(wss)], probs[np.argmax(wss)],
+                )
+            elif score_to_prob_function == "sigmoid-mid":
+                argmedian = np.argsort(wss)[len(wss) // 2]
+                self.assertGreater(
+                    probs[argmedian], probs[np.argmax(wss)],
+                )
+                self.assertGreater(
+                    probs[argmedian], probs[np.argmin(wss)],
+                )
+            else:  # tail
+                argmedian = np.argsort(wss)[len(wss) // 2]
+                self.assertGreater(
+                    probs[np.argmax(wss)], probs[argmedian],
+                )
+                self.assertGreater(
+                    probs[np.argmin(wss)], probs[argmedian],
+                )
 
 
 if __name__ == "__main__":

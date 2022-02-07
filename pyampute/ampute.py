@@ -163,6 +163,10 @@ class MultivariateAmputation(TransformerMixin):
         self.max_iter = max_iter
         self.seed = seed
 
+        self.assigned_group_number = None
+        self.wss_per_pattern = []
+        self.probs_per_pattern = []
+
         # The rest are set by _pattern_dict_to_matrix_form()
         setup_logging(verbose=verbose)
 
@@ -301,6 +305,7 @@ class MultivariateAmputation(TransformerMixin):
         to sample i.
 
         """
+
         """
         When wss is all the same the mechanism is
             1. MCAR: each case has an equal probability of becoming missing (wss == 0)
@@ -317,6 +322,7 @@ class MultivariateAmputation(TransformerMixin):
         else:  # else we calculate the probabilities based on the wss
             # standardize wss
             wss_standardized = stats.zscore(wss)
+            self.wss_per_pattern.append(wss_standardized)
             # calculate the size of b for the desired missingness proportion
             probs_array = self._calculate_probabilities_from_wss(
                 wss_standardized,
@@ -328,6 +334,7 @@ class MultivariateAmputation(TransformerMixin):
                 self.max_diff_with_target,
             )
             probs = np.squeeze(np.asarray(probs_array))
+            self.probs_per_pattern.append(probs)
 
         return probs
 
@@ -869,7 +876,7 @@ class MultivariateAmputation(TransformerMixin):
         # start a loop over each pattern
         for pattern_idx in range(self.num_patterns):
             # assign cases to the group
-            group_indices = X_indices[assigned_group_number == pattern_idx]
+            group_indices = X_indices[self.assigned_group_number == pattern_idx]
             pattern = np.squeeze(
                 np.asarray(self.observed_var_indicator[pattern_idx, :])
             )
