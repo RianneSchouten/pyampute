@@ -191,10 +191,32 @@ class TestAmpute(unittest.TestCase):
                     atol=0.05 * n,
                 )
             )
-            # OR any nans found across the columns
-            rows_amputed = np.logical_or.reduce(np.isnan(X_amputed), axis=1)
-            # We expect these to be large for "sigmoid-right"
-            ma.wss_per_pattern[0][rows_amputed]
+            probs = ma.probs_per_pattern[0]
+            wss = ma.wss_per_pattern[0]
+            if score_to_prob_function == "sigmoid-right":
+                self.assertGreater(
+                    probs[np.argmax(wss)], probs[np.argmin(wss)],
+                )
+            elif score_to_prob_function == "sigmoid-left":
+                self.assertGreater(
+                    probs[np.argmin(wss)], probs[np.argmax(wss)],
+                )
+            elif score_to_prob_function == "sigmoid-mid":
+                argmedian = np.argsort(wss)[len(wss) // 2]
+                self.assertGreater(
+                    probs[argmedian], probs[np.argmax(wss)],
+                )
+                self.assertGreater(
+                    probs[argmedian], probs[np.argmin(wss)],
+                )
+            else:  # tail
+                argmedian = np.argsort(wss)[len(wss) // 2]
+                self.assertGreater(
+                    probs[np.argmax(wss)], probs[argmedian],
+                )
+                self.assertGreater(
+                    probs[np.argmin(wss)], probs[argmedian],
+                )
 
 
 if __name__ == "__main__":
