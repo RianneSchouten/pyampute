@@ -15,16 +15,6 @@ Matrix = Union[pd.DataFrame, np.ndarray]
 LOOKUP_TABLE_PATH = join(getcwd(), "data", "shift_lookup.csv")
 
 
-def setup_logging(log_filename: str = "output.log", verbose: bool = False):
-    # Ref: https://stackoverflow.com/a/46098711/1888794
-    # prints to console and saves to File.
-    logging.basicConfig(
-        level=logging.INFO if verbose else logging.WARNING,
-        format="%(asctime)s [%(levelname)s] %(message)s",
-        handlers=[logging.FileHandler(log_filename), logging.StreamHandler()],
-    )
-
-
 def standardize_uppercase(input: str) -> str:
     """Standardize string to upper case."""
     return input.upper()

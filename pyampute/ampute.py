@@ -18,7 +18,6 @@ from pyampute.utils import (
     isin,
     is_numeric,
     enforce_numeric,
-    setup_logging,
     standardize_uppercase,
     sigmoid,
 )
@@ -153,6 +152,7 @@ class MultivariateAmputation(TransformerMixin):
         max_iter: int = 100,
         verbose: bool = False,
         seed: Optional[int] = None,
+        log_filename: str = "output.log",
     ):
         self.prop = prop
         self.patterns = patterns
@@ -166,9 +166,19 @@ class MultivariateAmputation(TransformerMixin):
         self.assigned_group_number = None
         self.wss_per_pattern = []
         self.probs_per_pattern = []
-
         # The rest are set by _pattern_dict_to_matrix_form()
-        setup_logging(verbose=verbose)
+
+        # Ref: https://stackoverflow.com/a/46098711/1888794
+        # prints to console and saves to File.
+        self.file_handler = logging.FileHandler(log_filename)
+        logging.basicConfig(
+            level=logging.INFO if verbose else logging.WARNING,
+            format="%(asctime)s [%(levelname)s] %(message)s",
+            handlers=[self.file_handler, logging.StreamHandler()],
+        )
+
+    def __del__(self):
+        self.file_handler.close()
 
     @staticmethod
     def _shifted_probability_func(
