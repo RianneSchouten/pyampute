@@ -297,12 +297,19 @@ class MultivariateAmputation(TransformerMixin):
         to sample i.
 
         """
-        # when wss contains merely zeros, the mechanism is
-        # 1. MCAR: each case has an equal probability of becoming missing
-        # 2. MAR with binary variables
-        # Therefore we just use uniform probability of missing per var using self.freqs
-        if np.all(wss == 0):
-            probs = np.repeat(self.freqs[pattern_index], len(wss))
+        """
+        When wss is all the same the mechanism is
+            1. MCAR: each case has an equal probability of becoming missing (wss == 0)
+            2. MAR with binary variables
+        Therefore we just use uniform probability of missing per var using self.freqs
+        Alternatively, If there are not enough unique wss we apply MCAR.
+        NOTE: The threshold is on unique WSS. 
+           The discrepancy between min number of candidates requires and unique wss means that there are few candidates and will trigger a warning, but if they're all unique wss, then MCAR will NOT be applied.
+        """
+        if np.all(wss == wss[0]) or len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
+            # there's 1 pattern under MCAR, freq = 1 (all candidates will be wrongly chosen)
+            prob_fill = self.prop if len(self.freqs) == 1 else self.freqs[pattern_index]
+            probs = np.repeat(prob_fill, len(wss))
         else:  # else we calculate the probabilities based on the wss
             # standardize wss
             wss_standardized = stats.zscore(wss)
@@ -356,7 +363,7 @@ class MultivariateAmputation(TransformerMixin):
                 "It is possible this is due to the use of binary variables in amputation. "
                 "This creates problems when using the sigmoid function for the score_to_probability_func. "
                 "Currently our solution is as follows: if there is just one candidate with a sum score 0, we will ampute it. "
-                "If there is one candidate with a nonzero sum score, or multiple candidates with the same score, we evenly apply the same amount of missingness (as if MCAR)."
+                "If there is one candidate with a nonzero sum score, or multiple candidates with the same score, we evenly apply as if MCAR."
             )
         return wss
 

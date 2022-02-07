@@ -16,59 +16,62 @@ class TestAmpute(unittest.TestCase):
         X = np.random.randn(n, 2)
 
         for mechanism in ["MAR", "MNAR", "MCAR"]:
-            current_mechanisms = np.repeat(mechanism, 2)
-            ma = MultivariateAmputation(
-                patterns=[
-                    {"incomplete_vars": [i], "mechanism": mechanism}
-                    for i, mechanism in enumerate(current_mechanisms)
-                ]
-            )
-            X_amputed = ma.fit_transform(X)
-            self.assertEqual(X_amputed.shape, X.shape)
-
-            mdp = mdPatterns()
-            patterns = mdp.get_patterns(X_amputed, show_plot=False)
-
-            self.assertTrue(
-                # each column should have prop*freq missing, 2 patterns so freq for each is 50%
-                np.allclose(
-                    patterns["row_count"].iloc[1:-1].astype(int),
-                    (0.5 * 0.5 * n),
-                    atol=0.05 * n,
+            with self.subTest("Multiple Patterns"):
+                # Testing > 1 pattern
+                current_mechanisms = np.repeat(mechanism, 2)
+                ma = MultivariateAmputation(
+                    patterns=[
+                        {"incomplete_vars": [i], "mechanism": mechanism}
+                        for i, mechanism in enumerate(current_mechanisms)
+                    ]
                 )
-            )  # expect: around 250
-            # about half the rows should be missing values
-            self.assertAlmostEqual(
-                patterns.loc["n_missing_values_per_col", "n_missing_values"].astype(
-                    int
-                ),
-                0.5 * n,
-                delta=0.05 * n,
-            )  # expect: around 500
+                X_amputed = ma.fit_transform(X)
+                self.assertEqual(X_amputed.shape, X.shape)
+
+                mdp = mdPatterns()
+                patterns = mdp.get_patterns(X_amputed, show_plot=False)
+
+                self.assertTrue(
+                    # each column should have prop*freq missing, 2 patterns so freq for each is 50%
+                    np.allclose(
+                        patterns["row_count"].iloc[1:-1].astype(int),
+                        (0.5 * 0.5 * n),
+                        atol=0.05 * n,
+                    )
+                )  # expect: around 250
+                # about half the rows should be missing values
+                self.assertAlmostEqual(
+                    patterns.loc["n_missing_values_per_col", "n_missing_values"].astype(
+                        int
+                    ),
+                    0.5 * n,
+                    delta=0.05 * n,
+                )  # expect: around 500
 
             # check if it also works if len(mechanisms) = 1
-            ma = MultivariateAmputation(
-                patterns=[{"incomplete_vars": [0], "mechanism": mechanism}]
-            )
-            X_amputed = ma.fit_transform(X)
-            mdp = mdPatterns()
-            patterns = mdp.get_patterns(X_amputed, show_plot=False)
-            self.assertAlmostEqual(
-                # column 0 should have prop% missing
-                patterns.loc["n_missing_values_per_col", 0],
-                0.5 * n,
-                delta=0.05 * n,
-            )
-            #  column 1 should have none missing
-            self.assertEqual(patterns.loc["n_missing_values_per_col", 1], 0)
-            # about half the rows should be missing values
-            self.assertAlmostEqual(
-                patterns.loc["n_missing_values_per_col", "n_missing_values"].astype(
-                    int
-                ),
-                0.5 * n,
-                delta=0.05 * n,
-            )  # expect: around 500
+            with self.subTest("1 Mechanism / 1 Pattern"):
+                ma = MultivariateAmputation(
+                    patterns=[{"incomplete_vars": [0], "mechanism": mechanism}]
+                )
+                X_amputed = ma.fit_transform(X)
+                mdp = mdPatterns()
+                patterns = mdp.get_patterns(X_amputed, show_plot=False)
+                self.assertAlmostEqual(
+                    # column 0 should have prop% missing
+                    patterns.loc["n_missing_values_per_col", 0],
+                    0.5 * n,
+                    delta=0.05 * n,
+                )
+                #  column 1 should have none missing
+                self.assertEqual(patterns.loc["n_missing_values_per_col", 1], 0)
+                # about half the rows should be missing values
+                self.assertAlmostEqual(
+                    patterns.loc["n_missing_values_per_col", "n_missing_values"].astype(
+                        int
+                    ),
+                    0.5 * n,
+                    delta=0.05 * n,
+                )  # expect: around 500
 
     # test one specific situation
     def test_specific_situation(self):
