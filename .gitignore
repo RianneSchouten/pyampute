@@ -2,3 +2,7 @@ __pycache__/
 .vscode
 *.log
 .DS_Store
+
+pyampute.egg-info/
+.idea/
+dist/
