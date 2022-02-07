@@ -814,3 +814,6 @@ class MultivariateAmputation(TransformerMixin):
                 X_incomplete.iloc[chosen_indices, pattern == 0] = np.nan
 
         return X_incomplete
+
+    def transform(self, X: Matrix) -> Matrix:
+        pass
