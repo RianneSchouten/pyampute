@@ -24,10 +24,16 @@ class TestMdPatterns(unittest.TestCase):
         mdp = mdPatterns()
         patterns = mdp.get_patterns(incomplete_X, show_plot=False)
 
-        self.assertEqual(patterns.shape, (3, 5))
-        self.assertEqual(patterns.iloc[0, 1:-1].sum(), 2)
-        self.assertEqual(patterns.iloc[1, 1:-1].sum(), 2)
-        self.assertEqual(patterns.iloc[0:-1, -1].sum(), 2)
+        self.assertEqual(patterns.shape, (4, 5))
+
+        self.assertListEqual(
+            patterns.loc["rows_no_missing"].values.tolist(),
+            [0, 1, 1, 1, 0]
+        )
+
+        self.assertEqual(patterns.loc[1].values[1:-1].sum(), 2)
+        self.assertEqual(patterns.loc[2].values[1:-1].sum(), 2)
+        self.assertEqual(patterns.loc[[1,2],"n_missing_values"].sum(), 2)
 
     def test_output_ma_as_input(self):
 
