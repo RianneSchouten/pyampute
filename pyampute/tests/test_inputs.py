@@ -39,7 +39,7 @@ class TestDefaults(unittest.TestCase):
 
     def test_minimal_defaults(self):
         minimal = MultivariateAmputation(seed=4)
-        minimal._validate_input(X_nomissing)
+        minimal.fit(X_nomissing)
         self.assertTrue(np.array_equal(minimal.freqs, np.array([1]),))
         self.assertTrue(np.array_equal(minimal.mechanisms, np.array(["MAR"])))
         self.assertTrue(
@@ -51,10 +51,15 @@ class TestDefaults(unittest.TestCase):
         mdp = mdPatterns()
         patterns = mdp.get_patterns(X_amputed, show_plot=False)
         # There should be approximately half the rows missing data (via prop=0.5)
-        self.assertTrue(
-            patterns[1, "row_count"] == X_nomissing.shape[0] // 2
-            or patterns.loc[1, "row_count"] == (X_nomissing.shape[0] // 2 + 1)
+        self.assertAlmostEqual(
+            patterns.loc[1, "row_count"],
+            0.5 * X_nomissing.shape[0],
+            delta=0.05 * X_nomissing.shape[0],
         )
+        # self.assertTrue(
+        #    patterns[1, "row_count"] == X_nomissing.shape[0] // 2
+        #    or patterns.loc[1, "row_count"] == (X_nomissing.shape[0] // 2 + 1)
+        # )
         # half of the vars should have missing values
         self.assertTrue(
             patterns.loc[1, "n_missing_values"] / X_nomissing.shape[1] == 3 / 6
@@ -79,7 +84,7 @@ class TestDefaults(unittest.TestCase):
                 },
             ]
             adjust = MultivariateAmputation(prop=45, patterns=patterns)
-            adjust._validate_input(X_nomissing)
+            adjust.fit(X_nomissing)
 
             self.assertEqual(adjust.prop, 0.45)
             self.assertTrue(
@@ -106,7 +111,7 @@ class TestDefaults(unittest.TestCase):
             {"incomplete_vars": [2], "score_to_probability_func": "sigmoid-mid"},
         ]
         mechanism_case_coverage = MultivariateAmputation(patterns=patterns)
-        mechanism_case_coverage._validate_input(X_nomissing)
+        mechanism_case_coverage.fit(X_nomissing)
         self.assertTrue(
             np.array_equal(
                 mechanism_case_coverage.observed_var_indicator,
@@ -138,7 +143,7 @@ class TestDefaults(unittest.TestCase):
             }
         ]
         mechanism_case_coverage = MultivariateAmputation(patterns=patterns)
-        mechanism_case_coverage._validate_input(X_nomissing)
+        mechanism_case_coverage.fit(X_nomissing)
         self.assertTrue(
             np.array_equal(
                 mechanism_case_coverage.weights, np.array([[1, 1, 1, 1, 0, 0]]),
@@ -154,7 +159,7 @@ class TestDefaults(unittest.TestCase):
             }
         ]
         mechanism_case_coverage = MultivariateAmputation(patterns=patterns)
-        mechanism_case_coverage._validate_input(X_nomissing)
+        mechanism_case_coverage.fit(X_nomissing)
         self.assertTrue(
             np.array_equal(
                 mechanism_case_coverage.weights, np.array([[1, 0, 1, 0, 1, 0]]),
@@ -174,7 +179,7 @@ class TestDefaults(unittest.TestCase):
             },
         ]
         mechanism_case_coverage = MultivariateAmputation(patterns=patterns)
-        mechanism_case_coverage._validate_input(X_nomissing)
+        mechanism_case_coverage.fit(X_nomissing)
 
         self.assertTrue(
             np.array_equal(
@@ -199,13 +204,13 @@ class TestBadArgs(unittest.TestCase):
         amputer = MultivariateAmputation()
         # data can't be empty
         with self.assertRaises(AssertionError):
-            amputer._validate_input(None)
+            amputer.fit(None)
         # must be 2d
         with self.assertRaises(AssertionError):
-            amputer._validate_input(X_nomissing.iloc[0])
+            amputer.fit(X_nomissing.iloc[0])
         # more than one column required
         with self.assertRaises(AssertionError):
-            amputer._validate_input(X_nomissing.iloc[0, :])
+            amputer.fit(X_nomissing.iloc[0, :])
         # data cannot have missing values for vars involved in ampute
         with self.assertRaises(AssertionError):
             X = X_nomissing.copy()
@@ -213,7 +218,8 @@ class TestBadArgs(unittest.TestCase):
             X.iloc[0, 0] = np.nan
             # first column involved in amputation, by default when column 1 is missing column 0 will be assigned a weight of 1
             amputer = MultivariateAmputation(patterns=[{"incomplete_vars": [1]}])
-            amputer._validate_input(X)
+            # error should occur on transform
+            amputer.fit_transform(X)
 
     def test_bad_incomplete_vars(self):
         bad_patterns = [
@@ -236,14 +242,14 @@ class TestBadArgs(unittest.TestCase):
 
         for patterns in bad_patterns:
             with self.assertRaises(AssertionError):
-                MultivariateAmputation(patterns=patterns)._validate_input(X_nomissing)
+                MultivariateAmputation(patterns=patterns).fit(X_nomissing)
 
     def test_bad_prop(self):
         # 0 and 100 fine
         with self.assertRaises(AssertionError):
-            MultivariateAmputation(prop=-3.2)._validate_input(X_nomissing)
+            MultivariateAmputation(prop=-3.2).fit(X_nomissing)
         with self.assertRaises(AssertionError):
-            MultivariateAmputation(prop=324)._validate_input(X_nomissing)
+            MultivariateAmputation(prop=324).fit(X_nomissing)
 
     def test_bad_freqs(self):
         bad_patterns = [
@@ -265,14 +271,14 @@ class TestBadArgs(unittest.TestCase):
         ]
         for patterns in bad_patterns:
             with self.assertRaises(AssertionError):
-                MultivariateAmputation(patterns=patterns)._validate_input(X_nomissing)
+                MultivariateAmputation(patterns=patterns).fit(X_nomissing)
 
     def test_bad_mechanisms(self):
         # invalid names
         with self.assertRaises(AssertionError):
             MultivariateAmputation(
                 patterns=[{"incomplete_vars": [0], "mechanism": "MARP"}]
-            )._validate_input(X_nomissing)
+            ).fit(X_nomissing)
 
     def test_bad_score_to_probabiliyt_func(self):
         # bad name
@@ -284,7 +290,7 @@ class TestBadArgs(unittest.TestCase):
                         "score_to_probability_func": "smigmoid-up",
                     }
                 ]
-            )._validate_input(X_nomissing)
+            ).fit(X_nomissing)
 
     def test_bad_weights(self):
         bad_patterns = [
@@ -325,7 +331,7 @@ class TestBadArgs(unittest.TestCase):
 
         for patterns in bad_patterns:
             with self.assertRaises(AssertionError):
-                MultivariateAmputation(patterns=patterns)._validate_input(X_nomissing)
+                MultivariateAmputation(patterns=patterns).fit(X_nomissing)
 
 
 if __name__ == "__main__":
