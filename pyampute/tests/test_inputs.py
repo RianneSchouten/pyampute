@@ -51,10 +51,15 @@ class TestDefaults(unittest.TestCase):
         mdp = mdPatterns()
         patterns = mdp.get_patterns(X_amputed, show_plot=False)
         # There should be approximately half the rows missing data (via prop=0.5)
-        self.assertTrue(
-            patterns[1, "row_count"] == X_nomissing.shape[0] // 2
-            or patterns.loc[1, "row_count"] == (X_nomissing.shape[0] // 2 + 1)
+        self.assertAlmostEqual(
+            patterns.loc[1, "row_count"],
+            0.5 * X_nomissing.shape[0],
+            delta=0.05 * X_nomissing.shape[0],
         )
+        #self.assertTrue(
+        #    patterns[1, "row_count"] == X_nomissing.shape[0] // 2
+        #    or patterns.loc[1, "row_count"] == (X_nomissing.shape[0] // 2 + 1)
+        #)
         # half of the vars should have missing values
         self.assertTrue(
             patterns.loc[1, "n_missing_values"] / X_nomissing.shape[1] == 3 / 6
