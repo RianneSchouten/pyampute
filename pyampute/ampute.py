@@ -159,7 +159,9 @@ class MultivariateAmputation(TransformerMixin):
         self.max_iter = max_iter
         self.seed = seed
 
+        self.assigned_group_number = None
         self.wss_per_pattern = []
+        self.probs_per_pattern = []
 
         # The rest are set by _pattern_dict_to_matrix_form()
         setup_logging()
@@ -306,6 +308,7 @@ class MultivariateAmputation(TransformerMixin):
         if np.all(wss == 0):
             probs = np.repeat(self.freqs[pattern_index], len(wss))
             self.wss_per_pattern.append(wss)
+            self.probs_per_pattern.append(probs)
         else:  # else we calculate the probabilities based on the wss
             # standardize wss
             wss_standardized = stats.zscore(wss)
@@ -321,6 +324,7 @@ class MultivariateAmputation(TransformerMixin):
                 self.max_diff_with_target,
             )
             probs = np.squeeze(np.asarray(probs_array))
+            self.probs_per_pattern.append(probs)
 
         return probs
 
@@ -784,14 +788,14 @@ class MultivariateAmputation(TransformerMixin):
         X_indices = np.arange(self.num_samples)
         # set seed for choice, if None it will be random.
         np.random.seed(self.seed)
-        assigned_group_number = np.random.choice(
+        self.assigned_group_number = np.random.choice(
             a=self.num_patterns, size=self.num_samples, p=self.freqs
         )
 
         # start a loop over each pattern
         for pattern_idx in range(self.num_patterns):
             # assign cases to the group
-            group_indices = X_indices[assigned_group_number == pattern_idx]
+            group_indices = X_indices[self.assigned_group_number == pattern_idx]
             pattern = np.squeeze(
                 np.asarray(self.observed_var_indicator[pattern_idx, :])
             )
