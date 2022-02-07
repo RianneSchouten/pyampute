@@ -351,7 +351,7 @@ class MultivariateAmputation(TransformerMixin):
         wss = np.dot(data_group, self.weights[pattern_ind, :].T)
 
         if len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
-            logging.warn(
+            logging.warning(
                 f"Candidates for pattern {pattern_ind} all have almost the same weighted sum scores. "
                 "It is possible this is due to the use of binary variables in amputation. "
                 "This creates problems when using the sigmoid function for the score_to_probability_func. "
