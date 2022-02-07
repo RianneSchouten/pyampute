@@ -869,7 +869,7 @@ class MultivariateAmputation(TransformerMixin):
         X_indices = np.arange(num_samples)
         # set seed for choice, if None it will be random.
         np.random.seed(self.seed)
-        assigned_group_number = np.random.choice(
+        self.assigned_group_number = np.random.choice(
             a=self.num_patterns, size=num_samples, p=self.freqs
         )
 
