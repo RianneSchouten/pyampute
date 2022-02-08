@@ -25,6 +25,7 @@ jobs:
     - name: Generate Report
       run: |
         pip install coverage
-        coverage run -m unittest
+        coverage run -m unittest discover
+        coverage xml
     - name: Codecov
       uses: codecov/codecov-action@v2.1.0
