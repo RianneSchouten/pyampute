@@ -7,7 +7,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
-
 from pyampute.utils import Matrix
 
 
@@ -44,7 +43,7 @@ class mdPatterns:
         self.md_patterns = None
 
     def get_patterns(
-        self, X: Matrix, count_or_proportion: str = "count", show_plot: bool = True
+            self, X: Matrix, count_or_proportion: str = "count", show_plot: bool = True
     ) -> pd.DataFrame:
         """Some comments
 
@@ -80,7 +79,7 @@ class mdPatterns:
         return self.md_patterns
 
     def _calculate_patterns(
-        self, X: pd.DataFrame, count_or_proportion: str = "count"
+            self, X: pd.DataFrame, count_or_proportion: str = "count"
     ) -> pd.DataFrame:
         """
         Find all unique missing data patterns and structure it as a pd.DataFrame
@@ -104,12 +103,12 @@ class mdPatterns:
         group_values = group_values.append(colsums, ignore_index=True)
 
         # add extra row to patterns when there are no incomplete rows in dataset
-        if group_values.iloc[0,0:-2].values.tolist() != list(np.ones(len(sorted_col))):
+        if group_values.iloc[0, 0:-2].values.tolist() != list(np.ones(len(sorted_col))):
             group_values.loc[-1] = np.concatenate((np.ones(len(sorted_col)), np.zeros(2))).astype(int)
             group_values.index = group_values.index + 1  # shifting index
-            group_values.sort_index(inplace=True) 
+            group_values.sort_index(inplace=True)
 
-        # put row_count in the begining
+            # put row_count in the begining
         cols = list(group_values)
         cols.insert(0, cols.pop(cols.index("row_count")))
         group_values = group_values.loc[:, cols]
@@ -120,14 +119,14 @@ class mdPatterns:
             group_values.iloc[0:-1, 0] = percents.astype(str)
             group_values.iloc[-1, 1:-1] = group_values.iloc[-1, 1:-1] / X.shape[0]
             group_values.iloc[-1, -1] = (
-                group_values.iloc[-1, -1] / (X.shape[0] * X.shape[1])
+                    group_values.iloc[-1, -1] / (X.shape[0] * X.shape[1])
             ).round(2)
 
         self.md_patterns = group_values
         self.md_patterns.index = (
-            ["rows_no_missing"]
-            + list(self.md_patterns.index[1:-1])
-            + ["n_missing_values_per_col"]
+                ["rows_no_missing"]
+                + list(self.md_patterns.index[1:-1])
+                + ["n_missing_values_per_col"]
         )
         return self.md_patterns
 
@@ -136,8 +135,8 @@ class mdPatterns:
         group_values = self.md_patterns
 
         heat_values = group_values.iloc[
-            0 : (group_values.shape[0] - 1), 1 : group_values.shape[1] - 1
-        ]
+                      0: (group_values.shape[0] - 1), 1: group_values.shape[1] - 1
+                      ]
 
         myred = "#B61A51B3"
         myblue = "#006CC2B3"
@@ -151,14 +150,14 @@ class mdPatterns:
 
         ax.set_yticks(np.arange(0, len(heat_values.index), 1))
         ax.set_yticklabels(
-            group_values.iloc[0 : (group_values.shape[0] - 1), 0]
+            group_values.iloc[0: (group_values.shape[0] - 1), 0]
         )  # first column
         ax.set_yticks(np.arange(-0.5, len(heat_values.index), 1), minor=True)
 
         ax.set_xticks(np.arange(0, len(heat_values.columns), 1))
         ax.set_xticklabels(
             group_values.iloc[
-                group_values.shape[0] - 1, 1 : (group_values.shape[1] - 1)
+            group_values.shape[0] - 1, 1: (group_values.shape[1] - 1)
             ]
         )  # last row
         ax.set_xticks(np.arange(-0.5, len(heat_values.columns), 1), minor=True)
@@ -166,7 +165,7 @@ class mdPatterns:
         by.set_yticks(np.arange(0, (len(heat_values.index) * 2) + 1, 1))
         right_ticklabels = list(
             group_values.iloc[
-                0 : (group_values.shape[0] - 1), group_values.shape[1] - 1
+            0: (group_values.shape[0] - 1), group_values.shape[1] - 1
             ]
         )  # last column
         by_ticklabels = [""] * (len(right_ticklabels) * 2 + 1)

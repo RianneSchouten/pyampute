@@ -32,7 +32,7 @@ class TestMdPatterns(unittest.TestCase):
 
         self.assertEqual(patterns.loc[1].values[1:-1].sum(), 2)
         self.assertEqual(patterns.loc[2].values[1:-1].sum(), 2)
-        self.assertEqual(patterns.loc[[1,2],"n_missing_values"].sum(), 2)
+        self.assertEqual(patterns.loc[[1, 2], "n_missing_values"].sum(), 2)
 
     def test_output_ma_as_input(self):
 
@@ -55,10 +55,10 @@ class TestMdPatterns(unittest.TestCase):
         self.assertEqual(patterns.loc["rows_no_missing", "row_count"], 489)
         self.assertEqual(patterns.loc[1, "row_count"], 511)
 
-        #self.assertEqual(patterns.iloc[0, 1:-1].sum(), 2)
-        #self.assertEqual(patterns.iloc[0, -1], 0)
-        #self.assertEqual(patterns.iloc[0, 0], 489)
-        #self.assertEqual(patterns.iloc[1, 0], 511)
+        # self.assertEqual(patterns.iloc[0, 1:-1].sum(), 2)
+        # self.assertEqual(patterns.iloc[0, -1], 0)
+        # self.assertEqual(patterns.iloc[0, 0], 489)
+        # self.assertEqual(patterns.iloc[1, 0], 511)
 
     def test_pd_dataframes(self):
 
@@ -69,7 +69,7 @@ class TestMdPatterns(unittest.TestCase):
         self.assertListEqual(
             patterns.iloc[1:-1, 1:-1].values.tolist(),
             [[1, 1, 1, 0], [1, 1, 0, 1], [1, 0, 0, 1], [1, 0, 0, 0]])
-        
+
     def test_proportions(self):
 
         mdp = mdPatterns()
@@ -82,10 +82,10 @@ class TestMdPatterns(unittest.TestCase):
             patterns.loc["n_missing_values_per_col"].values[1:].astype(float).tolist(), [0.0, 0.32, 0.36, 0.4, 0.27]
         )
 
-        #self.assertEqual(patterns.iloc[0:-1, 0].astype(float).values.sum(), 1.0)
-        #self.assertListEqual(
+        # self.assertEqual(patterns.iloc[0:-1, 0].astype(float).values.sum(), 1.0)
+        # self.assertListEqual(
         #    patterns.iloc[-1, 1:].values.tolist(), [0.0, 0.32, 0.36, 0.4, 0.27]
-        #)
+        # )
 
 
 if __name__ == "__main__":

@@ -9,7 +9,8 @@ setup(
     author="Rianne Schouten,Davina Zamanzadeh,Prabhant Singh",
     author_email="r.m.schouten@tue.nl,davzaman@gmail.com,p.singh@tue.nl",
     packages=setuptools.find_packages(
-        include=["pyampute.*", "pyampute"], exclude=["*.tests", "*.tests.*", "tests.*", "tests"],
+        include=["pyampute.*", "pyampute"],
+        exclude=["*.tests", "*.tests.*", "tests.*", "tests"],
     ),
     install_requires=[
         # "rich",  # nice stack traces + printing
