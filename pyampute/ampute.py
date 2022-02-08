@@ -18,7 +18,6 @@ from pyampute.utils import (
     isin,
     is_numeric,
     enforce_numeric,
-    setup_logging,
     standardize_uppercase,
     sigmoid,
 )
@@ -99,6 +98,9 @@ class MultivariateAmputation(TransformerMixin):
 
     max_iter : int, default : 100
         Max number of iterations for binary search when searching for horizontal shift of `score_to_probability_func`.
+    
+    verbose: bool, default : False
+        Toggle on to see INFO level logging information.
 
     seed: int, optional
         If you want reproducible results during amputation set an integer seed.
@@ -148,7 +150,9 @@ class MultivariateAmputation(TransformerMixin):
         upper_range: float = 3,
         max_diff_with_target: float = 0.001,
         max_iter: int = 100,
+        verbose: bool = False,
         seed: Optional[int] = None,
+        log_filename: str = "output.log",
     ):
         self.prop = prop
         self.patterns = patterns
@@ -159,8 +163,22 @@ class MultivariateAmputation(TransformerMixin):
         self.max_iter = max_iter
         self.seed = seed
 
+        self.assigned_group_number = None
+        self.wss_per_pattern = []
+        self.probs_per_pattern = []
         # The rest are set by _pattern_dict_to_matrix_form()
-        setup_logging()
+
+        # Ref: https://stackoverflow.com/a/46098711/1888794
+        # prints to console and saves to File.
+        self.file_handler = logging.FileHandler(log_filename)
+        logging.basicConfig(
+            level=logging.INFO if verbose else logging.WARNING,
+            format="%(asctime)s [%(levelname)s] %(message)s",
+            handlers=[self.file_handler, logging.StreamHandler()],
+        )
+
+    def __del__(self):
+        self.file_handler.close()
 
     @staticmethod
     def _shifted_probability_func(
@@ -297,15 +315,24 @@ class MultivariateAmputation(TransformerMixin):
         to sample i.
 
         """
-        # when wss contains merely zeros, the mechanism is
-        # 1. MCAR: each case has an equal probability of becoming missing
-        # 2. MAR with binary variables
-        # Therefore we just use uniform probability of missing per var using self.freqs
-        if np.all(wss == 0):
-            probs = np.repeat(self.freqs[pattern_index], len(wss))
+
+        """
+        When wss is all the same the mechanism is
+            1. MCAR: each case has an equal probability of becoming missing (wss == 0)
+            2. MAR with binary variables
+        Therefore we just use uniform probability of missing per var using self.freqs
+        Alternatively, If there are not enough unique wss we apply MCAR.
+        NOTE: The threshold is on unique WSS. 
+           The discrepancy between min number of candidates requires and unique wss means that there are few candidates and will trigger a warning, but if they're all unique wss, then MCAR will NOT be applied.
+        """
+        if np.all(wss == wss[0]) or len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
+            # there's 1 pattern under MCAR, freq = 1 (all candidates will be wrongly chosen)
+            prob_fill = self.prop if len(self.freqs) == 1 else self.freqs[pattern_index]
+            probs = np.repeat(prob_fill, len(wss))
         else:  # else we calculate the probabilities based on the wss
             # standardize wss
             wss_standardized = stats.zscore(wss)
+            self.wss_per_pattern.append(wss_standardized)
             # calculate the size of b for the desired missingness proportion
             probs_array = self._calculate_probabilities_from_wss(
                 wss_standardized,
@@ -317,6 +344,7 @@ class MultivariateAmputation(TransformerMixin):
                 self.max_diff_with_target,
             )
             probs = np.squeeze(np.asarray(probs_array))
+            self.probs_per_pattern.append(probs)
 
         return probs
 
@@ -331,7 +359,7 @@ class MultivariateAmputation(TransformerMixin):
         """
 
         if len(data_group) <= THRESHOLD_MIN_NUM_CANDIDATES:
-            logging.warn(
+            logging.warning(
                 f"Subset for pattern {pattern_ind} is small. "
                 "Too many patterns can result in subsets with 0 or few candidates. "
                 "Subsets with 0 candidates will be skipped. "
@@ -340,6 +368,10 @@ class MultivariateAmputation(TransformerMixin):
 
         # transform only vars involved in amputation to numeric to compute weights
         # does not transform the original datset
+        logging.info(
+            "Enforcing data to be numeric since calculation of weights"
+            " requires numeric data."
+        )
         data_group = enforce_numeric(data_group, self.vars_involved_in_ampute)
         # standardize data or not
         if self.std:
@@ -356,7 +388,7 @@ class MultivariateAmputation(TransformerMixin):
                 "It is possible this is due to the use of binary variables in amputation. "
                 "This creates problems when using the sigmoid function for the score_to_probability_func. "
                 "Currently our solution is as follows: if there is just one candidate with a sum score 0, we will ampute it. "
-                "If there is one candidate with a nonzero sum score, or multiple candidates with the same score, we evenly apply the same amount of missingness (as if MCAR)."
+                "If there is one candidate with a nonzero sum score, or multiple candidates with the same score, we evenly apply as if MCAR."
             )
         return wss
 
@@ -506,7 +538,7 @@ class MultivariateAmputation(TransformerMixin):
             try:
                 self.shift_lookup_table = read_csv(LOOKUP_TABLE_PATH, index_col=0)
             except Exception:
-                logging.warn(
+                logging.warning(
                     "Failed to load lookup table for a prespecified score to probability function. "
                     f"It is possible /data/{LOOKUP_TABLE_PATH}.csv is missing, in the wrong location, or corrupted. "
                     "Try rerunning /amputation/scripts.py to regenerate the lookup table."
@@ -646,6 +678,28 @@ class MultivariateAmputation(TransformerMixin):
             ]
         ), "Failed to specify custom weights array for MAR+MNAR pattern."
 
+        # Warnings.
+        mar_mask = self.mechanisms == "MAR"
+        # If there are weights under MAR that are nonzero for any vars that are incomplete, throw warning
+        if any(mar_mask) and np.equal(
+            self.weights[mar_mask].astype(bool),
+            (1 - self.observed_var_indicator)[mar_mask],
+        ).any(axis=None):
+            logging.warning(
+                "Indicated weights for incomplete vars for a pattern with MAR. "
+                "Did you mean MAR+MNAR?"
+            )
+        mnar_mask = self.mechanisms == "MNAR"
+        # if there are weights under MNAR that are nonzer for any vars that are observed, throw warning
+        if any(mnar_mask) and np.equal(
+            self.weights[mnar_mask].astype(bool),
+            self.observed_var_indicator[mnar_mask],
+        ).any(axis=None):
+            logging.warning(
+                "Indicated weights for vars that are observed for a pattern with MNAR. "
+                "Did you mean MAR+MNAR?"
+            )
+
         #####################################
         #     SCORE TO PROBABILITY FUNC     #
         #####################################
@@ -661,16 +715,76 @@ class MultivariateAmputation(TransformerMixin):
             func_str_options,
         ).all(), f"String funcs can only be one of {func_str_options}"
 
-    def _validate_input(self, X: Matrix) -> Matrix:
+    def _validate_data(self, X: Matrix) -> Matrix:
         """
-        Validates input data with given arguments to amputer.
+        Validate passed data for transform.
         Will modify the dataset to comply if possible, while giving warnings.
+        """
+        assert X is not None, "No dataset passed, cannot be None."
+        assert len(X.shape) == 2, "Dataset must be 2 dimensional."
+        assert X.shape[1] > 1, "Dataset passed must contain at least two columns."
+        # Enforce columns are the same from fit
+        if isinstance(X, DataFrame):
+            assert all(
+                X.columns == list(self.colname_to_idx.keys())
+            ), "Columns do not match the data passed to fit."
+        else:
+            assert (
+                X.shape[1] == self.num_features
+            ), "Columns do not match the data passed to fit."
+
+        # enforce numpy just for checking
+        X_check = X.values if isinstance(X, DataFrame) else X
+        assert not isnull(
+            X_check[:, self.vars_involved_in_ampute]
+        ).any(), "Features involved in amputation must be complete, but contains NaNs."
+        if not is_numeric(X_check[:, self.vars_involved_in_ampute]):
+            logging.warning(
+                "Features involved in amputation found to be non-numeric."
+                " They will be forced to numeric upon calculating sum scores."
+            )
+        # get binary variables involved in amputation
+        iterate_columns = X.values.T if isinstance(X, DataFrame) else X.T
+        binary_vars_mask = (
+            np.array([len(np.unique(col)) for col in iterate_columns]) == 2
+        )
+        binary_vars_involved_in_ampute = np.where(
+            self.vars_involved_in_ampute & binary_vars_mask
+        )[0]
+        if len(binary_vars_involved_in_ampute) > 0:
+            logging.warning(
+                f"Binary variables (at indices {binary_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR). "
+                "This can result in a subset with candidates that all have the same (or almost the same) weighted sum scores. "
+            )
+        categorical_vars_mask = False  # TODO
+        categorical_vars_involved_in_ampute = np.where(
+            self.vars_involved_in_ampute & categorical_vars_mask
+        )[0]
+        if len(categorical_vars_involved_in_ampute) > 0:
+            logging.warning(
+                f"Categorical variables (at indices {categorical_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR)."
+                "These will be forced to be numeric upon calculating sum scores."
+            )
+
+        return X
+
+    def fit(self, X: Matrix) -> "MultivariateAmputation":
+        """Fits amputer on complete data X.
+        Validates input data with given arguments to amputer.
+
+        Parameters
+        ----------
+        X : Matrix
+            Matrix of shape `(n_samples, m_features)`
+            Complete input data, where "n_samples" is the number of samples and
+            "m_features" is the number of features.
         """
         # This must come first so we can check patterns
         assert X is not None, "No dataset passed, cannot be None."
         assert len(X.shape) == 2, "Dataset must be 2 dimensional."
         self.num_features = X.shape[1]
-        self.num_samples = X.shape[0]
+
+        # Make sure columns are the same
 
         ##################
         #    PATTERNS    #
@@ -737,24 +851,9 @@ class MultivariateAmputation(TransformerMixin):
             self.weights[self.mechanisms != "MCAR"] != 0
         ).any(axis=0)
 
-        ##################
-        #      DATA      #
-        ##################
-        assert X.shape[1] > 1, "Dataset passed must contain at least two columns."
-        # enforce numpy just for checking
-        X_check = X.values if isinstance(X, DataFrame) else X
-        assert not isnull(
-            X_check[:, self.vars_involved_in_ampute]
-        ).any(), "Features involved in amputation must be complete, but contains NaNs."
-        if not is_numeric(X_check[:, self.vars_involved_in_ampute]):
-            logging.warn(
-                "Features involved in amputation found to be non-numeric."
-                " They will be forced to numeric upon calculating sum scores."
-            )
+        return self
 
-        return X
-
-    def fit_transform(self, X: Matrix) -> Matrix:
+    def transform(self, X: Matrix) -> Matrix:
         """Fits amputer on complete data X and returns the incomplete data X
 
         Parameters
@@ -771,23 +870,23 @@ class MultivariateAmputation(TransformerMixin):
             Incomplete dataset masked according to parameters.
         """
 
-        # sets defaults, adjusts vars, and runs checks
-        X = self._validate_input(X)
+        X = self._validate_data(X)
+        num_samples = X.shape[0]
 
         # split complete_data in groups
         # the number of groups is defined by the number of patterns
         X_incomplete = X.copy()
-        X_indices = np.arange(self.num_samples)
+        X_indices = np.arange(num_samples)
         # set seed for choice, if None it will be random.
         np.random.seed(self.seed)
-        assigned_group_number = np.random.choice(
-            a=self.num_patterns, size=self.num_samples, p=self.freqs
+        self.assigned_group_number = np.random.choice(
+            a=self.num_patterns, size=num_samples, p=self.freqs
         )
 
         # start a loop over each pattern
         for pattern_idx in range(self.num_patterns):
             # assign cases to the group
-            group_indices = X_indices[assigned_group_number == pattern_idx]
+            group_indices = X_indices[self.assigned_group_number == pattern_idx]
             pattern = np.squeeze(
                 np.asarray(self.observed_var_indicator[pattern_idx, :])
             )

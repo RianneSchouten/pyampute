@@ -8,7 +8,7 @@ A Python library for generating missing values in complete datasets (i.e. amputa
 
 Check out the `documentation`_!
 
-.. _documentation: https://rianneschouten.github.io/pymice/build/html/index.html
+.. _documentation: https://rianneschouten.github.io/pyampute/build/html/index.html
 
 amputation.ampute
 -----------------
