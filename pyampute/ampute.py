@@ -194,9 +194,9 @@ class MultivariateAmputation(TransformerMixin):
 
     @staticmethod
     def _shifted_probability_func(
-            wss_standardized: ArrayLike,
-            shift_amount: float,
-            probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
+        wss_standardized: ArrayLike,
+        shift_amount: float,
+        probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
     ) -> ArrayLike:
         """
         Applies shifted custom function or sigmoid (with cutoff) to
@@ -213,10 +213,10 @@ class MultivariateAmputation(TransformerMixin):
                 "SIGMOID-RIGHT": lambda wss_standardized, b: wss_standardized + b,
                 "SIGMOID-LEFT": lambda wss_standardized, b: -wss_standardized + b,
                 "SIGMOID-TAIL": lambda wss_standardized, b: (
-                        np.absolute(wss_standardized) - 0.75 + b
+                    np.absolute(wss_standardized) - 0.75 + b
                 ),
                 "SIGMOID-MID": lambda wss_standardized, b: (
-                        -np.absolute(wss_standardized) + 0.75 + b
+                    -np.absolute(wss_standardized) + 0.75 + b
                 ),
             }
 
@@ -227,13 +227,13 @@ class MultivariateAmputation(TransformerMixin):
 
     @staticmethod
     def _binary_search(
-            wss_standardized: ArrayLike,
-            score_to_probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
-            missingness_percent: float,
-            lower_range: float,
-            upper_range: float,
-            max_iter: int,
-            max_diff_with_target: float,
+        wss_standardized: ArrayLike,
+        score_to_probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
+        missingness_percent: float,
+        lower_range: float,
+        upper_range: float,
+        max_iter: int,
+        max_diff_with_target: float,
     ) -> Tuple[float, ArrayLike]:
         """
         Search for the appropriate shift/transformation to the scores before passing
@@ -282,14 +282,14 @@ class MultivariateAmputation(TransformerMixin):
         return b, probs_array
 
     def _calculate_probabilities_from_wss(
-            self,
-            wss_standardized: ArrayLike,
-            score_to_probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
-            missingness_percent: float,
-            lower_range: float,
-            upper_range: float,
-            max_iter: int,
-            max_diff_with_target: float,
+        self,
+        wss_standardized: ArrayLike,
+        score_to_probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
+        missingness_percent: float,
+        lower_range: float,
+        upper_range: float,
+        max_iter: int,
+        max_diff_with_target: float,
     ) -> ArrayLike:
         if isinstance(score_to_probability_func, str):
             if self.shift_lookup_table is not None:
@@ -300,7 +300,7 @@ class MultivariateAmputation(TransformerMixin):
                 prop = np.around(self.prop, 2)
 
                 shift = self.shift_lookup_table.loc[
-                    score_to_probability_func, str(prop)
+                    score_to_probability_func, "{:.2f}".format(prop)
                 ]
                 return self._shifted_probability_func(
                     wss_standardized, shift, score_to_probability_func
@@ -441,11 +441,11 @@ class MultivariateAmputation(TransformerMixin):
             )
 
     def _populate_pattern_array(
-            self,
-            indices_or_names: ArrayLike,
-            fill_value: Union[float, ArrayLike],
-            dtype: Type,
-            pattern_idx: int,
+        self,
+        indices_or_names: ArrayLike,
+        fill_value: Union[float, ArrayLike],
+        dtype: Type,
+        pattern_idx: int,
     ) -> ArrayLike:
         """
         Fills an array of length m (for each feature) with fill_value
@@ -604,21 +604,21 @@ class MultivariateAmputation(TransformerMixin):
 
             self.weights[
                 patterns_with_missing_weights & (self.mechanisms == "MCAR")
-                ] = np.zeros(shape=self.num_features)
+            ] = np.zeros(shape=self.num_features)
 
             missing_mar_mask = patterns_with_missing_weights & (
-                    self.mechanisms == "MAR"
+                self.mechanisms == "MAR"
             )
             self.weights[missing_mar_mask] = self.observed_var_indicator[
                 missing_mar_mask
             ]
 
             missing_mnar_mask = patterns_with_missing_weights & (
-                    self.mechanisms == "MNAR"
+                self.mechanisms == "MNAR"
             )
             # note that non-observed is given a value 0 in indicator matrix
             self.weights[missing_mnar_mask] = (
-                    1 - self.observed_var_indicator[missing_mnar_mask]
+                1 - self.observed_var_indicator[missing_mnar_mask]
             )
 
     def _validate_args(self):
@@ -658,7 +658,7 @@ class MultivariateAmputation(TransformerMixin):
             f" and {self.num_patterns} patterns specified from `patterns`."
         )
         assert (self.freqs >= 0).all() and (
-                self.freqs <= 1
+            self.freqs <= 1
         ).all(), "Frequencies must be between 0 and 1 inclusive."
         # there's imprecision in float, so it might be 0.9999999
         assert isclose(sum(self.freqs), 1), "Frequencies should sum to 1."
@@ -667,7 +667,7 @@ class MultivariateAmputation(TransformerMixin):
         #   MECHANISMS   #
         ##################
         assert (
-                len(self.mechanisms) == self.num_patterns
+            len(self.mechanisms) == self.num_patterns
         ), "Must specify a mechanism per pattern, but they do not match."
         mechanism_options = ["MCAR", "MAR", "MNAR", "MAR+MNAR"]
         assert isin(
@@ -716,7 +716,7 @@ class MultivariateAmputation(TransformerMixin):
         #     SCORE TO PROBABILITY FUNC     #
         #####################################
         assert (
-                len(self.score_to_probability_func) == self.num_patterns
+            len(self.score_to_probability_func) == self.num_patterns
         ), "Score to probability functions must have an entry per pattern."
         func_str_options = (
             ["SIGMOID-RIGHT", "SIGMOID-LEFT", "SIGMOID-MID", "SIGMOID-TAIL"],
@@ -832,8 +832,8 @@ class MultivariateAmputation(TransformerMixin):
                 for pattern in self.patterns
                 if "weights" in pattern
                 and (
-                        isinstance(pattern["weights"], List)
-                        or isinstance(pattern["weights"], np.ndarray)
+                    isinstance(pattern["weights"], List)
+                    or isinstance(pattern["weights"], np.ndarray)
                 )
             ]
         ), "List of weights should be defined for every variable for every pattern."
@@ -860,7 +860,7 @@ class MultivariateAmputation(TransformerMixin):
         # A var (column) is involved if for any pattern (row) it has a weight.
         # We don't care about numeric restraint for MCAR
         self.vars_involved_in_ampute = (
-                self.weights[self.mechanisms != "MCAR"] != 0
+            self.weights[self.mechanisms != "MCAR"] != 0
         ).any(axis=0)
 
         return self
