@@ -4,15 +4,15 @@ import unittest
 from pyampute.ampute import MultivariateAmputation
 from pyampute.exploration.md_patterns import mdPatterns
 
+
 # test that all mechanisms work
 class TestAmpute(unittest.TestCase):
     def setUp(self) -> None:
         return super().setUp()
 
     def test_mechanisms(self):
-
         # create complete data
-        n = 1000
+        n = 10000
         X = np.random.randn(n, 2)
 
         for mechanism in ["MAR", "MNAR", "MCAR"]:
@@ -113,7 +113,7 @@ class TestAmpute(unittest.TestCase):
         )
 
     def test_repeat_pattern(self):
-        n = 1000
+        n = 10000
         X = np.random.randn(n, 2)
         patterns = [
             {"incomplete_vars": [0], "mechanism": "mcar"},
@@ -125,7 +125,7 @@ class TestAmpute(unittest.TestCase):
 
     def test_seed(self):
         # create complete data
-        n = 1000
+        n = 10000
         X = np.random.randn(n, 2)
         default = MultivariateAmputation()  # no seed set by default
         # should produce different values
