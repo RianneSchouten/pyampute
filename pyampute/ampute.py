@@ -1,6 +1,6 @@
 """Transformer for generating multivariate missingness in complete datasets"""
-# Author: Rianne Schouten <riannemargarethaschouten@gmail.com>
-# Co-Author: Davina Zamanzadeh <davzaman@gmail.com>
+# Author: Rianne Schouten <https://rianneschouten.github.io/>
+# Co-Author: Davina Zamanzadeh <https://davinaz.me/>
 
 from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 import logging
