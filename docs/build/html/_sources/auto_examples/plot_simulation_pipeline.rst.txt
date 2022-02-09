@@ -127,7 +127,7 @@ Another option is to work with a complete portion of an already incomplete datas
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.009 seconds)
+   **Total running time of the script:** ( 0 minutes  0.008 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_simulation_pipeline.py:
