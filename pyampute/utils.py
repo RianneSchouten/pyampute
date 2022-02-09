@@ -2,7 +2,6 @@
 # Author: Davina Zamanzadeh <davzaman@gmail.com>
 
 from typing import List, Optional, Union
-import logging
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 import numpy as np

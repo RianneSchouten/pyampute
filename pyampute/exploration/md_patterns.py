@@ -29,12 +29,12 @@ class mdPatterns:
     Examples
     --------
     X = np.random.randn(100, 3)
-    mask1 = np.random.binomial(n=1, size=X.shape[0], p=0.5)    
+    mask1 = np.random.binomial(n=1, size=X.shape[0], p=0.5)
     mask2 = np.random.binomial(n=1, size=X.shape[0], p=0.5)
     X[mask1==1, 0] = np.nan
     X[mask2==1, 1] = np.nan
     mypat = mp.mdPatterns()
-    mdpatterns = mypat.get_patterns(X)  
+    mdpatterns = mypat.get_patterns(X)
     """
 
     def __init__(self):
@@ -51,9 +51,9 @@ class mdPatterns:
         ----------
         X : Matrix
             Matrix of shape `(n_samples, m_features)`
-            Incomplete input data, where "n_samples" is the number of samples and "m_features" is the number of features.
-        
-        count_or_proportion : str, {"count", "proportion"}
+            Incomplete input data, where "n_samples" is the number of samples and
+            "m_features" is the number of features.
+            count_or_proportion : str, {"count", "proportion"}
             Whether the patterns should be given in counts or proportions.
 
         show_plot : bool, default : True
@@ -63,7 +63,10 @@ class mdPatterns:
         -------
         md_patterns: pd.DataFrame
             A pandas dataframe of shape `(k+2, m_features+2)`
-            Here, "k" is the number of patterns, with one extra for rows that do not have missing values and one extra row with column totals, and "m_features" is the number of features, with one extra column for the row_count or row_percent and one extra column for number of missing values per pattern.
+            Here, "k" is the number of patterns, with one extra for rows that do not have missing
+            values and one extra row with column totals, and "m_features" is the number of features,
+             with one extra column for the row_count or row_percent and one extra column for number
+              of missing values per pattern.
         """
 
         # make sure Y is a pd.DataFrame
@@ -104,7 +107,8 @@ class mdPatterns:
 
         # add extra row to patterns when there are no incomplete rows in dataset
         if group_values.iloc[0, 0:-2].values.tolist() != list(np.ones(len(sorted_col))):
-            group_values.loc[-1] = np.concatenate((np.ones(len(sorted_col)), np.zeros(2))).astype(int)
+            group_values.loc[-1] = np.concatenate((np.ones(len(sorted_col)),
+                                                   np.zeros(2))).astype(int)
             group_values.index = group_values.index + 1  # shifting index
             group_values.sort_index(inplace=True)
 

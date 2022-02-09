@@ -23,7 +23,8 @@ class McarTest:
             return self.mcar_t_tests(data)
         else:
             error(
-                f"Chose {self.method} as test method, which is not supported. Please choose from [littles, ttest]."
+                f"Chose {self.method} as test method, which is not supported."
+                f" Please choose from [littles, ttest]."
             )
 
     @staticmethod

@@ -3,6 +3,14 @@ __pycache__/
 *.log
 .DS_Store
 
+venv/lib/python3.9/site-packages/fontTools/misc/
+
+venv/lib/python3.9/site-packages/fontTools/pens/
+
 pyampute.egg-info/
+
 .idea/
+
 dist/
+
+htmlcov/
