@@ -351,9 +351,7 @@ class MultivariateAmputation(TransformerMixin):
         """
         wss = self.wss_per_pattern[pattern_index]
         if np.all(wss == wss[0]) or len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
-            # there's 1 pattern under MCAR, freq = 1 (all candidates will be wrongly chosen)
-            prob_fill = self.prop if len(self.freqs) == 1 else self.freqs[pattern_index]
-            probs = np.repeat(prob_fill, len(wss))
+            probs = np.repeat(self.prop, len(wss))
         else:  # else we calculate the probabilities based on the wss
             # standardize wss
             wss_standardized = stats.zscore(wss)
@@ -407,7 +405,10 @@ class MultivariateAmputation(TransformerMixin):
         wss = np.dot(data_group, self.weights[pattern_ind, :].T)
         self.wss_per_pattern.append(wss)
 
-        if len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
+        if (
+            len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS
+            and self.mechanisms[pattern_ind] != "MCAR"
+        ):
             logging.warning(
                 f"Candidates for pattern {pattern_ind} all have almost "
                 f"the same weighted sum scores. "
@@ -932,8 +933,8 @@ class MultivariateAmputation(TransformerMixin):
                 X[group_indices] if isinstance(X, np.ndarray) else X.iloc[group_indices]
             )
             # calculate weighted sum scores for each sample in the group
-            wss = self._calculate_sumscores(data_group, pattern_idx)
-             # define candidate probabilities in group
+            self._calculate_sumscores(data_group, pattern_idx)
+            # define candidate probabilities in group
             probs = self._choose_probabilities(pattern_idx)
             # apply probabilities and choose cases
             # set seed for random binomial
