@@ -191,8 +191,6 @@ class TestAmpute(unittest.TestCase):
         )
         X_amputed = ma.fit_transform(X)
 
-        print(ma)
-
         self.assertTrue(len(ma.wss_per_pattern), 3)
         self.assertTrue(len(ma.probs_per_pattern), 3)
         self.assertListEqual(ma.mechanisms.tolist(), ["MCAR", "MNAR", "MAR+MNAR"])
