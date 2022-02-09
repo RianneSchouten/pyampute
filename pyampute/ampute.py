@@ -319,7 +319,6 @@ class MultivariateAmputation(TransformerMixin):
         # if not sigmoid, no binary search/shift
         return score_to_probability_func(wss_standardized)
 
-    #def _choose_probabilities(self, wss: ArrayLike, pattern_index: int) -> ArrayLike:
     def _choose_probabilities(self, pattern_index: int) -> ArrayLike:
         """
         Assigns missingness probabilities for each sample in the data subset
@@ -899,7 +898,6 @@ class MultivariateAmputation(TransformerMixin):
 
         # start a loop over each pattern
         for pattern_idx in range(self.num_patterns):
-            print(pattern_idx)
             # assign cases to the group
             group_indices = X_indices[self.assigned_group_number == pattern_idx]
             pattern = np.squeeze(
@@ -908,11 +906,9 @@ class MultivariateAmputation(TransformerMixin):
             data_group = (
                 X[group_indices] if isinstance(X, np.ndarray) else X.iloc[group_indices]
             )
-            print(data_group.shape)
             # calculate weighted sum scores for each sample in the group
             wss = self._calculate_sumscores(data_group, pattern_idx)
-            print(wss.shape)
-            # define candidate probabilities in group
+             # define candidate probabilities in group
             probs = self._choose_probabilities(pattern_idx)
             # apply probabilities and choose cases
             # set seed for random binomial

@@ -177,6 +177,30 @@ class TestAmpute(unittest.TestCase):
             )
         )
 
+    def test_self(self):
+
+        n = 10000
+        X = np.random.randn(n, 10)
+    
+        ma = MultivariateAmputation(
+            patterns = [
+                {'incomplete_vars': [2,3], 'mechanism': "MCAR"},
+                {'incomplete_vars': [8,9,1], 'mechanism': "MNAR"},
+                {'incomplete_vars': [1], 'weights': {0:1,1:2}, 'mechanism': "MAR+MNAR"}
+            ]
+        )
+        X_amputed = ma.fit_transform(X)
+
+        print(ma)
+
+        self.assertTrue(len(ma.wss_per_pattern), 3)
+        self.assertTrue(len(ma.probs_per_pattern), 3)
+        self.assertListEqual(ma.mechanisms.tolist(), ["MCAR", "MNAR", "MAR+MNAR"])
+        self.assertEqual(len(ma.wss_per_pattern[0]), len(ma.probs_per_pattern[0]))
+        self.assertEqual(len(ma.assigned_group_number), X.shape[0])
+        self.assertEqual(len(ma.assigned_group_number[ma.assigned_group_number == 1]), len(ma.wss_per_pattern[1]))
+        self.assertEqual(len(ma.assigned_group_number[ma.assigned_group_number == 2]), len(ma.probs_per_pattern[2]))
+
     def test_sigmoid_score_to_prob_function(self):
         # create complete data
         n = 10000
