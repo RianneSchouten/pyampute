@@ -1,7 +1,7 @@
 """
-=================================================
-Imputing missing values using multiple imputation
-=================================================
+=================================
+Single versus multiple imputation
+=================================
 
 By default, the IterativeImputer performs single imputation: a method where
 every missing value is replaced with one imputed value. The chained character

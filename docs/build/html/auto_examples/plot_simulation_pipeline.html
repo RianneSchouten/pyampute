@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Simulation Pipeline &#8212; pyampute 0.0.1 documentation</title>
+    <title>Evaluating missing values with a simulation pipeline &#8212; pyampute 0.0.1 documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -39,8 +39,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Amputing with a Custom Probability Function" href="plot_custom_probability_function.html" />
-    <link rel="prev" title="Example Usage" href="plot_easy_example.html" />
+    <link rel="next" title="Amputing with a custom probability function" href="plot_custom_probability_function.html" />
+    <link rel="prev" title="A quick example" href="plot_easy_example.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -208,9 +208,12 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-simulation-pipeline-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<section class="sphx-glr-example-title" id="simulation-pipeline">
-<span id="sphx-glr-auto-examples-plot-simulation-pipeline-py"></span><h1>Simulation Pipeline<a class="headerlink" href="#simulation-pipeline" title="Permalink to this headline">¶</a></h1>
-<p>Multivariate amputation can be used to evaluate the effect of missing values on the outcome of an analysis or experiment. In general, such an experiment is designed as follows:</p>
+<section class="sphx-glr-example-title" id="evaluating-missing-values-with-a-simulation-pipeline">
+<span id="sphx-glr-auto-examples-plot-simulation-pipeline-py"></span><h1>Evaluating missing values with a simulation pipeline<a class="headerlink" href="#evaluating-missing-values-with-a-simulation-pipeline" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>Multivariate amputation can be used to evaluate the effect of missing values on the outcome of an</dt><dd><p>analysis or experiment. In general, such an experiment is designed as follows:</p>
+</dd>
+</dl>
 <ol class="arabic simple">
 <li><p>Generate or import a complete dataset</p></li>
 <li><p>Ampute the dataset</p></li>
@@ -221,7 +224,10 @@ to download the full example code</p>
 <p>Author: Rianne Schouten &lt;<a class="reference external" href="mailto:r&#46;m&#46;schouten&#37;&#52;&#48;tue&#46;nl">r<span>&#46;</span>m<span>&#46;</span>schouten<span>&#64;</span>tue<span>&#46;</span>nl</a>&gt;</p>
 <section id="a-complete-dataset">
 <h2>A complete dataset<a class="headerlink" href="#a-complete-dataset" title="Permalink to this headline">¶</a></h2>
-<p>A complete dataset can synthetically be designed. In that case, be aware to create a correlation structure between features, since correlation ensures that the missing values differ from the observed values, which again results in a change of performance of your model (see <a class="footnote-reference brackets" href="#id3" id="id1">1</a>). Furthermore, a correlation structure is needed for many useful imputation methods.</p>
+<p>A complete dataset can synthetically be designed. In that case, be aware to create a correlation structure
+between features, since correlation ensures that the missing values differ from the observed values,
+which again results in a change of performance of your model (see <a class="footnote-reference brackets" href="#id3" id="id1">1</a>). Furthermore, a correlation
+structure is needed for many useful imputation methods.</p>
 <p>Another option is to work with a complete portion of an already incomplete dataset.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -233,8 +239,12 @@ to download the full example code</p>
 </section>
 <section id="multivariate-amputation">
 <h2>Multivariate Amputation<a class="headerlink" href="#multivariate-amputation" title="Permalink to this headline">¶</a></h2>
-<p>With our multivariate amputation methodology, it is straightforward to generate all sorts of missing data problems. We advise to evaluate the performance of your model for different settings of the algorithm. For instance, compare MCAR, MAR and MNAR missingness, or compare different missingness proportions. An explanation of the input arguments can be found in the <span id="id2">[documentation]</span> and a more thorough explanation in [this blogpost]_.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The default settings generate 1 patterns with MAR missingness for 50% of the rows. The incomplete dataset can be explored using the mdPatterns class.</span>
+<p>With our multivariate amputation methodology, it is straightforward to generate all sorts of missing data problems.
+We advise to evaluate the performance of your model for different settings of the algorithm. For instance, compare
+MCAR, MAR and MNAR missingness, or compare different missingness proportions. An explanation of the input arguments
+can be found in the <span id="id2">[documentation]</span> and a more thorough explanation in [this blogpost]_.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The default settings generate 1 patterns with MAR missingness for 50% of the rows. The incomplete dataset</span>
+<span class="c1"># can be explored using the mdPatterns class.</span>
 
 <span class="kn">from</span> <span class="nn">pyampute.ampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
 <span class="kn">from</span> <span class="nn">pyampute.exploration.md_patterns</span> <span class="kn">import</span> <span class="n">mdPatterns</span>
@@ -247,7 +257,7 @@ to download the full example code</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-pytb notranslate"><div class="highlight"><pre><span></span><span class="gt">Traceback (most recent call last):</span>
-  File <span class="nb">&quot;C:\Users\20200059\Documents\Github\pyampute\examples\plot_simulation_pipeline.py&quot;</span>, line <span class="m">48</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;C:\Users\20200059\Documents\Github\pyampute\examples\plot_simulation_pipeline.py&quot;</span>, line <span class="m">56</span>, in <span class="n">&lt;module&gt;</span>
     <span class="n">patterns</span> <span class="o">=</span> <span class="n">mdp</span><span class="o">.</span><span class="n">_get_patterns</span><span class="p">(</span><span class="n">incompl_data</span><span class="p">)</span>
 <span class="gr">AttributeError</span>: <span class="n">&#39;mdPatterns&#39; object has no attribute &#39;_get_patterns&#39;</span>
 </pre></div>
@@ -255,17 +265,17 @@ to download the full example code</p>
 </section>
 <section id="imputation">
 <h2>Imputation<a class="headerlink" href="#imputation" title="Permalink to this headline">¶</a></h2>
-<p>Imputation can easily be done using existing methods. Because we make use of sklearn’s TransformerMixin, it is easy to combine amputation and imputation in one pipeline.</p>
+<p>Imputation can easily be done using existing methods. Because we make use of sklearn’s TransformerMixin,
+it is easy to combine amputation and imputation in one pipeline.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># here some code that shows pipeline</span>
 </pre></div>
 </div>
 </section>
 <section id="evaluation">
 <h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
-<p>As an example, here we demonstrate how you can evaluate the effect of missing values on estimating the mean of a variable.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># here some code that compares the mean under 1, 2 and 3, and shows differences for MCAR and MAR, and differences for SimpleImputer and IterativeImputer.</span>
-</pre></div>
-</div>
+<p>As an example, here we demonstrate how you can evaluate the effect of missing values on estimating the mean of a variable.
+here some code that compares the mean under 1, 2 and 3, and shows differences for MCAR and MAR,
+and differences for SimpleImputer and IterativeImputer.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
@@ -275,7 +285,7 @@ to download the full example code</p>
 Rianne M. Schouten, Peter Lugtig &amp; Gerko Vink, etc.</p>
 </dd>
 </dl>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.020 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.017 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-simulation-pipeline-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/4bf1123cce983fd4900cc6e535aa8b59/plot_simulation_pipeline.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_simulation_pipeline.py</span></code></a></p>
@@ -298,13 +308,13 @@ Rianne M. Schouten, Peter Lugtig &amp; Gerko Vink, etc.</p>
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Example Usage</p>
+            <p class="prev-next-title">A quick example</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="plot_custom_probability_function.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Amputing with a Custom Probability Function</p>
+        <p class="prev-next-title">Amputing with a custom probability function</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

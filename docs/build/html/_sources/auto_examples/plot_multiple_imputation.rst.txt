@@ -18,9 +18,9 @@
 .. _sphx_glr_auto_examples_plot_multiple_imputation.py:
 
 
-=================================================
-Imputing missing values using multiple imputation
-=================================================
+=================================
+Single versus multiple imputation
+=================================
 
 By default, the IterativeImputer performs single imputation: a method where
 every missing value is replaced with one imputed value. The chained character
@@ -548,7 +548,7 @@ Error.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.117 seconds)
+   **Total running time of the script:** ( 0 minutes  0.050 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_multiple_imputation.py:

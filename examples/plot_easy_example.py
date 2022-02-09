@@ -1,7 +1,7 @@
 """
-=============
-Quick Example
-=============
+===============
+A quick example
+===============
 
 Generating missing values in complete datasets can be done with :class:`~pyampute.ampute.MultivariateAmputation`. This is useful for understanding and evaluating the effect of missing values on the outcome of a model. 
 

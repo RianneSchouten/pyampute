@@ -18,15 +18,145 @@
 .. _sphx_glr_auto_examples_plot_easy_example.py:
 
 
-=============
-Example Usage
-=============
+===============
+A quick example
+===============
 
-This is a very easy example of how the MultivariateAmputation can be used. The input is always a complete dataset. After amputation, an incomplete dataset can be explored using the mdPatterns class.
+Generating missing values in complete datasets can be done with :class:`~pyampute.ampute.MultivariateAmputation`. This is useful for understanding and evaluating the effect of missing values on the outcome of a model. 
 
-To further understand why you would want to ampute your complete dataset, see this example [1]_. In [this blogpost]_ we elaborate on how the input arguments can be specified and how they will lead to different kinds of missing data problems. 
+:class:`~pyampute.ampute.MultivariateAmputation` is designed as an `sklearn`_ `TransformerMixin`_, to allow for easy integration in a `pipeline`_.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-22
+Here, we give a short demonstration. A more extensive example of designing simulation studies for evaluating the effect of missing values can be found in `this example`_. For people who are familiar with the implementation of multivariate amputation in R-function `ampute`_, `this blogpost`_ gives an overview of the similarities and differences with :class:`~pyampute.ampute.MultivariateAmputation`. Inspection of an incomplete dataset can be done with :class:`~pyampute.exploration.md_patterns.mdPatterns`.
+
+Note that the amputation methodology itself is proposed in `Generating missing values for simulation purposes`_ and used in `The dance of the mechanisms`_.
+
+.. _`sklearn`: https://scikit-learn.org/stable/index.html
+.. _`TransformerMixin`: https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin
+.. _`pipeline`: https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html
+.. _`this example`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html
+.. _`ampute`: https://rianneschouten.github.io/mice_ampute/vignette/ampute.html
+.. _`this blogpost`: https://rianneschouten.github.io/pyampute/build/html/mapping.html
+.. _`Generating missing values for simulation purposes`: https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577
+.. _`The Dance of the Mechanisms`: https://journals.sagepub.com/doi/full/10.1177/0049124118799376
+
+.. GENERATED FROM PYTHON SOURCE LINES 23-27
+
+.. code-block:: default
+
+
+    # Author: Rianne Schouten <https://rianneschouten.github.io/>
+    # Co-Author: Davina Zamanzadeh <https://davinaz.me/>
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 28-33
+
+Transforming one dataset
+#########################
+
+ Multivariate amputation of one dataset can directly be performed with ``fit_transform``. Inspection of an incomplete dataset can be done with :class:`~pyampute.exploration.md_patterns.mdPatterns`. By default, :class:`~pyampute.ampute.MultivariateAmputation` generates 1 pattern with MAR missingness in 50% of the data rows for 50% of the variables.
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 33-51
+
+.. code-block:: default
+
+
+    import numpy as np
+
+    from pyampute.ampute import MultivariateAmputation
+    from pyampute.exploration.md_patterns import mdPatterns
+
+    rng = np.random.RandomState(2022)
+
+    m = 1000
+    n = 10
+    X_compl = np.random.randn(m,n)
+
+    ma = MultivariateAmputation()
+    X_incompl = ma.fit_transform(X_compl)
+
+    mdp = mdPatterns()
+    patterns = mdp.get_patterns(X_incompl)
+
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_easy_example_001.png
+   :alt: plot easy example
+   :srcset: /auto_examples/images/sphx_glr_plot_easy_example_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 52-57
+
+A separate fit and transform
+#############################
+
+ Evaluation of the effect of missing values on the outcome of a prediction model is best done by performing the amputation on the train and test set separately.
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 57-68
+
+.. code-block:: default
+
+
+    from sklearn.model_selection import train_test_split
+
+    X_compl_train, X_compl_test = train_test_split(X_compl, random_state=2020)
+    ma = MultivariateAmputation()
+    ma.fit(X_compl_train)
+    X_incompl_test = ma.transform(X_compl_test)
+
+    mdp = mdPatterns()
+    patterns = mdp.get_patterns(X_incompl_test)
+
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_easy_example_002.png
+   :alt: plot easy example
+   :srcset: /auto_examples/images/sphx_glr_plot_easy_example_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 69-78
+
+Application in a pipeline
+##########################
+
+ Because :class:`~pyampute.ampute.MultivariateAmputation` is designed as a `TransformerMixin`_, it is easy to set up an `sklearn`_ `pipeline`_ to evaluate several combinations of amputation settings and imputation methods.
+
+ .. _`sklearn`: https://scikit-learn.org/stable/index.html
+ .. _`TransformerMixin`: https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin
+ .. _`pipeline`: https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 78-88
+
+.. code-block:: default
+
+
+    from sklearn.pipeline import make_pipeline
+    from sklearn.impute import SimpleImputer
+    import matplotlib.pyplot as plt
+
+    pipe = make_pipeline(MultivariateAmputation(), SimpleImputer())
+    pipe.fit(X_compl_train)
+
+    X_imp_test = pipe.transform(X_compl_test)
+
 
 
 .. rst-class:: sphx-glr-script-out
@@ -34,36 +164,35 @@ To further understand why you would want to ampute your complete dataset, see th
 .. code-block:: pytb
 
     Traceback (most recent call last):
-      File "C:\Users\20200059\Documents\Github\pyampute\examples\plot_easy_example.py", line 22, in <module>
-        patterns = mdp._get_patterns(incompl_data)
-    AttributeError: 'mdPatterns' object has no attribute '_get_patterns'
+      File "C:\Users\20200059\Documents\Github\pyampute\examples\plot_easy_example.py", line 86, in <module>
+        X_imp_test = pipe.transform(X_compl_test)
+      File "c:\users\20200059\appdata\local\programs\python\python38\lib\site-packages\sklearn\pipeline.py", line 549, in _transform
+        Xt = transform.transform(Xt)
+      File "C:\Users\20200059\Documents\Github\pyampute\pyampute\ampute.py", line 916, in transform
+        chosen_candidates = np.random.binomial(
+      File "mtrand.pyx", line 3373, in numpy.random.mtrand.RandomState.binomial
+      File "__init__.pxd", line 749, in numpy.PyArray_MultiIterNew3
+    ValueError: shape mismatch: objects cannot be broadcast to a single shape
 
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 89-90
 
+By default, SimpleImputer imputes with the mean of the observed data. It is therefore like that we find the median in 50% of the rows (of the test set, which contains 25% of m) for 50% of the variables.
 
-|
+.. GENERATED FROM PYTHON SOURCE LINES 90-93
 
 .. code-block:: default
 
-    import numpy as np
-    from pyampute.ampute import MultivariateAmputation
-    from pyampute.exploration.md_patterns import mdPatterns
 
-    m = 1000
-    n = 10
-    compl_dataset = np.random.randn(n, m)
+    medians = np.nanmedian(X_imp_test, axis=0)
+    print(np.sum(X_imp_test == medians[None,:], axis=0))
 
-    ma = MultivariateAmputation()
-    incompl_data = ma.fit_transform(compl_dataset)
-
-    mdp = mdPatterns()
-    patterns = mdp._get_patterns(incompl_data)
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.020 seconds)
+   **Total running time of the script:** ( 0 minutes  0.395 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_easy_example.py:

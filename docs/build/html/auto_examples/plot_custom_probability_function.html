@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Amputing with a Custom Probability Function &#8212; pyampute 0.0.1 documentation</title>
+    <title>Amputing with a custom probability function &#8212; pyampute 0.0.1 documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -39,8 +39,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Imputing missing values using multiple imputation" href="plot_multiple_imputation.html" />
-    <link rel="prev" title="Simulation Pipeline" href="plot_simulation_pipeline.html" />
+    <link rel="next" title="Single versus multiple imputation" href="plot_multiple_imputation.html" />
+    <link rel="prev" title="Evaluating missing values with a simulation pipeline" href="plot_simulation_pipeline.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -179,7 +179,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="amputing-with-a-custom-probability-function">
-<span id="sphx-glr-auto-examples-plot-custom-probability-function-py"></span><h1>Amputing with a Custom Probability Function<a class="headerlink" href="#amputing-with-a-custom-probability-function" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-custom-probability-function-py"></span><h1>Amputing with a custom probability function<a class="headerlink" href="#amputing-with-a-custom-probability-function" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Create complete data.</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -234,17 +234,7 @@ to download the full example code</p>
 <span class="n">incomplete_data</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-pytb notranslate"><div class="highlight"><pre><span></span><span class="gt">Traceback (most recent call last):</span>
-  File <span class="nb">&quot;C:\Users\20200059\Documents\Github\pyampute\examples\plot_custom_probability_function.py&quot;</span>, line <span class="m">60</span>, in <span class="n">&lt;module&gt;</span>
-    <span class="n">incomplete_data</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-  File <span class="nb">&quot;C:\Users\20200059\Documents\Github\pyampute\pyampute\ampute.py&quot;</span>, line <span class="m">847</span>, in <span class="n">fit_transform</span>
-    <span class="n">chosen_candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span>
-  File <span class="nb">&quot;mtrand.pyx&quot;</span>, line <span class="m">3351</span>, in <span class="n">numpy.random.mtrand.RandomState.binomial</span>
-  File <span class="nb">&quot;_common.pyx&quot;</span>, line <span class="m">324</span>, in <span class="n">numpy.random._common.check_array_constraint</span>
-<span class="gr">ValueError</span>: <span class="n">p &lt; 0, p &gt; 1 or p contains NaNs</span>
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.017 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.049 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-custom-probability-function-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/61b55bc04624ccc90767ad8c5c7bc7e8/plot_custom_probability_function.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_custom_probability_function.py</span></code></a></p>
@@ -266,13 +256,13 @@ to download the full example code</p>
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Simulation Pipeline</p>
+            <p class="prev-next-title">Evaluating missing values with a simulation pipeline</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="plot_multiple_imputation.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Imputing missing values using multiple imputation</p>
+        <p class="prev-next-title">Single versus multiple imputation</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

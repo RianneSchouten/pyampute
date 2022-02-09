@@ -18,9 +18,9 @@
 .. _sphx_glr_auto_examples_plot_custom_probability_function.py:
 
 
-============================================
-Amputing with a Custom Probability Function
-============================================
+===========================================
+Amputing with a custom probability function
+===========================================
 
 .. GENERATED FROM PYTHON SOURCE LINES 8-16
 
@@ -112,18 +112,7 @@ Amputing with a Custom Probability Function
 
 
 
-.. rst-class:: sphx-glr-script-out
 
-.. code-block:: pytb
-
-    Traceback (most recent call last):
-      File "C:\Users\20200059\Documents\Github\pyampute\examples\plot_custom_probability_function.py", line 60, in <module>
-        incomplete_data = ma.fit_transform(X)
-      File "C:\Users\20200059\Documents\Github\pyampute\pyampute\ampute.py", line 847, in fit_transform
-        chosen_candidates = np.random.binomial(
-      File "mtrand.pyx", line 3351, in numpy.random.mtrand.RandomState.binomial
-      File "_common.pyx", line 324, in numpy.random._common.check_array_constraint
-    ValueError: p < 0, p > 1 or p contains NaNs
 
 
 
@@ -131,7 +120,7 @@ Amputing with a Custom Probability Function
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.017 seconds)
+   **Total running time of the script:** ( 0 minutes  0.049 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_custom_probability_function.py:

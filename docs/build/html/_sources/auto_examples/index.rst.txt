@@ -12,33 +12,12 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This is a very easy example of how the MultivariateAmputation can be used. The input is always ...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_easy_example_thumb.png
-     :alt: Example Usage
-
-     :ref:`sphx_glr_auto_examples_plot_easy_example.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_easy_example
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Multivariate amputation can be used to evaluate the effect of missing values on the outcome of ...">
 
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_simulation_pipeline_thumb.png
-     :alt: Simulation Pipeline
+     :alt: Evaluating missing values with a simulation pipeline
 
      :ref:`sphx_glr_auto_examples_plot_simulation_pipeline.py`
 
@@ -54,12 +33,33 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Amputing with a Custom Probability Function">
+    <div class="sphx-glr-thumbcontainer" tooltip="Generating missing values in complete datasets can be done with MultivariateAmputation. This is...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_easy_example_thumb.png
+     :alt: A quick example
+
+     :ref:`sphx_glr_auto_examples_plot_easy_example.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_easy_example
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Amputing with a custom probability function">
 
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_custom_probability_function_thumb.png
-     :alt: Amputing with a Custom Probability Function
+     :alt: Amputing with a custom probability function
 
      :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py`
 
@@ -80,7 +80,7 @@ Examples
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_multiple_imputation_thumb.png
-     :alt: Imputing missing values using multiple imputation
+     :alt: Single versus multiple imputation
 
      :ref:`sphx_glr_auto_examples_plot_multiple_imputation.py`
 

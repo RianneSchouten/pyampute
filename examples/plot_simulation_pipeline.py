@@ -1,7 +1,7 @@
 """
-===================
-Simulation Pipeline
-===================
+====================================================
+Evaluating missing values with a simulation pipeline
+====================================================
 
 Multivariate amputation can be used to evaluate the effect of missing values on the outcome of an
  analysis or experiment. In general, such an experiment is designed as follows:
