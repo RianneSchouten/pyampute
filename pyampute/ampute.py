@@ -319,7 +319,8 @@ class MultivariateAmputation(TransformerMixin):
         # if not sigmoid, no binary search/shift
         return score_to_probability_func(wss_standardized)
 
-    def _choose_probabilities(self, wss: ArrayLike, pattern_index: int) -> ArrayLike:
+    #def _choose_probabilities(self, wss: ArrayLike, pattern_index: int) -> ArrayLike:
+    def _choose_probabilities(self, pattern_index: int) -> ArrayLike:
         """
         Assigns missingness probabilities for each sample in the data subset
             corresponding to pattern k (pattern_index) using the standardized wss.
@@ -337,6 +338,7 @@ class MultivariateAmputation(TransformerMixin):
         NOTE: The threshold is on unique WSS. 
            The discrepancy between min number of candidates requires and unique wss means that there are few candidates and will trigger a warning, but if they're all unique wss, then MCAR will NOT be applied.
         """
+        wss = self.wss_per_pattern[pattern_index]
         if np.all(wss == wss[0]) or len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
             # there's 1 pattern under MCAR, freq = 1 (all candidates will be wrongly chosen)
             prob_fill = self.prop if len(self.freqs) == 1 else self.freqs[pattern_index]
@@ -344,7 +346,6 @@ class MultivariateAmputation(TransformerMixin):
         else:  # else we calculate the probabilities based on the wss
             # standardize wss
             wss_standardized = stats.zscore(wss)
-            self.wss_per_pattern.append(wss_standardized)
             # calculate the size of b for the desired missingness proportion
             probs_array = self._calculate_probabilities_from_wss(
                 wss_standardized,
@@ -356,7 +357,7 @@ class MultivariateAmputation(TransformerMixin):
                 self.max_diff_with_target,
             )
             probs = np.squeeze(np.asarray(probs_array))
-            self.probs_per_pattern.append(probs)
+        self.probs_per_pattern.append(probs)
 
         return probs
 
@@ -393,6 +394,7 @@ class MultivariateAmputation(TransformerMixin):
         # in case of MCAR, weights[i, ] contains merely zeros and wss are merely zeros
         # in case of MAR, MNAR, the mechanisms is determined by the weights
         wss = np.dot(data_group, self.weights[pattern_ind, :].T)
+        self.wss_per_pattern.append(wss)
 
         if len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
             logging.warning(
@@ -897,6 +899,7 @@ class MultivariateAmputation(TransformerMixin):
 
         # start a loop over each pattern
         for pattern_idx in range(self.num_patterns):
+            print(pattern_idx)
             # assign cases to the group
             group_indices = X_indices[self.assigned_group_number == pattern_idx]
             pattern = np.squeeze(
@@ -905,10 +908,12 @@ class MultivariateAmputation(TransformerMixin):
             data_group = (
                 X[group_indices] if isinstance(X, np.ndarray) else X.iloc[group_indices]
             )
+            print(data_group.shape)
             # calculate weighted sum scores for each sample in the group
             wss = self._calculate_sumscores(data_group, pattern_idx)
+            print(wss.shape)
             # define candidate probabilities in group
-            probs = self._choose_probabilities(wss, pattern_idx)
+            probs = self._choose_probabilities(pattern_idx)
             # apply probabilities and choose cases
             # set seed for random binomial
             np.random.seed(self.seed)
