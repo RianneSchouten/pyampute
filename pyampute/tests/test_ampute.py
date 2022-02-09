@@ -131,8 +131,10 @@ class TestAmpute(unittest.TestCase):
             patterns = mdp.get_patterns(X_amputed, show_plot=False)
 
             # total number of incomplete rows equals prop
-            np.allclose(
-                patterns.loc[1, "row_count"], (0.3 * n), atol=0.05 * n,
+            self.assertTrue(
+                np.allclose(
+                    patterns.loc[1, "row_count"], (0.3 * n), atol=0.05 * n,
+                )
             )
         with self.subTest(
             "Repeat Pattern on Same Var, Varying Freq Plus Extra Pattern"
@@ -149,8 +151,10 @@ class TestAmpute(unittest.TestCase):
             patterns = mdp.get_patterns(X_amputed, show_plot=False)
 
             # total number of incomplete rows equals prop
-            np.allclose(
-                patterns.loc[2, "row_count"], ((0.2 + 0.1) * n * 0.6), atol=0.05 * n,
+            self.assertTrue(
+                np.allclose(
+                    patterns.loc[2, "row_count"], ((0.2 + 0.1) * n * 0.6), atol=0.05 * n,
+                )
             )
 
     def test_seed(self):
