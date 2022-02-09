@@ -12,27 +12,6 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Multivariate amputation can be used to evaluate the effect of missing values on the outcome of ...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_simulation_pipeline_thumb.png
-     :alt: Evaluating missing values with a simulation pipeline
-
-     :ref:`sphx_glr_auto_examples_plot_simulation_pipeline.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_simulation_pipeline
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Generating missing values in complete datasets can be done with MultivariateAmputation. This is...">
 
 .. only:: html
@@ -72,6 +51,27 @@ Examples
    :hidden:
 
    /auto_examples/plot_custom_probability_function
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Multivariate amputation can be used to evaluate the effect of missing values on the outcome of ...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_simulation_pipeline_thumb.png
+     :alt: Evaluating missing values with a simulation pipeline
+
+     :ref:`sphx_glr_auto_examples_plot_simulation_pipeline.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_simulation_pipeline
 
 .. raw:: html
 

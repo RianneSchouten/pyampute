@@ -87,7 +87,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 nav-item">
+<li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -135,7 +135,29 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="plot_easy_example.html">
+   A quick example
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="plot_simulation_pipeline.html">
+   Evaluating missing values with a simulation pipeline
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Amputing with a custom probability function
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="plot_multiple_imputation.html">
+   Single versus multiple imputation
+  </a>
+ </li>
+</ul>
+
   </div>
 </nav>
               </div>
@@ -183,7 +205,11 @@ to download the full example code</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Create complete data.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">pyampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
+<span class="kn">from</span> <span class="nn">pyampute</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -193,7 +219,6 @@ to download the full example code</p>
 <span class="sd">Define custom probability function.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># purely for demonstrative type hints</span>
-<span class="kn">from</span> <span class="nn">pyampute</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
 
 
 <span class="c1"># Must produce values between 0 and 1</span>
@@ -228,13 +253,12 @@ to download the full example code</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Run ampute.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">pyampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
 
 <span class="n">ma</span> <span class="o">=</span> <span class="n">MultivariateAmputation</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="n">my_prop</span><span class="p">,</span> <span class="n">patterns</span><span class="o">=</span><span class="n">patterns</span><span class="p">)</span>
 <span class="n">incomplete_data</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.049 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.037 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-custom-probability-function-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/61b55bc04624ccc90767ad8c5c7bc7e8/plot_custom_probability_function.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_custom_probability_function.py</span></code></a></p>
@@ -286,7 +310,7 @@ to download the full example code</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
 </p>
     </div>
     

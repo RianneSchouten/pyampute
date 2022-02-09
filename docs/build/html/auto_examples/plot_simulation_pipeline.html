@@ -87,7 +87,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 nav-item">
+<li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -135,7 +135,29 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="plot_easy_example.html">
+   A quick example
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Evaluating missing values with a simulation pipeline
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="plot_custom_probability_function.html">
+   Amputing with a custom probability function
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="plot_multiple_imputation.html">
+   Single versus multiple imputation
+  </a>
+ </li>
+</ul>
+
   </div>
 </nav>
               </div>
@@ -160,26 +182,6 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-complete-dataset">
    A complete dataset
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#multivariate-amputation">
-   Multivariate Amputation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#imputation">
-   Imputation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#evaluation">
-   Evaluation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#references">
-   References
   </a>
  </li>
 </ul>
@@ -218,74 +220,88 @@ to download the full example code</p>
 <li><p>Generate or import a complete dataset</p></li>
 <li><p>Ampute the dataset</p></li>
 <li><p>Impute the dataset</p></li>
-<li><p>Compare the performance of a model between the dataset in step 1, 2 and 3.</p></li>
 </ol>
-<p>We will demonstrate how that works.</p>
-<p>Author: Rianne Schouten &lt;<a class="reference external" href="mailto:r&#46;m&#46;schouten&#37;&#52;&#48;tue&#46;nl">r<span>&#46;</span>m<span>&#46;</span>schouten<span>&#64;</span>tue<span>&#46;</span>nl</a>&gt;</p>
+<p>4. Compare the performance of a model between the dataset in step 1, 2 and 3.
+We will demonstrate how that works.</p>
+<p>%%
+Author: Rianne Schouten &lt;<a class="reference external" href="mailto:r&#46;m&#46;schouten&#37;&#52;&#48;tue&#46;nl">r<span>&#46;</span>m<span>&#46;</span>schouten<span>&#64;</span>tue<span>&#46;</span>nl</a>&gt;</p>
 <section id="a-complete-dataset">
 <h2>A complete dataset<a class="headerlink" href="#a-complete-dataset" title="Permalink to this headline">¶</a></h2>
-<p>A complete dataset can synthetically be designed. In that case, be aware to create a correlation structure
+<p>A complete dataset can synthetically be designed.
+In that case, be aware to create a correlation structure
 between features, since correlation ensures that the missing values differ from the observed values,
-which again results in a change of performance of your model (see <a class="footnote-reference brackets" href="#id3" id="id1">1</a>). Furthermore, a correlation
+which again results in a change of performance of your model (see <a href="#id2"><span class="problematic" id="id1">[1]_</span></a>). Furthermore, a correlation
 structure is needed for many useful imputation methods.</p>
 <p>Another option is to work with a complete portion of an already incomplete dataset.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="n">m</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">compl_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="multivariate-amputation">
-<h2>Multivariate Amputation<a class="headerlink" href="#multivariate-amputation" title="Permalink to this headline">¶</a></h2>
-<p>With our multivariate amputation methodology, it is straightforward to generate all sorts of missing data problems.
-We advise to evaluate the performance of your model for different settings of the algorithm. For instance, compare
-MCAR, MAR and MNAR missingness, or compare different missingness proportions. An explanation of the input arguments
-can be found in the <span id="id2">[documentation]</span> and a more thorough explanation in [this blogpost]_.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The default settings generate 1 patterns with MAR missingness for 50% of the rows. The incomplete dataset</span>
-<span class="c1"># can be explored using the mdPatterns class.</span>
-
-<span class="kn">from</span> <span class="nn">pyampute.ampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
-<span class="kn">from</span> <span class="nn">pyampute.exploration.md_patterns</span> <span class="kn">import</span> <span class="n">mdPatterns</span>
-
-<span class="n">ma</span> <span class="o">=</span> <span class="n">MultivariateAmputation</span><span class="p">()</span>
-<span class="n">incompl_data</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">compl_dataset</span><span class="p">)</span>
-
-<span class="n">mdp</span> <span class="o">=</span> <span class="n">mdPatterns</span><span class="p">()</span>
-<span class="n">patterns</span> <span class="o">=</span> <span class="n">mdp</span><span class="o">.</span><span class="n">_get_patterns</span><span class="p">(</span><span class="n">incompl_data</span><span class="p">)</span>
-</pre></div>
-</div>
 <div class="sphx-glr-script-out highlight-pytb notranslate"><div class="highlight"><pre><span></span><span class="gt">Traceback (most recent call last):</span>
-  File <span class="nb">&quot;C:\Users\20200059\Documents\Github\pyampute\examples\plot_simulation_pipeline.py&quot;</span>, line <span class="m">56</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;/Users/prabhant/OpenML/pyampute/examples/plot_simulation_pipeline.py&quot;</span>, line <span class="m">57</span>, in <span class="n">&lt;module&gt;</span>
     <span class="n">patterns</span> <span class="o">=</span> <span class="n">mdp</span><span class="o">.</span><span class="n">_get_patterns</span><span class="p">(</span><span class="n">incompl_data</span><span class="p">)</span>
 <span class="gr">AttributeError</span>: <span class="n">&#39;mdPatterns&#39; object has no attribute &#39;_get_patterns&#39;</span>
 </pre></div>
 </div>
-</section>
-<section id="imputation">
-<h2>Imputation<a class="headerlink" href="#imputation" title="Permalink to this headline">¶</a></h2>
-<p>Imputation can easily be done using existing methods. Because we make use of sklearn’s TransformerMixin,
-it is easy to combine amputation and imputation in one pipeline.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># here some code that shows pipeline</span>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyampute.ampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
+<span class="kn">from</span> <span class="nn">pyampute.exploration.md_patterns</span> <span class="kn">import</span> <span class="n">mdPatterns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+
+
+<span class="n">m</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">compl_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">%%</span>
+<span class="sd">Multivariate Amputation</span>
+<span class="sd">-----------------------</span>
+
+<span class="sd">With our multivariate amputation methodology, it is straightforward</span>
+<span class="sd">to generate all sorts of missing data problems.We advise to evaluate the</span>
+<span class="sd">performance of your model for different settings of the algorithm. For instance, compare</span>
+<span class="sd">MCAR, MAR and MNAR missingness, or compare different missingness</span>
+<span class="sd">proportions. An explanation of the input arguments</span>
+<span class="sd">can be found in the [documentation]_ and a more thorough explanation in [this blogpost]_.</span>
+<span class="sd">The default settings generate 1 patterns with MAR missingness</span>
+<span class="sd">for 50% of the rows. The incomplete dataset</span>
+<span class="sd">can be explored using the mdPatterns class.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">ma</span> <span class="o">=</span> <span class="n">MultivariateAmputation</span><span class="p">()</span>
+<span class="n">incompl_data</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">compl_dataset</span><span class="p">)</span>
+<span class="n">mdp</span> <span class="o">=</span> <span class="n">mdPatterns</span><span class="p">()</span>
+<span class="n">patterns</span> <span class="o">=</span> <span class="n">mdp</span><span class="o">.</span><span class="n">_get_patterns</span><span class="p">(</span><span class="n">incompl_data</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">%%</span>
+<span class="sd">Imputation</span>
+<span class="sd">----------</span>
+
+<span class="sd">Imputation can easily be done using existing methods.</span>
+<span class="sd"> Because we make use of sklearn&#39;s TransformerMixin,</span>
+<span class="sd">it is easy to combine amputation and imputation in one pipeline.</span>
+
+<span class="sd">here some code that shows pipeline</span>
+
+<span class="sd">%%</span>
+<span class="sd">Evaluation</span>
+<span class="sd">----------</span>
+<span class="sd">As an example, here we demonstrate how you can evaluate the effect of missing</span>
+<span class="sd">values on estimating the mean of a variable.</span>
+<span class="sd">here some code that compares the mean under 1, 2 and 3, and shows differences for MCAR and MAR,</span>
+<span class="sd">and differences for SimpleImputer and IterativeImputer.</span>
+
+<span class="sd">%%</span>
+<span class="sd">References</span>
+<span class="sd">----------</span>
+
+<span class="sd">.. [1] `Generating missing values ...</span>
+<span class="sd">       &lt;https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577&gt;`_,</span>
+<span class="sd">       Rianne M. Schouten, Peter Lugtig &amp; Gerko Vink, etc.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 </div>
-</section>
-<section id="evaluation">
-<h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
-<p>As an example, here we demonstrate how you can evaluate the effect of missing values on estimating the mean of a variable.
-here some code that compares the mean under 1, 2 and 3, and shows differences for MCAR and MAR,
-and differences for SimpleImputer and IterativeImputer.</p>
-</section>
-<section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<dl class="footnote brackets">
-<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p><a class="reference external" href="https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577">Generating missing values …</a>,
-Rianne M. Schouten, Peter Lugtig &amp; Gerko Vink, etc.</p>
-</dd>
-</dl>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.017 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.009 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-simulation-pipeline-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/4bf1123cce983fd4900cc6e535aa8b59/plot_simulation_pipeline.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_simulation_pipeline.py</span></code></a></p>
@@ -338,7 +354,7 @@ Rianne M. Schouten, Peter Lugtig &amp; Gerko Vink, etc.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
 </p>
     </div>
     
