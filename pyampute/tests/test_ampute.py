@@ -4,15 +4,15 @@ import unittest
 from pyampute.ampute import MultivariateAmputation
 from pyampute.exploration.md_patterns import mdPatterns
 
+
 # test that all mechanisms work
 class TestAmpute(unittest.TestCase):
     def setUp(self) -> None:
         return super().setUp()
 
     def test_mechanisms(self):
-
         # create complete data
-        n = 1000
+        n = 10000
         X = np.random.randn(n, 2)
 
         for mechanism in ["MAR", "MNAR", "MCAR"]:
@@ -118,19 +118,44 @@ class TestAmpute(unittest.TestCase):
         )
 
     def test_repeat_pattern(self):
-        n = 1000
-        X = np.random.randn(n, 2)
-        patterns = [
-            {"incomplete_vars": [0], "mechanism": "mcar"},
-            {"incomplete_vars": [0], "mechanism": "mcar"},
-        ]
-        repeat_patterns = MultivariateAmputation(patterns=patterns)
-        repeat_patterns.fit(X)
-        # TODO: What to we expect the output to be?
+        n = 10000
+        with self.subTest("1 Repeat Pattern on Same Var"):
+            X = np.random.randn(n, 2)
+            patterns = [
+                {"incomplete_vars": [0], "mechanism": "mcar"},
+                {"incomplete_vars": [0], "mechanism": "mcar"},
+            ]
+            repeat_patterns = MultivariateAmputation(patterns=patterns, prop=0.3)
+            X_amputed = repeat_patterns.fit_transform(X)
+            mdp = mdPatterns()
+            patterns = mdp.get_patterns(X_amputed, show_plot=False)
+
+            # total number of incomplete rows equals prop
+            np.allclose(
+                patterns.loc[1, "row_count"], (0.3 * n), atol=0.05 * n,
+            )
+        with self.subTest(
+            "Repeat Pattern on Same Var, Varying Freq Plus Extra Pattern"
+        ):
+            X = np.random.randn(n, 2)
+            new_patterns = [
+                {"incomplete_vars": [0], "mechanism": "mcar", "freq": 0.2},
+                {"incomplete_vars": [0], "mechanism": "mcar", "freq": 0.1},
+                {"incomplete_vars": [1], "mechanism": "mar", "freq": 0.7},
+            ]
+            repeat_patterns = MultivariateAmputation(patterns=new_patterns, prop=0.6)
+            X_amputed = repeat_patterns.fit_transform(X)
+            mdp = mdPatterns()
+            patterns = mdp.get_patterns(X_amputed, show_plot=False)
+
+            # total number of incomplete rows equals prop
+            np.allclose(
+                patterns.loc[2, "row_count"], ((0.2 + 0.1) * n * 0.6), atol=0.05 * n,
+            )
 
     def test_seed(self):
         # create complete data
-        n = 1000
+        n = 10000
         X = np.random.randn(n, 2)
         default = MultivariateAmputation()  # no seed set by default
         # should produce different values

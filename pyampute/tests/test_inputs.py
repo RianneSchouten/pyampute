@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import unittest
-from unittest.mock import patch
 
 # Local imports
 from pyampute.ampute import MultivariateAmputation
@@ -94,7 +93,7 @@ class TestDefaults(unittest.TestCase):
                 )
             )
             self.assertTrue(
-                np.array_equal(adjust.mechanisms, np.array(["MAR", "MAR+MNAR"]),)
+                np.array_equal(adjust.mechanisms, np.array(["MAR", "MAR+MNAR"]), )
             )
             self.assertTrue(
                 np.array_equal(
@@ -130,7 +129,7 @@ class TestDefaults(unittest.TestCase):
             )
         )
         self.assertTrue(
-            np.array_equal(mechanism_case_coverage.freqs, np.array([1 / 3] * 3),)
+            np.array_equal(mechanism_case_coverage.freqs, np.array([1 / 3] * 3), )
         )
 
     def test_weights_dict(self):
