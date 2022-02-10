@@ -36,14 +36,23 @@ class MCARTest:
     We advise to use Little's MCAR test carefully. Rejecting the null hypothesis may not always mean that data is not MCAR, nor is accepting the null hypothesis a guarantee that data is MCAR. See `Schouten et al. (2021)`_ for a thorough discussion of missingness mechanisms. 
 
     .. _`Schouten et al. (2021)`: https://journals.sagepub.com/doi/full/10.1177/0049124118799376
-    
+
+    Examples
+    --------
+    >>> import pandas as pd
+    >>> from pyampute.exploration.mcar_statistical_tests import MCARTest
+    >>> data_mcar = pd.read_table("data/missingdata_mcar.csv")
+    >>> mt = MCARTest(method="little")
+    >>> print(mt.little_mcar_test(data_mcar))
+    0.17365464213775494    
     """
+
     def __init__(self, method: str = "little"):
         self.method = method
 
     def __call__(self, data: Matrix) -> float:
         if self.method == "little":
-            return self.littles_mcar_test(data)
+            return self.little_mcar_test(data)
         elif self.method == "ttest":
             return self.mcar_t_tests(data)
         else:
@@ -52,7 +61,7 @@ class MCARTest:
             )
 
     @staticmethod
-    def littles_mcar_test(X: Matrix) -> float:
+    def little_mcar_test(X: Matrix) -> float:
         """
         Implementation of Little's MCAR test
         

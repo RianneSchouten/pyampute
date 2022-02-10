@@ -99,7 +99,7 @@ Transforming one dataset
 
  .. code-block:: none
 
-    2022-02-10 14:49:33,659 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-10 14:58:01,057 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -142,7 +142,7 @@ A separate fit and transform
 
  .. code-block:: none
 
-    2022-02-10 14:49:33,898 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-10 14:58:01,273 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -208,7 +208,7 @@ By default, SimpleImputer imputes with the mean of the observed data. It is ther
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.484 seconds)
+   **Total running time of the script:** ( 0 minutes  0.462 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_easy_example.py:

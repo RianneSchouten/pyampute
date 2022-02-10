@@ -6,8 +6,8 @@ from pyampute.exploration.mcar_statistical_tests import MCARTest
 
 
 # load test data
-data_mar = pd.read_table("data/missingdata.csv", sep="\t")
-data_mcar = pd.read_table("data/missingdata_mcar.csv", sep="\t")
+data_mar = pd.read_table("data/missingdata.csv")
+data_mcar = pd.read_table("data/missingdata_mcar.csv")
 
 significance_level = 0.05
 
@@ -15,7 +15,7 @@ significance_level = 0.05
 class TestMCARTest(unittest.TestCase):
     """Test for MCAR."""
 
-    def test_littles_mcar_test(self):
+    def test_little_mcar_test(self):
         self.assertFalse(MCARTest(method="little")(data_mcar) < significance_level)
         self.assertTrue(MCARTest(method="little")(data_mar) < significance_level)
 

@@ -311,9 +311,18 @@
 </div>
 <p class="rubric">Notes</p>
 <p>We advise to use Little’s MCAR test carefully. Rejecting the null hypothesis may not always mean that data is not MCAR, nor is accepting the null hypothesis a guarantee that data is MCAR. See <a class="reference external" href="https://journals.sagepub.com/doi/full/10.1177/0049124118799376">Schouten et al. (2021)</a> for a thorough discussion of missingness mechanisms.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyampute.exploration.mcar_statistical_tests</span> <span class="kn">import</span> <span class="n">MCARTest</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_mcar</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s2">&quot;data/missingdata_mcar.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span> <span class="o">=</span> <span class="n">MCARTest</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;little&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">little_mcar_test</span><span class="p">(</span><span class="n">data_mcar</span><span class="p">))</span>
+<span class="go">0.17365464213775494</span>
+</pre></div>
+</div>
 <dl class="py method">
-<dt class="sig sig-object py" id="pyampute.exploration.mcar_statistical_tests.MCARTest.littles_mcar_test">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">littles_mcar_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyampute.exploration.mcar_statistical_tests.MCARTest.littles_mcar_test" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pyampute.exploration.mcar_statistical_tests.MCARTest.little_mcar_test">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">little_mcar_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyampute.exploration.mcar_statistical_tests.MCARTest.little_mcar_test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of Little’s MCAR test</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
