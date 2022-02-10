@@ -2,7 +2,7 @@
 import unittest
 import pandas as pd
 
-from pyampute.exploration.mcar_statistical_tests import McarTest
+from pyampute.exploration.mcar_statistical_tests import MCARTest
 
 
 # load test data
@@ -12,22 +12,22 @@ data_mcar = pd.read_table("data/missingdata_mcar.csv", sep="\t")
 significance_level = 0.05
 
 
-class TestMcarTests(unittest.TestCase):
+class TestMCARTest(unittest.TestCase):
     """Test for MCAR."""
 
     def test_littles_mcar_test(self):
-        self.assertFalse(McarTest(method="littles")(data_mcar) < significance_level)
-        self.assertTrue(McarTest(method="littles")(data_mar) < significance_level)
+        self.assertFalse(MCARTest(method="littles")(data_mcar) < significance_level)
+        self.assertTrue(MCARTest(method="littles")(data_mar) < significance_level)
 
     def test_mcar_t_tests(self):
         # Axis=None reduces in all dimensions
         # should fail to reject sometimes, since MCAR
         self.assertTrue(
-            (McarTest(method="ttest")(data_mcar) > significance_level).any(axis=None)
+            (MCARTest(method="ttest")(data_mcar) > significance_level).any(axis=None)
         )
         # reject all: missingness is not MCAR for any pair of vars
         self.assertFalse(
-            (McarTest(method="ttest")(data_mar) < significance_level).all(axis=None)
+            (MCARTest(method="ttest")(data_mar) < significance_level).all(axis=None)
         )
 
 

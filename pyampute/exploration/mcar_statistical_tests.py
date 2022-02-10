@@ -1,7 +1,6 @@
-"""Some title"""
-# Author: Rianne Schouten <r.m.schouten@tue.nl>
-# Co-Author: Davina Zamanzadeh <davzaman@gmail.com>
-# Co-Author:
+"""Statistical hypothesis test for Missing Completely At Random (MCAR)"""
+# Author: Rianne Schouten <https://rianneschouten.github.io/>
+# Co-Author: Davina Zamanzadeh <https://davinaz.me/>
 
 from logging import error
 import numpy as np
@@ -9,10 +8,19 @@ import pandas as pd
 from math import pow
 from scipy.stats import chi2, ttest_ind
 
+# Local
 from pyampute.utils import Matrix
 
 
-class McarTest:
+class MCARTest:
+    """
+    Statistical hypothesis test for Missing Completely At Random (MCAR)
+
+    Performs Little's MCAR test (see `Little, R.J.A. (1988)`_). Null hypothesis: Alternative hypothesis: 
+
+    .. _`Little, R.J.A. (1988)` Little, R. J. A. (1988). A test of missing completely at random for multivariate data with missing values. `Journal of the American Statistical Association,` 83(404), 1198-1202.
+    
+    """
     def __init__(self, method: str = "littles"):
         self.method = method
 
