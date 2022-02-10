@@ -1,5 +1,14 @@
 pymice
 ======
+|made-with-python|
+
+.. |made-with-python| image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
+   :target: https://www.python.org/
+
+|code-coverage|
+
+.. |code-coverage| image:: https://img.shields.io/codecov/c/github/RianneSchouten/pyampute
+
 
 .. role:: pyth(code)
   :language: python
@@ -44,6 +53,7 @@ installation
 ------------
 
 via pip
-'''
+```
 pip install pyampute
-'''
+```
+
