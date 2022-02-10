@@ -18,31 +18,55 @@ class MCARTest:
 
     Performs Little's MCAR test (see `Little, R.J.A. (1988)`_). Null hypothesis: Alternative hypothesis: 
 
+    Parameters
+    ----------
+    method : str, {"little", "ttest"}, default : "little"
+        Whether to perform one chi-square test on the entire dataset ("little") or separate t-tests for every combination of variables ("ttest"). 
+
+    See also
+    --------
+    :class:`~pyampute.exploration.md_patterns.mdPatterns` : Displays missing data patterns in incomplete datasets
+    
+    :class:`~pyampute.ampute.MultivariateAmputation` : Transformer for generating multivariate missingness in complete datasets
+
+    Notes
+    -----
+    We advise to use Little's MCAR test carefully. Rejecting the null hypothesis may not always mean guarantee that data is not MCAR, nor is accepting the null hypothesis a guarantee that data is MCAR. See `Schouten et al. (2021)`_ for a thorough discussion of missingness mechanisms. 
+
     .. _`Little, R.J.A. (1988)` Little, R. J. A. (1988). A test of missing completely at random for multivariate data with missing values. `Journal of the American Statistical Association,` 83(404), 1198-1202.
+    .. _`Schouten et al. (2021)` Schouten, R.M. and Vink, G. (2021) The dance of the mechanisms: How observed information influences the validity of missingness assumptions. `Sociological Methods & Research,` 50(3): 1243-1258.
     
     """
-    def __init__(self, method: str = "littles"):
+    def __init__(self, method: str = "little"):
         self.method = method
 
     def __call__(self, data: Matrix) -> float:
-        if self.method == "littles":
+        if self.method == "little":
             return self.littles_mcar_test(data)
         elif self.method == "ttest":
             return self.mcar_t_tests(data)
         else:
             error(
-                f"Chose {self.method} as test method, which is not supported. Please choose from [littles, ttest]."
+                f"Chose {self.method} as test method, which is not supported. Please choose from [little, ttest]."
             )
 
     @staticmethod
-    def littles_mcar_test(data: Matrix) -> float:
+    def littles_mcar_test(X: Matrix) -> float:
         """
         Implementation of Little's MCAR test
-        Returns  the p_value, the outcome of a chi-square statistical test.
-        Null hypothesis: "missingness mech of data is MCAR".
+        
+        Parameters
+        ----------
+        X : Matrix of shape `(n, m)`
+            Dataset with missing values. `n` rows (samples) and `m` columns (features).
+
+        Returns
+        -------
+        pvalue : float
+            The p-value of a chi-square hypothesis test. Null hypothesis: Data is Missing Completely At Random (MCAR). Alternative hypothesis: Data is not MCAR.
         """
 
-        dataset = data.copy()
+        dataset = X.copy()
         vars = dataset.dtypes.index.values
         n_var = dataset.shape[1]
 
@@ -78,19 +102,26 @@ class MCARTest:
         df = pj - n_var
 
         # perform test and save output
-        p_value = 1 - chi2.cdf(d2, df)
+        pvalue = 1 - chi2.cdf(d2, df)
 
-        return p_value
+        return pvalue
 
     @staticmethod
-    def mcar_t_tests(data: Matrix) -> Matrix:
+    def mcar_t_tests(X: Matrix) -> pd.DataFrame:
         """
-        MCAR t-tests for each pair of variables.
+        Performs t-tests for MCAR for each pair of features.
 
-        Returns a matrix of p-values for each pair of variables.
-        Null hypothesis: missingness in row variable is MCAR vs col variable.
-    """
-        dataset = data.copy()
+        Parameters
+        ----------
+        X : Matrix of shape `(n, m)`
+            Dataset with missing values. `n` rows (samples) and `m` columns (features).
+
+        Returns
+        -------
+        pvalues : pandas DataFrame of shape `(m, m)`
+            The pvalues of t-tests for each pair of features. Null hypothesis for cell :math:`pvalues[h,j]`: data in feature :math:`h` is Missing Completely At Random (MCAR) with respect to feature :math:`j` for all :math:`h,j` in :math:`{1,2,...m}`. Diagonal values do not exist and are not displayed. 
+        """
+        dataset = X.copy()
         vars = dataset.dtypes.index.values
         mcar_matrix = pd.DataFrame(
             data=np.zeros(shape=(dataset.shape[1], dataset.shape[1])),
