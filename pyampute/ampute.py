@@ -30,80 +30,59 @@ class MultivariateAmputation(TransformerMixin):
     """Generating multivariate missingness patterns in complete datasets
 
     - `n` = number of samples.
-    - `m` = number of features/vars.
+    - `m` = number of features/variables.
     - `k` = number of patterns.
 
-    Read more about this and this here. And put reference somewhere.
+    Amputation is the opposite of imputation: the generation of missing values in complete datasets. This is useful for evaluating the effect of missing values on your outcome, mostly in experimental settings, but also as a preprocessing step in developing models. 
+
+    We provide `several examples`_ and `an extensive blogpost`_ to explain in more detail how certain parameter choices affect the generated missingness.
+
+    Our class is built on a scikit-learn `TransformerMixin`_.
+
+    .. _`several examples`: https://rianneschouten.github.io/pyampute/build/html/examples.html
+    .. _`an extensive blogpost`: https://rianneschouten.github.io/pyampute/build/html/mapping.html
+    .. _`TransformerMixin`: https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html
 
     Parameters
     ----------
-    complete_data : Matrix with shape `(n, m)`
-        Dataset with no missing values for vars involved in amputation.
-        `n` rows (samples) and `m` columns (features).
-        Values involved in amputation should be numeric, or will be forced,
-        and any columns that aren't fully numeric will be dropped.
-
     prop : float, default : 0.5
-        Proportion of missingness as a decimal or percent.
+        Proportion of incomplete data rows as a decimal or percent.
 
     patterns : List[Dict], default: ``DEFAULT_PATTERN``
-        List of `k` dictionaries.
-        If there are too many patterns,
-        the subsequent data subset (for pattern) will be empty, and *no amputation will occur*.
-        Each dictionary has the following key-value pairs (required unless [optional]):
+        List of `k` dictionaries. Each dictionary has the following key-value pairs:
 
             **incomplete_vars** (Union[ArrayLike[int], ArrayLike[str]]) --
-                Indicates variables that should be amputed.
-                List of int for indices of variables, list of str for column names of variables.
-                ``observed_vars`` is the complement of ``incomplete_vars``.
-            **weights** (Union[ArrayLike[float], Dict[int, float], Dict[str, float]],default: all 0s (MCAR) or
-                `observed_vars` weight 1 (MAR) or `incomplete_vars` weight 1 (MNAR)) --
-                Specifies the size of effect of each specified var on missing vars.
-                If using an array, you must specify all *m* weights.
-                If using a dictionary, the keys are either indices of vars or column names;
-                unspecified vars will be
-                assumed to have a weight of 0.
-                Negative values have a decrease effect, 0s indicate no role in missingness,
-                unspecified vars have
-                weight 0), and positive values have an increase effect.
-                The weighted score for sample `i` in pattern `k` is the inner product of the
-                `weights` and `sample[i]`.
-                **Note:** weights are required to be defined
+                Indicates which variables that should be amputed. List of int for indices of variables, list of str for column names of variables. `observed_vars` is the complement of `incomplete_vars`.
+            **weights** (Union[ArrayLike[float], Dict[int, float], Dict[str, float]], default: all 0s (MCAR) or `observed_vars` weight 1 (MAR) or `incomplete_vars` weight 1 (MNAR)) --
+                Specifies the (relative) size of effect of each specified var on missing vars. If using an array, you must specify all *m* weights. If using a dictionary, the keys are either indices of vars or column names; unspecified vars will be
+                assumed to have a weight of 0. Negative values have a decrease effect, 0s indicate no role in missingness, and positive values have an increase effect. The weighted score for sample `i` in pattern `k` is the inner product of the `weights` and `sample[i]`. *Note:* weights are required to be defined
                 if the corresponding mechanism is MAR+MNAR.
 
-            **mechanism** (`str, {MAR, MCAR, MNAR, MAR+MNAR} case insensitive`) --
-                MNAR+MAR is only possible by passing a custom weight array.
+            **mechanism** (`str, {MAR, MCAR, MNAR, MAR+MNAR}`) -- 
+                Case insensitive. MNAR+MAR is only possible by passing a custom weight array.
 
             **freq** (*float [0,1], default: all patterns with equal frequency (1/k)*) --
                 Relative occurence of a pattern with respect to other patterns.
                 All frequencies across `k` dicts/patterns must sum to 1.
                 Either specify for all patterns, or none for the default.
                 For example (`k` = 3 patterns), ``freq := [0.4, 0.4, 0.2]``
-                means, of all samples with missing values,
-                40% should have pattern 1, 40% pattern 2. and 20% pattern 3.
+                means that of all rows with missing values, 40% should have pattern 1, 40% pattern 2. and 20% pattern 3.
 
-            **score_to_probability_func**
-                (`Union[str, Callable[ArrayLike[floats] -> ArrayLike[floats]]],
-                {"sigmoid-right", "sigmoid-left", "sigmoid-mid", "sigmoid-tail", Callable}`) --
-                Converts standardized weighted scores for
-                each sample (in a data subset corresponding to pattern k)
-                to probability of missingness.
-                Choosing one of the sigmoid options
-                (case insensitive) applies sigmoid function with a logit cutoff
-                per pattern.
-                The simgoid function will dictates that a
+            **score_to_probability_func** (`Union[str, Callable[ArrayLike[floats] -> ArrayLike[floats]]], {"sigmoid-right", "sigmoid-left", "sigmoid-mid", "sigmoid-tail", Callable}`) --
+                Converts standardized weighted scores for each data row (in a data subset corresponding to pattern k) to probability of missingness. Choosing one of the sigmoid options (case insensitive) applies sigmoid function with a logit cutoff
+                per pattern. The simgoid functions dictate that a
                 [high, low, average, extreme] score (respectively) has a
-                high probability of amputation.
-                The sigmoid functions will be shifted to ensure
-                correct joint missingness probabilities.
-                Custom functions must accept arrays with values ``(-inf, inf)`` and output values ``[0,1]``.
-                We will *not* shift custom functions, refer to
-                :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py` for more.
+                high probability of amputation. The sigmoid functions will be shifted to ensure correct joint missingness probabilities. Custom functions must accept arrays with values ``(-inf, inf)`` and output values ``[0,1]``. We will *not* shift custom functions, refer to              :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py` for more.
 
-    std : boolean, default : True
-        Whether or not to standardize data before computing weighted scores.
-        Standardization ensures that weights can be applied properly.
-        Do not standardize if passing both train and test set (prevent leaking).
+    std : bool, default : True
+        Whether or not to standardize data before computing weighted scores. Standardization ensures that weights can be interpreted relative to each other. Do not standardize if train and test split is done after amputation (prevent leaking).
+
+    verbose: bool, default : False
+        Toggle on to see INFO level logging information.
+
+    seed: int, optional
+        If you want reproducible results during amputation, set an integer seed.
+        If you don't set it, a random number will be produced every time.
 
     lower_range : float, default : -3
         Lower limit in range when searching for horizontal shift of `score_to_probability_func`.
@@ -112,67 +91,65 @@ class MultivariateAmputation(TransformerMixin):
         Upper limit in range when searching for horizontal shift of `score_to_probability_func`.
 
     max_dif_with_target : float, default : 0.001
-        The allowable error between the desired percent missing data (prop)
-        and calculated joint missingness probability after assigning a
-        probability for cases to be missing.
+        The allowable error between the desired percent of missing data (`prop`)
+        and calculated joint missingness probability.
 
     max_iter : int, default : 100
-        Max number of iterations for binary search when
-        searching for horizontal shift of `score_to_probability_func`.
-    verbose: bool, default : False
-        Toggle on to see INFO level logging information.
-
-    seed: int, optional
-        If you want reproducible results during amputation set an integer seed.
-        If you don't set it, a random number will be produced every time.
+        Max number of iterations for binary search when searching for horizontal shift of `score_to_probability_func`.
 
     Attributes
     ----------
     DEFAULT_PATTERN: Dict[str, Any]
-        If patterns is not passed, the default is the following:
-        .. code-block::
-            :caption: Default pattern.
+        If `patterns` are not passed, the default is the following:
+        
+        .. code-block:: python
 
             {
                 "incomplete_vars": random 50% of vars,
                 "mechanism": "MAR",
-                "score-to-prob": "sigmoid-right"
                 "freq": 1
+                "score-to-prob": "sigmoid-right"
+                
             }
-       DEFAULTS :  Dict[str, str]
-        Default values used, especially if values are
-        not passed for arguments in certain patterns (not to be confused
-        with patterns not being specified at all).
 
-    Methods
-    -------
-    fit_transform(X)
+       DEFAULTS :  Dict[str, Any]
+        Default values used, especially if values are not passed for parameters in certain patterns (not to be confused with patterns not being specified at all).
+    
+    See also
+    --------
+    :class:`~pyampute.exploration.md_patterns.mdPatterns` : Displays missing data patterns in incomplete datasets
+
+    :class:`~pyampute.exploration.mcar_statistical_tests.MCARTest` : Statistical hypothesis test for Missing Completely At Random (MCAR)
+
+    Notes
+    -----
+    The methodology for multivariate amputation has been proposed by `Schouten et al. (2018)`_ and is implemented in an R-function: `mice::ampute`_.
+
+    .. _`Schouten et al. (2018)`: https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577
+    .. _`mice::ampute`: https://rianneschouten.github.io/mice_ampute/vignette/ampute.html
 
     Examples
     --------
-    TODO
+    >>> import numpy as np
+    >>> from pyampute.ampute import MultivariateAmputation
+    >>> n = 1000
+    >>> m = 10
+    >>> X_compl = np.random.randn(n,m)
+    >>> ma = MultivariateAmputation()
+    >>> X_incompl = ma.fit_transform(X_compl)
     """
-
-    DEFAULTS = {
-        "score_to_probability_func": "SIGMOID-RIGHT",
-        "mechanism": "MAR",
-        "lower_range": -3,
-        "upper_range": 3,
-        "max_iter": 100,
-        "max_diff_with_target": 0.001,
-    }
 
     def __init__(
         self,
         prop: float = 0.5,
         patterns: Dict[str, Any] = None,
         std: bool = True,
+        verbose: bool = False,
+        seed: Optional[int] = None,
         lower_range: float = -3,
         upper_range: float = 3,
         max_diff_with_target: float = 0.001,
         max_iter: int = 100,
-        verbose: bool = False,
-        seed: Optional[int] = None,
         log_filename: str = "output.log",
     ):
         self.prop = prop
@@ -208,14 +185,7 @@ class MultivariateAmputation(TransformerMixin):
         probability_func: Union[str, Callable[[ArrayLike], ArrayLike]],
     ) -> ArrayLike:
         """
-        Applies shifted custom function or sigmoid (with cutoff) to
-            standardized weighted sum scores to convert to probability.
-        String: sigmoid-
-            Right: Regular sigmoid pushes larger values to have high probability,
-            Left: To flip regular sigmoid across y axis, make input negative.
-                This pushes smaller values to have high probability.
-            Mid: Values in the center of the score distribution have high probability.
-            Tail: Larger and smaller values have high probabiliy.
+        Applies shifted custom function or sigmoid (with cutoff) to standardized weighted sum scores to convert to probability. String : `sigmoid-right` : Regular sigmoid pushes larger values to have high probability, `sigmoid-left`: Flips regular sigmoid across y axis, make input negative. This pushes smaller values to have high probability, `sigmoid-mid`: Values in the center of the score distribution have high probability, `sigmoid-tail`: Both larger and smaller values have high probabiliy, but values in the center have low probability.
         """
         if isinstance(probability_func, str):
             cutoff_transformations = {
@@ -245,10 +215,7 @@ class MultivariateAmputation(TransformerMixin):
         max_diff_with_target: float,
     ) -> Tuple[float, ArrayLike]:
         """
-        Search for the appropriate shift/transformation to the scores before passing
-            through the self.probability_function to result in the desired missingness
-            proportion. For instance, raw wss will mask 17% of samples in pattern k but you want
-            40% missing.
+        Search for the appropriate shift/transformation to the weighted sum scores in order to obtain the desired missingness proportion, before passing through ``self.score_to_probability_func``. For instance, raw wss will mask 17% of samples in pattern :math:`k` but you may want 40% missing.
         """
 
         b = 0
@@ -300,6 +267,9 @@ class MultivariateAmputation(TransformerMixin):
         max_iter: int,
         max_diff_with_target: float,
     ) -> ArrayLike:
+        """
+        Returns the result of ``_shifted_probability_func``
+        """
         if isinstance(score_to_probability_func, str):
             if self.shift_lookup_table is not None:
                 logging.info(
@@ -331,24 +301,16 @@ class MultivariateAmputation(TransformerMixin):
 
     def _choose_probabilities(self, pattern_index: int) -> ArrayLike:
         """
-        Assigns missingness probabilities for each sample in the data subset
-            corresponding to pattern k (pattern_index) using the standardized wss.
-        This is later thresholded to use to decide whether or not to apply pattern k
-        to sample i.
-
+        Assigns missingness probabilities to each sample (row) in the data subset corresponding to pattern :math:`k` using the standardized wss.
+        These probabilities are later used to decide whether or not to apply pattern :math:`k` to sample :math:`i`.
         """
 
-        """
-        When wss is all the same the mechanism is
-            1. MCAR: each case has an equal probability of becoming missing (wss == 0)
-            2. MAR with binary variables
-        Therefore we just use uniform probability of missing per var using self.freqs
-        Alternatively, If there are not enough unique wss we apply MCAR.
-        NOTE: The threshold is on unique WSS.
-           The discrepancy between min number of candidates requires and
-            unique wss means that there are few candidates and will trigger
-             a warning, but if they're all unique wss, then MCAR will NOT be applied.
-        """
+        #When wss are all the same the mechanism is
+        #    1. MCAR: each case has an equal probability of becoming missing (wss == 0)
+        #    2. MAR with binary variables
+        #Therefore we just use uniform probability of missing per var using self.freqs. Alternatively, If there are not enough unique wss we apply MCAR.
+        #NOTE: The threshold is on unique WSS. The discrepancy between min number of candidates requires and unique wss means that there are few candidates and will trigger a warning, but if they're all unique wss, then MCAR will NOT be applied.
+
         wss = self.wss_per_pattern[pattern_index]
         if np.all(wss == wss[0]) or len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
             probs = np.repeat(self.prop, len(wss))
@@ -372,12 +334,7 @@ class MultivariateAmputation(TransformerMixin):
 
     def _calculate_sumscores(self, data_group: Matrix, pattern_ind: int) -> ArrayLike:
         """
-        Creates a vector of weighted sum scores for each sample in the data subset
-        corresponding to pattern k by computing the inner product of
-            self.weights and the raw values of the samples in that subset.
-
-        This is later converted to a probability to be thresholded on to decide
-            whether or not to apply pattern k to sample i in the data subset.
+        Creates a vector of weighted sum scores for all data rows (samples) in the data subset corresponding to pattern :math:`k` by computing the inner product of ``self.weights`` and the raw values of the samples in that subset. This is later converted to a probability to be thresholded on to decide whether or not to apply pattern :math:`k` to sample :math:`i` in the data subset.
         """
 
         if len(data_group) <= THRESHOLD_MIN_NUM_CANDIDATES:
@@ -466,7 +423,7 @@ class MultivariateAmputation(TransformerMixin):
         pattern_idx: int,
     ) -> ArrayLike:
         """
-        Fills an array of length m (for each feature) with fill_value
+        Fills an array of length :math:`m` (for each feature) with fill_value
             wherever indicated by indices_or_names.
         Column names will be mapped to their corresponding indices.
         """
@@ -490,11 +447,7 @@ class MultivariateAmputation(TransformerMixin):
 
     def _pattern_dict_to_matrix_form(self):
         """
-        Converts the list of dictionaries into corresponding matrices and arrays.
-        Each dict entry that's ArrayLike will transform into a matrix (k, m)
-            e.g., weight array for pattern i will define the row i in the weight matrix
-        Each dict entry that's a single value will transform into an array of length m
-            e.g., freq for pattern i will define ith entry in freqs array.
+        Converts the list of dictionaries into corresponding matrices and arrays. Each dict entry that's ArrayLike will transform into a matrix (`k`, `m`) e.g., weight array for pattern :math:`k` will define the row :math:`k` in the weights matrix. Each dict entry that's a single value will transform into an array of length :math:`m`, e.g., freq for pattern :math:`i` will define :math:`i` th entry in freqs array.
         """
         k_by_m = (self.num_patterns, self.num_features)
 
@@ -563,7 +516,7 @@ class MultivariateAmputation(TransformerMixin):
         Read the lookup table csv from path.
         Loads the table only once for the shift lookup
         when computing missing probabilities from scores.
-        This is only useful for prespecified functions (e.g., sigmoid-RIGHT)
+        This is only useful for prespecified functions (e.g. sigmoid-right)
         """
         if any([isinstance(func, str) for func in self.score_to_probability_func]):
             try:
@@ -809,15 +762,16 @@ class MultivariateAmputation(TransformerMixin):
 
     def fit(self, X: Matrix) -> "MultivariateAmputation":
         """Fits amputer on complete data X.
-        Validates input data with given arguments to amputer.
+
+        Validates input data and implements parameter settings.
 
         Parameters
         ----------
         X : Matrix
-            Matrix of shape `(n_samples, m_features)`
-            Complete input data, where "n_samples" is the number of samples and
-            "m_features" is the number of features.
+            Matrix of shape `(n, m)`.
+            Complete input data, where `n` is the number of data rows (samples) and `m` is the number of features (column, variables). Data cannot contain missing values and should be numeric, or will be forced to be numeric.
         """
+
         # This must come first so we can check patterns
         assert X is not None, "No dataset passed, cannot be None."
         assert len(X.shape) == 2, "Dataset must be 2 dimensional."
@@ -896,17 +850,16 @@ class MultivariateAmputation(TransformerMixin):
         """Fits amputer on complete data X and returns the incomplete data X
 
         Parameters
-        ----------
+        ----------        
         X : Matrix
-            Matrix of shape `(n_samples, m_features)`
-            Complete input data, where "n_samples" is the number of samples and
-            "m_features" is the number of features.
+            Matrix of shape `(n, m)`
+            Complete input data, where `n` is the number of data rows (samples) and `m` is the number of features (column, variables). Data cannot contain missing values and should be numeric, or will be forced to be numeric.
 
         Returns
         -------
         X_incomplete : Matrix
-            Matrix of shape `(n_samples, m_features)`.
-            Incomplete dataset masked according to parameters.
+            Matrix of shape `(n, m)`.
+            Incomplete data masked according to parameters.
         """
 
         X = self._validate_data(X)

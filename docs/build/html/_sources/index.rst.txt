@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pyampute's documentation!
-====================================
+Welcome to ``pyampute``'s documentation!
+========================================
 
-Here some short introduction and explanation.
+With ``pyampute``, we provide :class:`~pyampute.ampute.MultivariateAmputation`: a transformer for generating missing values in complete datasets. This is useful for evaluating the effect of missing values on the outcome of your model Additionally, we provide functionality for inspecting incomplete datasets: :class:`~pyampute.exploration.md_patterns.mdPatterns` and :class:`~pyampute.exploration.mcar_statistical_tests.MCARTest`. 
 
 .. toctree::
    :maxdepth: 2

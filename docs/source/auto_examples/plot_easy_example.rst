@@ -99,7 +99,7 @@ Transforming one dataset
 
  .. code-block:: none
 
-    2022-02-10 14:58:01,057 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-10 16:36:08,832 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -142,7 +142,7 @@ A separate fit and transform
 
  .. code-block:: none
 
-    2022-02-10 14:58:01,273 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-10 16:36:09,070 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -184,7 +184,7 @@ Application in a pipeline
         X_imp_test = pipe.transform(X_compl_test)
       File "c:\users\20200059\appdata\local\programs\python\python38\lib\site-packages\sklearn\pipeline.py", line 549, in _transform
         Xt = transform.transform(Xt)
-      File "C:\Users\20200059\Documents\Github\pyampute\pyampute\ampute.py", line 942, in transform
+      File "C:\Users\20200059\Documents\Github\pyampute\pyampute\ampute.py", line 895, in transform
         chosen_candidates = np.random.binomial(
       File "mtrand.pyx", line 3373, in numpy.random.mtrand.RandomState.binomial
       File "__init__.pxd", line 749, in numpy.PyArray_MultiIterNew3
@@ -208,7 +208,7 @@ By default, SimpleImputer imputes with the mean of the observed data. It is ther
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.462 seconds)
+   **Total running time of the script:** ( 0 minutes  0.503 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_easy_example.py:
