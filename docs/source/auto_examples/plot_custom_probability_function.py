@@ -1,18 +1,14 @@
 """
-===========================================
-Amputing with a custom probability function
-===========================================
+============================================
+Amputing with a Custom Probability Function
+============================================
 """
 
 # %%
 """
 Create complete data.
 """
-from pyampute import MultivariateAmputation
-from pyampute import ArrayLike
 import numpy as np
-
-
 
 n = 10000
 X = np.random.randn(n, 2)
@@ -22,6 +18,7 @@ X = np.random.randn(n, 2)
 Define custom probability function.
 """
 # purely for demonstrative type hints
+from pyampute import ArrayLike
 
 
 # Must produce values between 0 and 1
@@ -57,8 +54,15 @@ patterns = [
 """
 Run ampute.
 """
+from pyampute import MultivariateAmputation
 
 ma = MultivariateAmputation(prop=my_prop, patterns=patterns)
 incomplete_data = ma.fit_transform(X)
+
+# %%
+from pyampute.exploration.md_patterns import mdPatterns
+
+mdp = mdPatterns()
+pattern = mdp.get_patterns(incomplete_data)
 
 # %%

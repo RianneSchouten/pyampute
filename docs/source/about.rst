@@ -11,7 +11,9 @@ Something about Rianne
 Davina Zamanzadeh
 -----------------
 
-Something about Davina
+Davina is a PhD student in Computer Science Department at UCLA (University of California, Los Angeles).
+She conducts research in machine learning with clinical applications under Dr. Alex Bui (`MII Lab <https://mii.ucla.edu/>`_) and Dr. Majid Sarrafzadeh (`eR Lab <https://er.cs.ucla.edu/>`_).
+Read more about her `here <https://davinaz.me/>`_.
 
 Prabhant Singh
 --------------

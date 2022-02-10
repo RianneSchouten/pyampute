@@ -33,12 +33,12 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Amputing with a custom probability function">
+    <div class="sphx-glr-thumbcontainer" tooltip="Amputing with a Custom Probability Function">
 
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_custom_probability_function_thumb.png
-     :alt: Amputing with a custom probability function
+     :alt: Amputing with a Custom Probability Function
 
      :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py`
 

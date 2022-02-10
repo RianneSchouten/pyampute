@@ -139,9 +139,9 @@ Error.
 .. code-block:: pytb
 
     Traceback (most recent call last):
-      File "/Users/prabhant/OpenML/pyampute/examples/plot_multiple_imputation.py", line 67, in <module>
+      File "/Users/davina/Documents/Stuff/Code/pyampute/examples/plot_multiple_imputation.py", line 67, in <module>
         from sklearn.impute import ChainedImputer
-    ImportError: cannot import name 'ChainedImputer' from 'sklearn.impute' (/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/impute/__init__.py)
+    ImportError: cannot import name 'ChainedImputer' from 'sklearn.impute' (/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/impute/__init__.py)
 
 
 
@@ -548,7 +548,7 @@ Error.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.026 seconds)
+   **Total running time of the script:** ( 0 minutes  0.088 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_multiple_imputation.py:

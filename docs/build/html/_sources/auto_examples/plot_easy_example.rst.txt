@@ -86,20 +86,26 @@ Transforming one dataset
 
 
 
-
-.. image-sg:: /auto_examples/images/sphx_glr_plot_easy_example_001.png
-   :alt: plot easy example
-   :srcset: /auto_examples/images/sphx_glr_plot_easy_example_001.png
-   :class: sphx-glr-single-img
-
-
 .. rst-class:: sphx-glr-script-out
 
- Out:
+.. code-block:: pytb
 
- .. code-block:: none
-
-    2022-02-09 19:18:04,308 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/prabhant/OpenML/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    Traceback (most recent call last):
+      File "/Users/davina/Documents/Stuff/Code/pyampute/examples/plot_easy_example.py", line 49, in <module>
+        patterns = mdp.get_patterns(X_incompl)
+      File "/Users/davina/Documents/Stuff/Code/pyampute/pyampute/exploration/md_patterns.py", line 80, in get_patterns
+        self._make_plot()
+      File "/Users/davina/Documents/Stuff/Code/pyampute/pyampute/exploration/md_patterns.py", line 150, in _make_plot
+        ax.imshow(heat_values, aspect="auto", cmap=cmap)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/matplotlib/_api/deprecation.py", line 456, in wrapper
+        return func(*args, **kwargs)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/matplotlib/__init__.py", line 1412, in inner
+        return func(ax, *map(sanitize_sequence, args), **kwargs)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/matplotlib/axes/_axes.py", line 5442, in imshow
+        im.set_data(X)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/matplotlib/image.py", line 706, in set_data
+        raise TypeError("Image data of dtype {} cannot be converted to "
+    TypeError: Image data of dtype object cannot be converted to float
 
 
 
@@ -126,25 +132,6 @@ A separate fit and transform
 
     mdp = mdPatterns()
     patterns = mdp.get_patterns(X_incompl_test)
-
-
-
-
-.. image-sg:: /auto_examples/images/sphx_glr_plot_easy_example_002.png
-   :alt: plot easy example
-   :srcset: /auto_examples/images/sphx_glr_plot_easy_example_002.png
-   :class: sphx-glr-single-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    2022-02-09 19:18:04,507 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/prabhant/OpenML/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-
-
 
 
 .. GENERATED FROM PYTHON SOURCE LINES 69-78
@@ -174,27 +161,6 @@ Application in a pipeline
     X_imp_test = pipe.transform(X_compl_test)
 
 
-
-.. rst-class:: sphx-glr-script-out
-
-.. code-block:: pytb
-
-    Traceback (most recent call last):
-      File "/Users/prabhant/OpenML/pyampute/examples/plot_easy_example.py", line 86, in <module>
-        X_imp_test = pipe.transform(X_compl_test)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/utils/metaestimators.py", line 113, in <lambda>
-        out = lambda *args, **kwargs: self.fn(obj, *args, **kwargs)  # noqa
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/pipeline.py", line 647, in transform
-        Xt = transform.transform(Xt)
-      File "/Users/prabhant/OpenML/pyampute/pyampute/ampute.py", line 941, in transform
-        chosen_candidates = np.random.binomial(
-      File "mtrand.pyx", line 3378, in numpy.random.mtrand.RandomState.binomial
-      File "__init__.pxd", line 742, in numpy.PyArray_MultiIterNew3
-    ValueError: shape mismatch: objects cannot be broadcast to a single shape
-
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 89-90
 
 By default, SimpleImputer imputes with the mean of the observed data. It is therefore like that we find the median in 50% of the rows (of the test set, which contains 25% of m) for 50% of the variables.
@@ -210,7 +176,7 @@ By default, SimpleImputer imputes with the mean of the observed data. It is ther
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.458 seconds)
+   **Total running time of the script:** ( 0 minutes  0.154 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_easy_example.py:

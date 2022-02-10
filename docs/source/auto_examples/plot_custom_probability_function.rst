@@ -18,22 +18,18 @@
 .. _sphx_glr_auto_examples_plot_custom_probability_function.py:
 
 
-===========================================
-Amputing with a custom probability function
-===========================================
+============================================
+Amputing with a Custom Probability Function
+============================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-20
+.. GENERATED FROM PYTHON SOURCE LINES 8-16
 
 .. code-block:: default
 
     """
     Create complete data.
     """
-    from pyampute import MultivariateAmputation
-    from pyampute import ArrayLike
     import numpy as np
-
-
 
     n = 10000
     X = np.random.randn(n, 2)
@@ -45,7 +41,7 @@ Amputing with a custom probability function
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-33
+.. GENERATED FROM PYTHON SOURCE LINES 17-30
 
 .. code-block:: default
 
@@ -53,6 +49,7 @@ Amputing with a custom probability function
     Define custom probability function.
     """
     # purely for demonstrative type hints
+    from pyampute import ArrayLike
 
 
     # Must produce values between 0 and 1
@@ -68,7 +65,7 @@ Amputing with a custom probability function
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-56
+.. GENERATED FROM PYTHON SOURCE LINES 31-53
 
 .. code-block:: default
 
@@ -101,13 +98,14 @@ Amputing with a custom probability function
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-64
+.. GENERATED FROM PYTHON SOURCE LINES 54-62
 
 .. code-block:: default
 
     """
     Run ampute.
     """
+    from pyampute import MultivariateAmputation
 
     ma = MultivariateAmputation(prop=my_prop, patterns=patterns)
     incomplete_data = ma.fit_transform(X)
@@ -119,10 +117,45 @@ Amputing with a custom probability function
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 63-68
+
+.. code-block:: default
+
+    from pyampute.exploration.md_patterns import mdPatterns
+
+    mdp = mdPatterns()
+    pattern = mdp.get_patterns(incomplete_data)
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "/Users/davina/Documents/Stuff/Code/pyampute/examples/plot_custom_probability_function.py", line 66, in <module>
+        pattern = mdp.get_patterns(incomplete_data)
+      File "/Users/davina/Documents/Stuff/Code/pyampute/pyampute/exploration/md_patterns.py", line 80, in get_patterns
+        self._make_plot()
+      File "/Users/davina/Documents/Stuff/Code/pyampute/pyampute/exploration/md_patterns.py", line 150, in _make_plot
+        ax.imshow(heat_values, aspect="auto", cmap=cmap)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/matplotlib/_api/deprecation.py", line 456, in wrapper
+        return func(*args, **kwargs)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/matplotlib/__init__.py", line 1412, in inner
+        return func(ax, *map(sanitize_sequence, args), **kwargs)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/matplotlib/axes/_axes.py", line 5442, in imshow
+        im.set_data(X)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/matplotlib/image.py", line 706, in set_data
+        raise TypeError("Image data of dtype {} cannot be converted to "
+    TypeError: Image data of dtype object cannot be converted to float
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.037 seconds)
+   **Total running time of the script:** ( 0 minutes  0.136 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_custom_probability_function.py:

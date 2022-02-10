@@ -53,7 +53,7 @@ Another option is to work with a complete portion of an already incomplete datas
 .. code-block:: pytb
 
     Traceback (most recent call last):
-      File "/Users/prabhant/OpenML/pyampute/examples/plot_simulation_pipeline.py", line 57, in <module>
+      File "/Users/davina/Documents/Stuff/Code/pyampute/examples/plot_simulation_pipeline.py", line 57, in <module>
         patterns = mdp._get_patterns(incompl_data)
     AttributeError: 'mdPatterns' object has no attribute '_get_patterns'
 
@@ -127,7 +127,7 @@ Another option is to work with a complete portion of an already incomplete datas
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.008 seconds)
+   **Total running time of the script:** ( 0 minutes  0.018 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_simulation_pipeline.py:
