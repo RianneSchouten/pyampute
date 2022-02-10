@@ -9,11 +9,11 @@ Welcome to ``pyampute``'s documentation!
 With ``pyampute``, we provide :class:`~pyampute.ampute.MultivariateAmputation`: a transformer for generating missing values in complete datasets. This is useful for evaluating the effect of missing values on the outcome of your model Additionally, we provide functionality for inspecting incomplete datasets: :class:`~pyampute.exploration.md_patterns.mdPatterns` and :class:`~pyampute.exploration.mcar_statistical_tests.MCARTest`. 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    installation
    pyampute
    examples
    blogposts
    about
-   contributing
+   contribution
