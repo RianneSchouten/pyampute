@@ -74,7 +74,6 @@ class MultivariateAmputation(TransformerMixin):
                 The weighted score for sample `i` in pattern `k` is the inner product of the
                 `weights` and `sample[i]`.
                 **Note:** weights are required to be defined
->>>>>>> Stashed changes
                 if the corresponding mechanism is MAR+MNAR.
 
             **mechanism** (`str, {MAR, MCAR, MNAR, MAR+MNAR}`) -- 
@@ -104,7 +103,6 @@ class MultivariateAmputation(TransformerMixin):
                 (case insensitive) applies sigmoid function with a logit cutoff
                 per pattern.
                 The simgoid function will dictates that a
->>>>>>> Stashed changes
                 [high, low, average, extreme] score (respectively) has a
                 high probability of amputation. The sigmoid functions will be shifted to ensure correct joint missingness probabilities. Custom functions must accept arrays with values ``(-inf, inf)`` and output values ``[0,1]``. We will *not* shift custom functions, refer to              :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py` for more.
 
@@ -172,7 +170,14 @@ class MultivariateAmputation(TransformerMixin):
     >>> ma = MultivariateAmputation()
     >>> X_incompl = ma.fit_transform(X_compl)
     """
-
+    DEFAULTS = {
+        "score_to_probability_func": "SIGMOID-RIGHT",
+        "mechanism": "MAR",
+        "lower_range": -3,
+        "upper_range": 3,
+        "max_iter": 100,
+        "max_diff_with_target": 0.001,
+    }
     def __init__(
         self,
         prop: float = 0.5,
