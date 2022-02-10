@@ -291,7 +291,7 @@ Weighted sum scores are stored in ``ma.wss_per_pattern``, which gives a list of 
     :figclass: align-center
 
 Missingness types and score_to_probability_func
-----------------------------------------------
+-----------------------------------------------
 
 At this point in the amputation process, all rows in the dataset are assigned to a pattern and have a weighted sum score. We now reach the state where we decide which rows will be amputed. We do that by means of a probability function that maps the weighted sum scores to a probability of being amputed. The multivariate amputation methodology knows four types of probability functions.
 
