@@ -54,7 +54,7 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Multivariate amputation can be used to evaluate the effect of missing values on the outcome of ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Generating missing values in a complete dataset (we call this amputation) may seem like a bizar...">
 
 .. only:: html
 
@@ -72,27 +72,6 @@ Examples
    :hidden:
 
    /auto_examples/plot_simulation_pipeline
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="By default, the IterativeImputer performs single imputation: a method where every missing value...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_multiple_imputation_thumb.png
-     :alt: Single versus multiple imputation
-
-     :ref:`sphx_glr_auto_examples_plot_multiple_imputation.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_multiple_imputation
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

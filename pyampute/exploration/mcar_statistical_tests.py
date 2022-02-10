@@ -16,12 +16,14 @@ class MCARTest:
     """
     Statistical hypothesis test for Missing Completely At Random (MCAR)
 
-    Performs Little's MCAR test (see `Little, R.J.A. (1988)`_). Null hypothesis: Alternative hypothesis: 
+    Performs Little's MCAR test (see `Little, R.J.A. (1988)`_). Null hypothesis: data is Missing Completely At Random (MCAR). Alternative hypothesis: data is not MCAR.
+
+    .. _`Little, R.J.A. (1988)`: https://www.tandfonline.com/doi/abs/10.1080/01621459.1988.10478722
 
     Parameters
     ----------
     method : str, {"little", "ttest"}, default : "little"
-        Whether to perform one chi-square test on the entire dataset ("little") or separate t-tests for every combination of variables ("ttest"). 
+        Whether to perform a chi-square test on the entire dataset ("little") or separate t-tests for every combination of variables ("ttest"). 
 
     See also
     --------
@@ -31,10 +33,9 @@ class MCARTest:
 
     Notes
     -----
-    We advise to use Little's MCAR test carefully. Rejecting the null hypothesis may not always mean guarantee that data is not MCAR, nor is accepting the null hypothesis a guarantee that data is MCAR. See `Schouten et al. (2021)`_ for a thorough discussion of missingness mechanisms. 
+    We advise to use Little's MCAR test carefully. Rejecting the null hypothesis may not always mean that data is not MCAR, nor is accepting the null hypothesis a guarantee that data is MCAR. See `Schouten et al. (2021)`_ for a thorough discussion of missingness mechanisms. 
 
-    .. _`Little, R.J.A. (1988)` Little, R. J. A. (1988). A test of missing completely at random for multivariate data with missing values. `Journal of the American Statistical Association,` 83(404), 1198-1202.
-    .. _`Schouten et al. (2021)` Schouten, R.M. and Vink, G. (2021) The dance of the mechanisms: How observed information influences the validity of missingness assumptions. `Sociological Methods & Research,` 50(3): 1243-1258.
+    .. _`Schouten et al. (2021)`: https://journals.sagepub.com/doi/full/10.1177/0049124118799376
     
     """
     def __init__(self, method: str = "little"):
@@ -63,7 +64,7 @@ class MCARTest:
         Returns
         -------
         pvalue : float
-            The p-value of a chi-square hypothesis test. Null hypothesis: Data is Missing Completely At Random (MCAR). Alternative hypothesis: Data is not MCAR.
+            The p-value of a chi-square hypothesis test. Null hypothesis: data is Missing Completely At Random (MCAR). Alternative hypothesis: data is not MCAR.
         """
 
         dataset = X.copy()
@@ -119,7 +120,7 @@ class MCARTest:
         Returns
         -------
         pvalues : pandas DataFrame of shape `(m, m)`
-            The pvalues of t-tests for each pair of features. Null hypothesis for cell :math:`pvalues[h,j]`: data in feature :math:`h` is Missing Completely At Random (MCAR) with respect to feature :math:`j` for all :math:`h,j` in :math:`{1,2,...m}`. Diagonal values do not exist and are not displayed. 
+            The p-values of t-tests for each pair of features. Null hypothesis for cell :math:`pvalues[h,j]`: data in feature :math:`h` is Missing Completely At Random (MCAR) with respect to feature :math:`j` for all :math:`h,j` in :math:`{1,2,...m}`. Diagonal values do not exist. 
         """
         dataset = X.copy()
         vars = dataset.dtypes.index.values

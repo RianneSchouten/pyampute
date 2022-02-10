@@ -8,30 +8,30 @@
 
     <title>A mapping from R-function ampute to pyampute &#8212; pyampute 0.0.1 documentation</title>
     
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
-
+    <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
     
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
+    <link rel="stylesheet"
+      href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
     
       
-
+  
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
-
+    <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -135,7 +135,8 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -161,6 +162,9 @@
 
   </div>
 </nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
             </div>
             
           
@@ -582,7 +586,7 @@
 <section id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 <p>In sum, with <a class="reference internal" href="pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a> in Python package <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> we allow for easy, multivariate amputation of complete datasets.</p>
-<p>In the example <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html">Evaluating missing values with a simulation pipeline</a>, we demonstrate how you can design a pipeline that evaluates missing data methods for various types of missingness. Note furthermore that <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> comes with <a class="reference internal" href="pyampute.exploration.html#pyampute.exploration.md_patterns.mdPatterns" title="pyampute.exploration.md_patterns.mdPatterns"><code class="xref py py-class docutils literal notranslate"><span class="pre">mdPatterns</span></code></a>, which allows for a quick inspection of an incomplete dataset, and with <a class="reference internal" href="pyampute.exploration.html#pyampute.exploration.mcar_statistical_tests.McarTest" title="pyampute.exploration.mcar_statistical_tests.McarTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">McarTest</span></code></a>, an implementation of <a class="reference internal" href="#little1988" id="id9"><span>[Little1988]</span></a> MCAR test, although it should be used with care. In the example <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_multiple_imputation.html">Single versus multiple imputation</a>, we give a short explanation of the difference between single and multiple imputation, and demonstrate how sklearn’s IterativeImputer (which performs multivariate, single imputation) can be used to perform multiple imputation (following <a class="reference internal" href="#vanbuuren2006" id="id10"><span>[VanBuuren2006]</span></a>).</p>
+<p>In the example <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html">Evaluating missing values with a simulation pipeline</a>, we demonstrate how you can design a pipeline that evaluates missing data methods for various types of missingness. Note furthermore that <code class="docutils literal notranslate"><span class="pre">pyampute</span></code> comes with <a class="reference internal" href="pyampute.exploration.html#pyampute.exploration.md_patterns.mdPatterns" title="pyampute.exploration.md_patterns.mdPatterns"><code class="xref py py-class docutils literal notranslate"><span class="pre">mdPatterns</span></code></a>, which allows for a quick inspection of an incomplete dataset, and with <code class="xref py py-class docutils literal notranslate"><span class="pre">McarTest</span></code>, an implementation of <a class="reference internal" href="#little1988" id="id9"><span>[Little1988]</span></a> MCAR test, although it should be used with care. In the example <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_multiple_imputation.html">Single versus multiple imputation</a>, we give a short explanation of the difference between single and multiple imputation, and demonstrate how sklearn’s IterativeImputer (which performs multivariate, single imputation) can be used to perform multiple imputation (following <a class="reference internal" href="#vanbuuren2006" id="id10"><span>[VanBuuren2006]</span></a>).</p>
 <p>Please do not hesitate to <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/about.html">contact us</a> in case there are any questions.</p>
 <p>Cheers,</p>
 </section>
@@ -613,7 +617,7 @@
               
               
               <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="blogposts.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -636,8 +640,8 @@
       </div>
     </div>
   
-  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
-<footer class="footer mt-5 mt-md-0">
+    <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -648,7 +652,7 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
 </p>
     </div>
     

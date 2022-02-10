@@ -16,8 +16,8 @@ class TestMCARTest(unittest.TestCase):
     """Test for MCAR."""
 
     def test_littles_mcar_test(self):
-        self.assertFalse(MCARTest(method="littles")(data_mcar) < significance_level)
-        self.assertTrue(MCARTest(method="littles")(data_mar) < significance_level)
+        self.assertFalse(MCARTest(method="little")(data_mcar) < significance_level)
+        self.assertTrue(MCARTest(method="little")(data_mar) < significance_level)
 
     def test_mcar_t_tests(self):
         # Axis=None reduces in all dimensions
