@@ -909,6 +909,10 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
             Incomplete data masked according to parameters.
         """
 
+        # Reset wss and props per pattern
+        self.wss_per_pattern = []
+        self.probs_per_pattern = []
+
         X = self._validate_data(X)
         num_samples = X.shape[0]
 
@@ -950,9 +954,5 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
                 )
             else:
                 X_incomplete.iloc[chosen_indices, pattern == 0] = np.nan
-
-        # Reset wss and props per pattern
-        self.wss_per_pattern = []
-        self.probs_per_pattern = []
 
         return X_incomplete
