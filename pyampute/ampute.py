@@ -52,10 +52,29 @@ class MultivariateAmputation(TransformerMixin):
         List of `k` dictionaries. Each dictionary has the following key-value pairs:
 
             **incomplete_vars** (Union[ArrayLike[int], ArrayLike[str]]) --
+<<<<<<< Updated upstream
                 Indicates which variables that should be amputed. List of int for indices of variables, list of str for column names of variables. `observed_vars` is the complement of `incomplete_vars`.
             **weights** (Union[ArrayLike[float], Dict[int, float], Dict[str, float]], default: all 0s (MCAR) or `observed_vars` weight 1 (MAR) or `incomplete_vars` weight 1 (MNAR)) --
                 Specifies the (relative) size of effect of each specified var on missing vars. If using an array, you must specify all *m* weights. If using a dictionary, the keys are either indices of vars or column names; unspecified vars will be
                 assumed to have a weight of 0. Negative values have a decrease effect, 0s indicate no role in missingness, and positive values have an increase effect. The weighted score for sample `i` in pattern `k` is the inner product of the `weights` and `sample[i]`. *Note:* weights are required to be defined
+=======
+                Indicates variables that should be amputed.
+                List of int for indices of variables, list of str for column names of variables.
+                ``observed_vars`` is the complement of ``incomplete_vars``.
+            **weights** (Union[ArrayLike[float], Dict[int, float], Dict[str, float]],
+             default: all 0s (MCAR)or `observed_vars` weight 1 (MAR) or `incomplete_vars` weight 1 (MNAR)) --
+                Specifies the size of effect of each specified var on missing vars.
+                If using an array, you must specify all *m* weights.
+                If using a dictionary, the keys are either indices of vars or column names;
+                unspecified vars will be
+                assumed to have a weight of 0.
+                Negative values have a decrease effect, 0s indicate no role in missingness,
+                unspecified vars have
+                weight 0), and positive values have an increase effect.
+                The weighted score for sample `i` in pattern `k` is the inner product of the
+                `weights` and `sample[i]`.
+                **Note:** weights are required to be defined
+>>>>>>> Stashed changes
                 if the corresponding mechanism is MAR+MNAR.
 
             **mechanism** (`str, {MAR, MCAR, MNAR, MAR+MNAR}`) -- 
@@ -66,11 +85,26 @@ class MultivariateAmputation(TransformerMixin):
                 All frequencies across `k` dicts/patterns must sum to 1.
                 Either specify for all patterns, or none for the default.
                 For example (`k` = 3 patterns), ``freq := [0.4, 0.4, 0.2]``
+<<<<<<< Updated upstream
                 means that of all rows with missing values, 40% should have pattern 1, 40% pattern 2. and 20% pattern 3.
 
             **score_to_probability_func** (`Union[str, Callable[ArrayLike[floats] -> ArrayLike[floats]]], {"sigmoid-right", "sigmoid-left", "sigmoid-mid", "sigmoid-tail", Callable}`) --
                 Converts standardized weighted scores for each data row (in a data subset corresponding to pattern k) to probability of missingness. Choosing one of the sigmoid options (case insensitive) applies sigmoid function with a logit cutoff
                 per pattern. The simgoid functions dictate that a
+=======
+                means, of all samples with missing values,
+                40% should have pattern 1, 40% pattern 2. and 20% pattern 3.
+
+            **score_to_probability_func** `Union[str, Callable[ArrayLike[floats]
+                -> ArrayLike[floats]]],{"sigmoid-right", "sigmoid-left", "sigmoid-mid", "sigmoid-tail", Callable}`) --
+                Converts standardized weighted scores for
+                each sample (in a data subset corresponding to pattern k)
+                to probability of missingness.
+                Choosing one of the sigmoid options
+                (case insensitive) applies sigmoid function with a logit cutoff
+                per pattern.
+                The simgoid function will dictates that a
+>>>>>>> Stashed changes
                 [high, low, average, extreme] score (respectively) has a
                 high probability of amputation. The sigmoid functions will be shifted to ensure correct joint missingness probabilities. Custom functions must accept arrays with values ``(-inf, inf)`` and output values ``[0,1]``. We will *not* shift custom functions, refer to              :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py` for more.
 
