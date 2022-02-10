@@ -1,40 +1,57 @@
-"""Some title"""
-# Author: Rianne Schouten <r.m.schouten@tue.nl>
-# Co-Author: Srinidhi Ilango <s.srinidhi.ilango@student.tue.nl>
+"""Displays missing data patterns in incomplete datasets"""
+# Author: Rianne Schouten <https://rianneschouten.github.io/>
+# Co-Author: Srinidhi Ilango 
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
+# Local
 from pyampute.utils import Matrix
 
 
 class mdPatterns:
     """
-    some comments
-    Initialize with nothing, then run get_patterns
+    Displays missing data patterns in incomplete datasets
+
+    Extracts all unique missing data patterns in an incomplete dataset and creates a visualization. ``1`` (red) and ``0`` (blue) refer to missing and observed values respectively.
 
     Parameters
     ----------
-    incomplete_data : Matrix with shape `(n, m)`
-        Dataset with missing values
-    missing_values
-        The placeholder for the missing values as needed by MissingIndicator
+    None: currently no parameters available.
 
-    Methods
-    -------
-    get_patterns
+    Attributes
+    ----------
+    md_patterns : pandas DataFrame of shape `(k+2, m+2)`
+        `k` is the number of unique missing data patterns and `m` the number of dataset columns (features). ``0`` and ``1`` correspond to missing and observed values respectively. The first row displays the data rows with no missing values and the last row gives column totals. The first column displays the count or proportion of rows that follow a pattern and the last column displays the number of missing values per pattern.
+
+    See also
+    --------
+    :class:`~pyampute.ampute.MultivariateAmputation` : Transformer for generating multivariate missingness in complete datasets
+
+    Notes
+    -----
+    This class is useful for investigating any structure in an incomplete dataset, and can help to understand possible reasons or solutions. We follow the logic of a comparable R-function, `mice::md_patterns`_.
+
+    .. _`mice::md_patterns`: https://github.com/amices/mice
 
     Examples
     --------
-    X = np.random.randn(100, 3)
-    mask1 = np.random.binomial(n=1, size=X.shape[0], p=0.5)    
-    mask2 = np.random.binomial(n=1, size=X.shape[0], p=0.5)
-    X[mask1==1, 0] = np.nan
-    X[mask2==1, 1] = np.nan
-    mypat = mp.mdPatterns()
-    mdpatterns = mypat.get_patterns(X)  
+    >>> import numpy as np
+    >>> import pandas as pd
+    >>> from pyampute.exploration.md_patterns import mdPatterns
+    >>> nhanes2 = pd.read_csv("data/nhanes2.csv")
+    >>> mdp = mdPatterns()
+    >>> patterns = mdp.get_patterns(nhanes2)
+    >>> print(patterns)
+                            row_count  age  hyp  bmi  chl  n_missing_values
+    rows_no_missing                 13    1    1    1    1                 0
+    1                                3    1    1    1    0                 1
+    2                                1    1    1    0    1                 1
+    3                                1    1    0    0    1                 2
+    4                                7    1    0    0    0                 3
+    n_missing_values_per_col              0    8    9   10                27
     """
 
     def __init__(self):
@@ -45,28 +62,26 @@ class mdPatterns:
     def get_patterns(
             self, X: Matrix, count_or_proportion: str = "count", show_plot: bool = True
     ) -> pd.DataFrame:
-        """Some comments
+        """Extracts and visualizes missing data patterns in an incomplete dataset
 
         Parameters
         ----------
-        X : Matrix
-            Matrix of shape `(n_samples, m_features)`
-            Incomplete input data, where "n_samples" is the number of samples and "m_features" is the number of features.
+        X : Matrix of shape `(n, m)`
+            Dataset with missing values. `n` rows (samples) and `m` columns (features).
         
-        count_or_proportion : str, {"count", "proportion"}
-            Whether the patterns should be given in counts or proportions.
+        count_or_proportion : str, {"count", "proportion"}, default : "count"
+            Whether the number of rows should be specified as a count or a proportion. 
 
         show_plot : bool, default : True
-            Whether the patterns should be shown in a plot.
+            Whether a plot should be displayed using ``plt.show``. 
 
         Returns
         -------
-        md_patterns: pd.DataFrame
-            A pandas dataframe of shape `(k+2, m_features+2)`
-            Here, "k" is the number of patterns, with one extra for rows that do not have missing values and one extra row with column totals, and "m_features" is the number of features, with one extra column for the row_count or row_percent and one extra column for number of missing values per pattern.
+        md_patterns : pandas DataFrame of shape `(k+2, m+2)`
+            `k` is the number of unique missing data patterns and `m` the number of dataset columns (features). The first row displays the data rows with no missing values and the last row gives column totals. The first column displays the count or proportion of rows that follow a pattern and the last column displays the number of missing values per pattern.
         """
 
-        # make sure Y is a pd.DataFrame
+        # make sure X is a pd.DataFrame
         Xdf = pd.DataFrame(X)
 
         # calculate patterns
@@ -81,9 +96,7 @@ class mdPatterns:
     def _calculate_patterns(
             self, X: pd.DataFrame, count_or_proportion: str = "count"
     ) -> pd.DataFrame:
-        """
-        Find all unique missing data patterns and structure it as a pd.DataFrame
-        """
+        """Extracts all unique missing data patterns in an incomplete dataset and transforms into a pandas DataFrame"""
 
         # mask
         mask = X.isnull()
@@ -131,6 +144,7 @@ class mdPatterns:
         return self.md_patterns
 
     def _make_plot(self):
+        """"Creates visualization of missing data patterns"""
 
         group_values = self.md_patterns
 
