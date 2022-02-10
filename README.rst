@@ -6,6 +6,7 @@ pymice
    :target: https://www.python.org/
 
 .. |code-coverage| image:: https://img.shields.io/codecov/c/github/RianneSchouten/pyampute
+   :target: https://app.codecov.io/gh/RianneSchouten/pyampute/
 
 
 .. role:: pyth(code)
