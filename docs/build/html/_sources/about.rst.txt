@@ -18,4 +18,4 @@ Read more about her `here <https://davinaz.me/>`_.
 Prabhant Singh
 --------------
 
-Something about Prabhant
+Prabhant is an AI engineer in TU Eindhoven and OpenML project. His research is in the area of AutoML and Meta-learning.
