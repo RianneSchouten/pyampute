@@ -320,14 +320,13 @@ Conclusion
 
 In sum, with :class:`~pyampute.ampute.MultivariateAmputation` in Python package ``pyampute`` we allow for easy, multivariate amputation of complete datasets. 
 
-In the example `Evaluating missing values with a simulation pipeline`_, we demonstrate how you can design a pipeline that evaluates missing data methods for various types of missingness. Note furthermore that ``pyampute`` comes with :class:`~pyampute.exploration.md_patterns.mdPatterns`, which allows for a quick inspection of an incomplete dataset, and with :class:`~pyampute.exploration.mcar_statistical_tests.McarTest`, an implementation of [Little1988]_ MCAR test, although it should be used with care. In the example `Single versus multiple imputation`_, we give a short explanation of the difference between single and multiple imputation, and demonstrate how sklearn's IterativeImputer (which performs multivariate, single imputation) can be used to perform multiple imputation (following [VanBuuren2006]_).
+In the example `Evaluating missing values with a simulation pipeline`_, we demonstrate how you can design a pipeline that evaluates missing data methods for various types of missingness. Note furthermore that ``pyampute`` comes with :class:`~pyampute.exploration.md_patterns.mdPatterns`, which allows for a quick inspection of an incomplete dataset, and with :class:`~pyampute.exploration.mcar_statistical_tests.McarTest`, an implementation of [Little1988]_ MCAR test, although it should be used with care. 
 
 Please do not hesitate to `contact us`_ in case there are any questions.
 
 Cheers,
 
 .. _Evaluating missing values with a simulation pipeline: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html
-.. _Single versus multiple imputation: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_multiple_imputation.html
 .. _contact us: https://rianneschouten.github.io/pyampute/build/html/about.html
 
 References
@@ -335,6 +334,5 @@ References
 
 .. [Schouten2021] Schouten, R.M. and Vink, G. (2021) The dance of the mechanisms: How observed information influences the validity of missingness assumptions. `Sociological Methods & Research,` 50(3): 1243-1258.
 .. [Schouten2018] Rianne R.M., Lugtig, P. & Vink, G. (2018) Generating missing values for simulation purposes: A multivariate amputation procedure. `Journal of Statistical Computation and Simulation,` 88(15): 1909-1930. 
-.. [VanBuuren2006] Van Buuren, S., J. P. L. Brand, C. G. M. Groothuis-Oudshoorn, and D. B. Rubin. 2006. Fully Conditional Specification in Multivariate Imputation. `Journal of Statistical Computation and Simulation,` 76 (12): 1049–64.
 .. [Little1988] Little, R. J. A. (1988). A test of missing completely at random for multivariate data with missing values. `Journal of the American Statistical Association,` 83(404), 1198–1202.
 .. [Rubin1976] Rubin, D. B. (1976) Inference and Missing Data. `Biometrika,` 63 (3): 581–90.
