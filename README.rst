@@ -42,3 +42,8 @@ The ``mdPatterns`` class is an implementation of ``mice:md.pattern`` in **R** an
 
 installation
 ------------
+
+via pip
+'''
+pip install pyampute
+'''

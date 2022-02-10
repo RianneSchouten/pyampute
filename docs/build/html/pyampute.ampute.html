@@ -8,30 +8,30 @@
 
     <title>pyampute.ampute module &#8212; pyampute 0.0.1 documentation</title>
     
-    <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
     
-    <link rel="stylesheet"
-      href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
     
       
-  
+
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/blank.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     
-    <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -105,6 +105,12 @@
  </a>
 </li>
 
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="contributing.html">
+  Contribution Guidelines
+ </a>
+</li>
+
     
 </ul>
       </div>
@@ -129,8 +135,7 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -150,9 +155,6 @@
 
   </div>
 </nav>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
             </div>
             
           
@@ -190,7 +192,7 @@
 <p>Transformer for generating multivariate missingness in complete datasets</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyampute.ampute.MultivariateAmputation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyampute.ampute.</span></span><span class="sig-name descname"><span class="pre">MultivariateAmputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_diff_with_target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyampute.ampute.MultivariateAmputation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyampute.ampute.</span></span><span class="sig-name descname"><span class="pre">MultivariateAmputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_diff_with_target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyampute.ampute.MultivariateAmputation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
 <p>Generating multivariate missingness patterns in complete datasets</p>
 <ul class="simple">
@@ -212,46 +214,50 @@ If there are too many patterns,
 the subsequent data subset (for pattern) will be empty, and <em>no amputation will occur</em>.
 Each dictionary has the following key-value pairs (required unless [optional]):</p>
 <blockquote>
-<div><dl>
+<div><dl class="simple">
 <dt><strong>incomplete_vars</strong> (Union[ArrayLike[int], ArrayLike[str]]) –</dt><dd><p>Indicates variables that should be amputed.
 List of int for indices of variables, list of str for column names of variables.
 <code class="docutils literal notranslate"><span class="pre">observed_vars</span></code> is the complement of <code class="docutils literal notranslate"><span class="pre">incomplete_vars</span></code>.</p>
 </dd>
-<dt><strong>weights</strong> (Union[ArrayLike[float], Dict[int, float], Dict[str, float]], default: all 0s (MCAR) or</dt><dd><dl class="simple">
-<dt><cite>observed_vars</cite> weight 1 (MAR) or <cite>incomplete_vars</cite> weight 1 (MNAR)) –</dt><dd><p>Specifies the size of effect of each specified var on missing vars.
+<dt><strong>weights</strong> (Union[ArrayLike[float], Dict[int, float], Dict[str, float]],default: all 0s (MCAR) or</dt><dd><p><cite>observed_vars</cite> weight 1 (MAR) or <cite>incomplete_vars</cite> weight 1 (MNAR)) –
+Specifies the size of effect of each specified var on missing vars.
 If using an array, you must specify all <em>m</em> weights.
-If using a dictionary, the keys are either indices of vars or column names; unspecified vars will be
+If using a dictionary, the keys are either indices of vars or column names;
+unspecified vars will be
 assumed to have a weight of 0.
-Negative values have a decrease effect, 0s indicate no role in missingness, unspecified vars have
+Negative values have a decrease effect, 0s indicate no role in missingness,
+unspecified vars have
 weight 0), and positive values have an increase effect.
-The weighted score for sample <cite>i</cite> in pattern <cite>k</cite> is the inner product of the <cite>weights</cite> and <cite>sample[i]</cite>.
-<strong>Note:</strong> weights are required to be defined if the corresponding mechanism is MAR+MNAR.</p>
-</dd>
-</dl>
+The weighted score for sample <cite>i</cite> in pattern <cite>k</cite> is the inner product of the
+<cite>weights</cite> and <cite>sample[i]</cite>.
+<strong>Note:</strong> weights are required to be defined
+if the corresponding mechanism is MAR+MNAR.</p>
 </dd>
 <dt><strong>mechanism</strong> (<cite>str, {MAR, MCAR, MNAR, MAR+MNAR} case insensitive</cite>) –</dt><dd><p>MNAR+MAR is only possible by passing a custom weight array.</p>
 </dd>
 <dt><strong>freq</strong> (<em>float [0,1], default: all patterns with equal frequency (1/k)</em>) –</dt><dd><p>Relative occurence of a pattern with respect to other patterns.
 All frequencies across <cite>k</cite> dicts/patterns must sum to 1.
 Either specify for all patterns, or none for the default.
-For example (<cite>k</cite> = 3 patterns), <code class="docutils literal notranslate"><span class="pre">freq</span> <span class="pre">:=</span> <span class="pre">[0.4,</span> <span class="pre">0.4,</span> <span class="pre">0.2]</span></code> means, of all samples with missing values,
+For example (<cite>k</cite> = 3 patterns), <code class="docutils literal notranslate"><span class="pre">freq</span> <span class="pre">:=</span> <span class="pre">[0.4,</span> <span class="pre">0.4,</span> <span class="pre">0.2]</span></code>
+means, of all samples with missing values,
 40% should have pattern 1, 40% pattern 2. and 20% pattern 3.</p>
 </dd>
-<dt><strong>score_to_probability_func</strong> (<a href="#id1"><span class="problematic" id="id2">`</span></a>Union[str, Callable[ArrayLike[floats] -&gt; ArrayLike[floats]]],</dt><dd><dl>
-<dt>{“sigmoid-right”, “sigmoid-left”, “sigmoid-mid”, “sigmoid-tail”, Callable}`) –</dt><dd><p>Converts standardized weighted scores for each sample (in a data subset corresponding to pattern k)
+<dt><strong>score_to_probability_func</strong></dt><dd><p>(<cite>Union[str, Callable[ArrayLike[floats] -&gt; ArrayLike[floats]]],
+{“sigmoid-right”, “sigmoid-left”, “sigmoid-mid”, “sigmoid-tail”, Callable}</cite>) –
+Converts standardized weighted scores for
+each sample (in a data subset corresponding to pattern k)
 to probability of missingness.
-Choosing one of the sigmoid options (case insensitive) applies sigmoid function with a logit cutoff
+Choosing one of the sigmoid options
+(case insensitive) applies sigmoid function with a logit cutoff
 per pattern.
-The simgoid function will dictates that a [high, low, average, extreme] score (respectively) has a
+The simgoid function will dictates that a
+[high, low, average, extreme] score (respectively) has a
 high probability of amputation.
-The sigmoid functions will be shifted to ensure correct joint missingness probabilities.
+The sigmoid functions will be shifted to ensure
+correct joint missingness probabilities.
 Custom functions must accept arrays with values <code class="docutils literal notranslate"><span class="pre">(-inf,</span> <span class="pre">inf)</span></code> and output values <code class="docutils literal notranslate"><span class="pre">[0,1]</span></code>.
-We will <em>not</em> shift custom functions, refer to</p>
-<blockquote>
-<div><p><a class="reference internal" href="auto_examples/plot_custom_probability_function.html#sphx-glr-auto-examples-plot-custom-probability-function-py"><span class="std std-ref">Amputing with a Custom Probability Function</span></a> for more.</p>
-</div></blockquote>
-</dd>
-</dl>
+We will <em>not</em> shift custom functions, refer to
+<a class="reference internal" href="auto_examples/plot_custom_probability_function.html#sphx-glr-auto-examples-plot-custom-probability-function-py"><span class="std std-ref">Amputing with a Custom Probability Function</span></a> for more.</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -264,7 +270,8 @@ Do not standardize if passing both train and test set (prevent leaking).</p></li
 <li><p><strong>max_dif_with_target</strong> (<em>float</em><em>, </em><em>default : 0.001</em>) – The allowable error between the desired percent missing data (prop)
 and calculated joint missingness probability after assigning a
 probability for cases to be missing.</p></li>
-<li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>default : 100</em>) – Max number of iterations for binary search when searching for horizontal shift of <cite>score_to_probability_func</cite>.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em><em>, </em><em>default : 100</em>) – Max number of iterations for binary search when
+searching for horizontal shift of <cite>score_to_probability_func</cite>.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default : False</em>) – Toggle on to see INFO level logging information.</p></li>
 <li><p><strong>seed</strong> (<em>int</em><em>, </em><em>optional</em>) – If you want reproducible results during amputation set an integer seed.
 If you don’t set it, a random number will be produced every time.</p></li>
@@ -274,7 +281,8 @@ If you don’t set it, a random number will be produced every time.</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pyampute.ampute.MultivariateAmputation.DEFAULT_PATTERN">
 <span class="sig-name descname"><span class="pre">DEFAULT_PATTERN</span></span><a class="headerlink" href="#pyampute.ampute.MultivariateAmputation.DEFAULT_PATTERN" title="Permalink to this definition">¶</a></dt>
-<dd><p>If patterns is not passed, the default is the following:
+<dd><blockquote>
+<div><p>If patterns is not passed, the default is the following:
 .. code-block:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">caption</span><span class="p">:</span> <span class="n">Default</span> <span class="n">pattern</span><span class="o">.</span>
 
@@ -286,21 +294,16 @@ If you don’t set it, a random number will be produced every time.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
+</div></blockquote>
+<dl class="simple">
+<dt>DEFAULTS<span class="classifier">Dict[str, str]</span></dt><dd><p>Default values used, especially if values are
+not passed for arguments in certain patterns (not to be confused
+with patterns not being specified at all).</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>Dict[str, Any]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyampute.ampute.MultivariateAmputation.DEFAULTS">
-<span class="sig-name descname"><span class="pre">DEFAULTS</span></span><a class="headerlink" href="#pyampute.ampute.MultivariateAmputation.DEFAULTS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default values used, especially if values are not passed for arguments in certain patterns (not to be confused
-with patterns not being specified at all).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Dict[str, str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -313,8 +316,8 @@ with patterns not being specified at all).</p>
 <p class="rubric">Examples</p>
 <p>TODO</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">DEFAULTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'lower_range':</span> <span class="pre">-3,</span> <span class="pre">'max_diff_with_target':</span> <span class="pre">0.001,</span> <span class="pre">'max_iter':</span> <span class="pre">100,</span> <span class="pre">'mechanism':</span> <span class="pre">'MAR',</span> <span class="pre">'score_to_probability_func':</span> <span class="pre">'SIGMOID-RIGHT',</span> <span class="pre">'upper_range':</span> <span class="pre">3}</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pyampute.ampute.MultivariateAmputation.DEFAULTS">
+<span class="sig-name descname"><span class="pre">DEFAULTS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'lower_range':</span> <span class="pre">-3,</span> <span class="pre">'max_diff_with_target':</span> <span class="pre">0.001,</span> <span class="pre">'max_iter':</span> <span class="pre">100,</span> <span class="pre">'mechanism':</span> <span class="pre">'MAR',</span> <span class="pre">'score_to_probability_func':</span> <span class="pre">'SIGMOID-RIGHT',</span> <span class="pre">'upper_range':</span> <span class="pre">3}</span></em><a class="headerlink" href="#pyampute.ampute.MultivariateAmputation.DEFAULTS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -363,7 +366,7 @@ Incomplete dataset masked according to parameters.</p>
               
               
               <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+<div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="pyampute.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -386,8 +389,8 @@ Incomplete dataset masked according to parameters.</p>
       </div>
     </div>
   
-    <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -398,7 +401,7 @@ Incomplete dataset masked according to parameters.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
 </p>
     </div>
     

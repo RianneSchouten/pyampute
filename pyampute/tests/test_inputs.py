@@ -215,7 +215,8 @@ class TestBadArgs(unittest.TestCase):
             X = X_nomissing.copy()
             # first column (first value) missing value
             X.iloc[0, 0] = np.nan
-            # first column involved in amputation, by default when column 1 is missing column 0 will be assigned a weight of 1
+            # first column involved in amputation, by default when column 1 is
+            # missing column 0 will be assigned a weight of 1
             amputer = MultivariateAmputation(patterns=[{"incomplete_vars": [1]}])
             # error should occur on transform
             amputer.fit_transform(X)

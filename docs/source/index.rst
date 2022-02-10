@@ -16,3 +16,4 @@ Here some short introduction and explanation.
    examples
    blogposts
    about
+   contributing

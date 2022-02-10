@@ -118,7 +118,8 @@ class mdPatterns:
 
         # add extra row to patterns when there are no incomplete rows in dataset
         if group_values.iloc[0, 0:-2].values.tolist() != list(np.ones(len(sorted_col))):
-            group_values.loc[-1] = np.concatenate((np.ones(len(sorted_col)), np.zeros(2))).astype(int)
+            group_values.loc[-1] = np.concatenate((np.ones(len(sorted_col)),
+                                                   np.zeros(2))).astype(int)
             group_values.index = group_values.index + 1  # shifting index
             group_values.sort_index(inplace=True)
 

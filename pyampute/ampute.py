@@ -56,17 +56,20 @@ class MultivariateAmputation(TransformerMixin):
                 Indicates variables that should be amputed.
                 List of int for indices of variables, list of str for column names of variables.
                 ``observed_vars`` is the complement of ``incomplete_vars``.
-
-            **weights** (Union[ArrayLike[float], Dict[int, float], Dict[str, float]], default: all 0s (MCAR) or
-             `observed_vars` weight 1 (MAR) or `incomplete_vars` weight 1 (MNAR)) --
+            **weights** (Union[ArrayLike[float], Dict[int, float], Dict[str, float]],default: all 0s (MCAR) or
+                `observed_vars` weight 1 (MAR) or `incomplete_vars` weight 1 (MNAR)) --
                 Specifies the size of effect of each specified var on missing vars.
                 If using an array, you must specify all *m* weights.
-                If using a dictionary, the keys are either indices of vars or column names; unspecified vars will be
+                If using a dictionary, the keys are either indices of vars or column names;
+                unspecified vars will be
                 assumed to have a weight of 0.
-                Negative values have a decrease effect, 0s indicate no role in missingness, unspecified vars have
+                Negative values have a decrease effect, 0s indicate no role in missingness,
+                unspecified vars have
                 weight 0), and positive values have an increase effect.
-                The weighted score for sample `i` in pattern `k` is the inner product of the `weights` and `sample[i]`.
-                **Note:** weights are required to be defined if the corresponding mechanism is MAR+MNAR.
+                The weighted score for sample `i` in pattern `k` is the inner product of the
+                `weights` and `sample[i]`.
+                **Note:** weights are required to be defined
+                if the corresponding mechanism is MAR+MNAR.
 
             **mechanism** (`str, {MAR, MCAR, MNAR, MAR+MNAR} case insensitive`) --
                 MNAR+MAR is only possible by passing a custom weight array.
@@ -75,21 +78,27 @@ class MultivariateAmputation(TransformerMixin):
                 Relative occurence of a pattern with respect to other patterns.
                 All frequencies across `k` dicts/patterns must sum to 1.
                 Either specify for all patterns, or none for the default.
-                For example (`k` = 3 patterns), ``freq := [0.4, 0.4, 0.2]`` means, of all samples with missing values,
+                For example (`k` = 3 patterns), ``freq := [0.4, 0.4, 0.2]``
+                means, of all samples with missing values,
                 40% should have pattern 1, 40% pattern 2. and 20% pattern 3.
 
-            **score_to_probability_func** (`Union[str, Callable[ArrayLike[floats] -> ArrayLike[floats]]],
-             {"sigmoid-right", "sigmoid-left", "sigmoid-mid", "sigmoid-tail", Callable}`) --
-                Converts standardized weighted scores for each sample (in a data subset corresponding to pattern k)
+            **score_to_probability_func**
+                (`Union[str, Callable[ArrayLike[floats] -> ArrayLike[floats]]],
+                {"sigmoid-right", "sigmoid-left", "sigmoid-mid", "sigmoid-tail", Callable}`) --
+                Converts standardized weighted scores for
+                each sample (in a data subset corresponding to pattern k)
                 to probability of missingness.
-                Choosing one of the sigmoid options (case insensitive) applies sigmoid function with a logit cutoff
+                Choosing one of the sigmoid options
+                (case insensitive) applies sigmoid function with a logit cutoff
                 per pattern.
-                The simgoid function will dictates that a [high, low, average, extreme] score (respectively) has a
+                The simgoid function will dictates that a
+                [high, low, average, extreme] score (respectively) has a
                 high probability of amputation.
-                The sigmoid functions will be shifted to ensure correct joint missingness probabilities.
+                The sigmoid functions will be shifted to ensure
+                correct joint missingness probabilities.
                 Custom functions must accept arrays with values ``(-inf, inf)`` and output values ``[0,1]``.
                 We will *not* shift custom functions, refer to
-                 :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py` for more.
+                :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py` for more.
 
     std : boolean, default : True
         Whether or not to standardize data before computing weighted scores.
@@ -108,8 +117,8 @@ class MultivariateAmputation(TransformerMixin):
         probability for cases to be missing.
 
     max_iter : int, default : 100
-        Max number of iterations for binary search when searching for horizontal shift of `score_to_probability_func`.
-    
+        Max number of iterations for binary search when
+        searching for horizontal shift of `score_to_probability_func`.
     verbose: bool, default : False
         Toggle on to see INFO level logging information.
 
@@ -130,9 +139,9 @@ class MultivariateAmputation(TransformerMixin):
                 "score-to-prob": "sigmoid-right"
                 "freq": 1
             }
-   
-    DEFAULTS :  Dict[str, str]
-        Default values used, especially if values are not passed for arguments in certain patterns (not to be confused
+       DEFAULTS :  Dict[str, str]
+        Default values used, especially if values are
+        not passed for arguments in certain patterns (not to be confused
         with patterns not being specified at all).
 
     Methods
@@ -206,7 +215,7 @@ class MultivariateAmputation(TransformerMixin):
             Left: To flip regular sigmoid across y axis, make input negative.
                 This pushes smaller values to have high probability.
             Mid: Values in the center of the score distribution have high probability.
-            Tail: Larger and smaller values have high probabiliy.    
+            Tail: Larger and smaller values have high probabiliy.
         """
         if isinstance(probability_func, str):
             cutoff_transformations = {
@@ -294,7 +303,8 @@ class MultivariateAmputation(TransformerMixin):
         if isinstance(score_to_probability_func, str):
             if self.shift_lookup_table is not None:
                 logging.info(
-                    "Rounding proportion of missingness to 2 decimal places in order to use lookup table for"
+                    "Rounding proportion of missingness to 2 "
+                    "decimal places in order to use lookup table for"
                     " one of the prespecified score to probability functions."
                 )
                 prop = np.around(self.prop, 2)
@@ -334,14 +344,14 @@ class MultivariateAmputation(TransformerMixin):
             2. MAR with binary variables
         Therefore we just use uniform probability of missing per var using self.freqs
         Alternatively, If there are not enough unique wss we apply MCAR.
-        NOTE: The threshold is on unique WSS. 
-           The discrepancy between min number of candidates requires and unique wss means that there are few candidates and will trigger a warning, but if they're all unique wss, then MCAR will NOT be applied.
+        NOTE: The threshold is on unique WSS.
+           The discrepancy between min number of candidates requires and
+            unique wss means that there are few candidates and will trigger
+             a warning, but if they're all unique wss, then MCAR will NOT be applied.
         """
         wss = self.wss_per_pattern[pattern_index]
         if np.all(wss == wss[0]) or len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
-            # there's 1 pattern under MCAR, freq = 1 (all candidates will be wrongly chosen)
-            prob_fill = self.prop if len(self.freqs) == 1 else self.freqs[pattern_index]
-            probs = np.repeat(prob_fill, len(wss))
+            probs = np.repeat(self.prop, len(wss))
         else:  # else we calculate the probabilities based on the wss
             # standardize wss
             wss_standardized = stats.zscore(wss)
@@ -395,13 +405,20 @@ class MultivariateAmputation(TransformerMixin):
         wss = np.dot(data_group, self.weights[pattern_ind, :].T)
         self.wss_per_pattern.append(wss)
 
-        if len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS:
+        if (
+            len(np.unique(wss)) <= THRESHOLD_MIN_NUM_UNIQUE_WSS
+            and self.mechanisms[pattern_ind] != "MCAR"
+        ):
             logging.warning(
-                f"Candidates for pattern {pattern_ind} all have almost the same weighted sum scores. "
+                f"Candidates for pattern {pattern_ind} all have almost "
+                f"the same weighted sum scores. "
                 "It is possible this is due to the use of binary variables in amputation. "
-                "This creates problems when using the sigmoid function for the score_to_probability_func. "
-                "Currently our solution is as follows: if there is just one candidate with a sum score 0, we will ampute it. "
-                "If there is one candidate with a nonzero sum score, or multiple candidates with the same score, we evenly apply as if MCAR."
+                "This creates problems when using the "
+                "sigmoid function for the score_to_probability_func. "
+                "Currently our solution is as follows: if there is just"
+                " one candidate with a sum score 0, we will ampute it. "
+                "If there is one candidate with a nonzero sum score,"
+                " or multiple candidates with the same score, we evenly apply as if MCAR."
             )
         return wss
 
@@ -481,7 +498,7 @@ class MultivariateAmputation(TransformerMixin):
         """
         k_by_m = (self.num_patterns, self.num_features)
 
-        #### Init ####
+        # Init
         # indicator matrix (k, m) {0, 1}, (previously called patterns)
         self.observed_var_indicator = np.empty(shape=k_by_m, dtype=bool)
         # weight for scores matrix (k, m) [-inf, inf]
@@ -496,7 +513,7 @@ class MultivariateAmputation(TransformerMixin):
         # list of functions or strings per pattern (len k)
         self.score_to_probability_func = []
 
-        #### Build from Dicts ####
+        # Build from Dicts
         for pattern_idx, pattern in enumerate(self.patterns):
             # one-hot the at corresponding indices
             amputed_var_indicator = self._populate_pattern_array(
@@ -525,7 +542,7 @@ class MultivariateAmputation(TransformerMixin):
                     shape=self.num_features, fill_value=np.nan
                 )
 
-            #### Single default values if not specified ####
+            # Single default values if not specified ####
             self.mechanisms[pattern_idx] = (
                 pattern["mechanism"]
                 if "mechanism" in pattern
@@ -537,14 +554,15 @@ class MultivariateAmputation(TransformerMixin):
                 else self.DEFAULTS["score_to_probability_func"]
             )
 
-            #### All or None ####
+            # All or None
             if "freq" in pattern:
                 self.freqs[pattern_idx] = pattern["freq"]
 
     def _load_shift_lookup_table(self):
         """
         Read the lookup table csv from path.
-        Loads the table only once for the shift lookup when computing missing probabilities from scores.
+        Loads the table only once for the shift lookup
+        when computing missing probabilities from scores.
         This is only useful for prespecified functions (e.g., sigmoid-RIGHT)
         """
         if any([isinstance(func, str) for func in self.score_to_probability_func]):
@@ -553,7 +571,8 @@ class MultivariateAmputation(TransformerMixin):
             except Exception:
                 logging.warning(
                     "Failed to load lookup table for a prespecified score to probability function. "
-                    f"It is possible /data/{LOOKUP_TABLE_PATH}.csv is missing, in the wrong location, or corrupted. "
+                    f"It is possible /data/{LOOKUP_TABLE_PATH}.csv is missing,"
+                    f" in the wrong location, or corrupted. "
                     "Try rerunning /amputation/scripts.py to regenerate the lookup table."
                 )
                 self.shift_lookup_table = None
@@ -693,7 +712,8 @@ class MultivariateAmputation(TransformerMixin):
 
         # Warnings.
         mar_mask = self.mechanisms == "MAR"
-        # If there are weights under MAR that are nonzero for any vars that are incomplete, throw warning
+        # If there are weights under MAR that are nonzero for
+        # any vars that are incomplete, throw warning
         if any(mar_mask) and np.equal(
             self.weights[mar_mask].astype(bool),
             (1 - self.observed_var_indicator)[mar_mask],
@@ -703,7 +723,8 @@ class MultivariateAmputation(TransformerMixin):
                 "Did you mean MAR+MNAR?"
             )
         mnar_mask = self.mechanisms == "MNAR"
-        # if there are weights under MNAR that are nonzer for any vars that are observed, throw warning
+        # if there are weights under MNAR that are nonzer for
+        # any vars that are observed, throw warning
         if any(mnar_mask) and np.equal(
             self.weights[mnar_mask].astype(bool),
             self.observed_var_indicator[mnar_mask],
@@ -766,8 +787,11 @@ class MultivariateAmputation(TransformerMixin):
         )[0]
         if len(binary_vars_involved_in_ampute) > 0:
             logging.warning(
-                f"Binary variables (at indices {binary_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR). "
-                "This can result in a subset with candidates that all have the same (or almost the same) weighted sum scores. "
+                f"Binary variables (at indices {binary_vars_involved_in_ampute}) are"
+                f" indicated to be used in amputation (they are weighted and will"
+                f" be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR). "
+                f"This can result in a subset with candidates that all hav"
+                f"e the same (or almost the same) weighted sum scores. "
             )
         categorical_vars_mask = False  # TODO
         categorical_vars_involved_in_ampute = np.where(
@@ -775,7 +799,9 @@ class MultivariateAmputation(TransformerMixin):
         )[0]
         if len(categorical_vars_involved_in_ampute) > 0:
             logging.warning(
-                f"Categorical variables (at indices {categorical_vars_involved_in_ampute}) are indicated to be used in amputation (they are weighted and will be used to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR)."
+                f"Categorical variables (at indices {categorical_vars_involved_in_ampute}) are"
+                f" indicated to be used in amputation (they are weighted and will be used "
+                f"to calculate the weighted sum score under MAR, MNAR, or MAR+MNAR)."
                 "These will be forced to be numeric upon calculating sum scores."
             )
 
@@ -907,8 +933,8 @@ class MultivariateAmputation(TransformerMixin):
                 X[group_indices] if isinstance(X, np.ndarray) else X.iloc[group_indices]
             )
             # calculate weighted sum scores for each sample in the group
-            wss = self._calculate_sumscores(data_group, pattern_idx)
-             # define candidate probabilities in group
+            self._calculate_sumscores(data_group, pattern_idx)
+            # define candidate probabilities in group
             probs = self._choose_probabilities(pattern_idx)
             # apply probabilities and choose cases
             # set seed for random binomial

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Conda &#8212; pyampute 0.0.1 documentation</title>
+    <title>Contribution Guidelines &#8212; pyampute 0.0.1 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -39,8 +39,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="From source" href="source.html" />
-    <link rel="prev" title="Python Package Index (PyPI)" href="pypi.html" />
+    <link rel="prev" title="About us" href="about.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -75,7 +74,7 @@
       
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 current active nav-item">
+    <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="installation.html">
   Installation
  </a>
@@ -105,8 +104,8 @@
  </a>
 </li>
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="contributing.html">
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
   Contribution Guidelines
  </a>
 </li>
@@ -140,24 +139,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pypi.html">
-   Python Package Index (PyPI)
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Conda
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="source.html">
-   From source
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
             </div>
@@ -170,9 +152,34 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reporting-bugs">
+   Reporting Bugs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contributions">
+   Contributions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pull-requests">
+   Pull Requests
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pull-requests-checklist">
+   Pull Requests checklist
+  </a>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -192,8 +199,53 @@
               
               <div>
                 
-  <section id="conda">
-<h1>Conda<a class="headerlink" href="#conda" title="Permalink to this headline">¶</a></h1>
+  <section id="contribution-guidelines">
+<h1>Contribution Guidelines<a class="headerlink" href="#contribution-guidelines" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the workflow on how to contribute to the pyampute package.</p>
+<section id="reporting-bugs">
+<h2>Reporting Bugs<a class="headerlink" href="#reporting-bugs" title="Permalink to this headline">¶</a></h2>
+<p>We use GitHub issues to track all bugs and feature requests; feel free to open an issue if you have found a bug or wish to see a feature implemented.</p>
+<p>It is recommended to check that your issue complies with the following rules before submitting:</p>
+<ul class="simple">
+<li><p>Verify that your issue is not being currently addressed by other issues or pull requests.</p></li>
+<li><p>Please ensure all code snippets and error messages are formatted in appropriate code blocks. See Creating and highlighting code blocks.</p></li>
+<li><p>Please include your operating system type and version number, as well as your Python, pyampute, scikit-learn, numpy versions.</p></li>
+</ul>
+</section>
+<section id="contributions">
+<h2>Contributions<a class="headerlink" href="#contributions" title="Permalink to this headline">¶</a></h2>
+<p>All the contributions to pyampute should linked to issues on Github issue tracker. if you encountered a particular part of the documentation
+or code that you want to improve, but there is no related open issue yet, open one first.
+This is important since you can first get feedback or pointers from experienced contributors.
+To let everyone know you are working on an issue, please leave a comment that states you will work on the issue
+(or, if you have the permission, assign yourself to the issue). This avoids double work!</p>
+</section>
+<section id="pull-requests">
+<h2>Pull Requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h2>
+<p>All contributions to pyampute should be done via Pull requests. To make a PR to pyampute</p>
+<ul class="simple">
+<li><p>Fork the Pyampute repository.</p></li>
+<li><p>create a feature branch to hold your development changes.</p></li>
+<li><p>Develop your feature on feature branch and add changes then commit files.</p></li>
+<li><p>Follow <a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)">these instructions</a> to make a PR to the pyampute repository, this will send email to the authors.</p></li>
+</ul>
+</section>
+<section id="pull-requests-checklist">
+<h2>Pull Requests checklist<a class="headerlink" href="#pull-requests-checklist" title="Permalink to this headline">¶</a></h2>
+<p>We recommended that your contribution complies with the following rules before you submit a pull request:
+* Follow the pep8 style guide. With the following exceptions or additions:</p>
+<ul class="simple">
+<li><p>The max line length is 100 characters instead of 80.</p></li>
+<li><p>When creating a multi-line expression with binary operators, break before the operator.</p></li>
+</ul>
+<ul class="simple">
+<li><p>If your pull request addresses an issue, please use the pull request title to describe the issue and mention the issue number in the pull request description. This will make sure a link back to the original issue is created.</p></li>
+<li><p>An incomplete contribution – where you expect to do more work before receiving a full review – should be submitted as a draft. These may be useful to: indicate you are working on something to avoid duplicated work, request broad review of functionality or API, or seek collaborators. Drafts often benefit from the inclusion of a task list in the PR description.</p></li>
+<li><p>Add unit tests and examples for any new functionality being introduced.(we use unittest for testing)</p></li>
+<li><p>Documentation and high-coverage tests are necessary for enhancements to be accepted. Bug-fixes or new features should be provided with non-regression tests. These tests verify the correct behavior of the fix or feature. In this manner, further modifications on the code base are granted to be consistent with the desired behavior.</p></li>
+</ul>
+<p>(contribution guidelines adapted from openml-python)</p>
+</section>
 </section>
 
 
@@ -202,19 +254,12 @@
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="pypi.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="about.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Python Package Index (PyPI)</p>
+            <p class="prev-next-title">About us</p>
         </div>
-    </a>
-    <a class='right-next' id="next-link" href="source.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">From source</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
     </a>
 </div>
               

@@ -1,7 +1,7 @@
 """
-===========================================
-Amputing with a custom probability function
-===========================================
+============================================
+Amputing with a Custom Probability Function
+============================================
 """
 
 # %%
@@ -58,5 +58,11 @@ from pyampute import MultivariateAmputation
 
 ma = MultivariateAmputation(prop=my_prop, patterns=patterns)
 incomplete_data = ma.fit_transform(X)
+
+# %%
+from pyampute.exploration.md_patterns import mdPatterns
+
+mdp = mdPatterns()
+pattern = mdp.get_patterns(incomplete_data)
 
 # %%

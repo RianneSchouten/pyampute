@@ -79,7 +79,8 @@ class TestMdPatterns(unittest.TestCase):
 
         self.assertEqual(patterns["row_prop"].values[:-1].astype(float).sum(), 1.0)
         self.assertListEqual(
-            patterns.loc["n_missing_values_per_col"].values[1:].astype(float).tolist(), [0.0, 0.32, 0.36, 0.4, 0.27]
+            patterns.loc["n_missing_values_per_col"].values[1:].astype(float).tolist(),
+            [0.0, 0.32, 0.36, 0.4, 0.27]
         )
 
         # self.assertEqual(patterns.iloc[0:-1, 0].astype(float).values.sum(), 1.0)
