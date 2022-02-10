@@ -7,5 +7,3 @@ Here some general sentence.
    :maxdepth: 4
 
    pypi
-   conda
-   source
