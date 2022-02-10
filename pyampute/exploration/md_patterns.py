@@ -52,6 +52,7 @@ class mdPatterns:
     3                                1    1    0    0    1                 2
     4                                7    1    0    0    0                 3
     n_missing_values_per_col              0    8    9   10                27
+
     """
 
     def __init__(self):
