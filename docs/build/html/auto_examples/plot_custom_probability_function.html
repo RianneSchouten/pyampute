@@ -6,32 +6,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Amputing with a Custom Probability Function &#8212; pyampute 0.0.1 documentation</title>
+    <title>Amputing with a custom probability function &#8212; pyampute 0.0.1 documentation</title>
     
-    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
     
-    <link rel="stylesheet"
-      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
     
       
-  
+
     
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/blank.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     
-    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -92,7 +92,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -111,8 +111,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../contributing.html">
-  Contribution Guidelines
+ <a class="reference internal nav-link" href="../contribution.html">
+  Contribution guidelines
  </a>
 </li>
 
@@ -140,35 +140,14 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_easy_example.html">
-   A quick example
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_simulation_pipeline.html">
-   Evaluating missing values with a simulation pipeline
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Amputing with a Custom Probability Function
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
             </div>
             
           
@@ -179,9 +158,19 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cases-when-you-might-not-achieve-desired-amount-of-missingness">
+   Cases when you might not achieve desired amount of missingness
+  </a>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -207,22 +196,17 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="amputing-with-a-custom-probability-function">
-<span id="sphx-glr-auto-examples-plot-custom-probability-function-py"></span><h1>Amputing with a Custom Probability Function<a class="headerlink" href="#amputing-with-a-custom-probability-function" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Create complete data.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span id="sphx-glr-auto-examples-plot-custom-probability-function-py"></span><h1>Amputing with a custom probability function<a class="headerlink" href="#amputing-with-a-custom-probability-function" title="Permalink to this headline">¶</a></h1>
+<p>Create complete data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Define custom probability function.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="c1"># purely for demonstrative type hints</span>
+<p>Define custom probability function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># purely for demonstrative type hints</span>
 <span class="kn">from</span> <span class="nn">pyampute</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
-
 
 <span class="c1"># Must produce values between 0 and 1</span>
 <span class="k">def</span> <span class="nf">min_max_scale</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
@@ -230,13 +214,14 @@ to download the full example code</p>
     <span class="k">return</span> <span class="p">(</span><span class="n">X_abs</span> <span class="o">-</span> <span class="n">X_abs</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">X_abs</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">X_abs</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Define some patterns.</span>
-<span class="sd">Include the custom score to probability function in whichever pattern(s) you desire.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="n">my_incomplete_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])]</span>
+<p>Define some patterns.
+Include the custom score to probability function in whichever pattern(s) you desire.
+Here we’ll create 3 patterns.
+Note that the first and last pattern have the same weights but use different <code class="docutils literal notranslate"><span class="pre">score_to_probability_func</span></code> s.
+The first pattern introduces missingness to feature 0, and the latter two introduce missingness to feature 1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my_incomplete_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">])]</span>
 <span class="n">my_freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
-<span class="n">my_weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])]</span>
+<span class="n">my_weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">])]</span>
 <span class="n">my_score_to_probability_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">min_max_scale</span><span class="p">,</span> <span class="s2">&quot;sigmoid-right&quot;</span><span class="p">,</span> <span class="s2">&quot;sigmoid-right&quot;</span><span class="p">]</span>
 <span class="n">my_prop</span> <span class="o">=</span> <span class="mf">0.3</span>
 
@@ -253,13 +238,19 @@ to download the full example code</p>
 <span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Run ampute.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">pyampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
+<p>Run ampute.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
 
 <span class="n">ma</span> <span class="o">=</span> <span class="n">MultivariateAmputation</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="n">my_prop</span><span class="p">,</span> <span class="n">patterns</span><span class="o">=</span><span class="n">patterns</span><span class="p">)</span>
 <span class="n">incomplete_data</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We expect about 30% of rows to be missing values</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">incomplete_data</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>27.339999999999996
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyampute.exploration.md_patterns</span> <span class="kn">import</span> <span class="n">mdPatterns</span>
@@ -268,7 +259,66 @@ to download the full example code</p>
 <span class="n">pattern</span> <span class="o">=</span> <span class="n">mdp</span><span class="o">.</span><span class="n">get_patterns</span><span class="p">(</span><span class="n">incomplete_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_custom_probability_function_001.png" srcset="../_images/sphx_glr_plot_custom_probability_function_001.png" alt="plot custom probability function" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.165 seconds)</p>
+<img src="../_images/sphx_glr_plot_custom_probability_function_001.png" srcset="../_images/sphx_glr_plot_custom_probability_function_001.png" alt="plot custom probability function" class = "sphx-glr-single-img"/><p>Plot probabilities per pattern against the weighted sum scores per pattern.
+Note that Pattern 1 and Pattern 3 have the same weights.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">patterns</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">pattern_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">patterns</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">pattern_idx</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">ma</span><span class="o">.</span><span class="n">wss_per_pattern</span><span class="p">[</span><span class="n">pattern_idx</span><span class="p">],</span> <span class="n">ma</span><span class="o">.</span><span class="n">probs_per_pattern</span><span class="p">[</span><span class="n">pattern_idx</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">score_to_prob_func</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">[</span><span class="n">pattern_idx</span><span class="p">][</span><span class="s2">&quot;score_to_probability_func&quot;</span><span class="p">]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">score_to_prob_func</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">score_to_prob_func</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">score_to_prob_func</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">pattern_idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pattern </span><span class="si">{</span><span class="n">pattern_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="c1"># supxlabel requires matplotlib&gt;=3.4.0</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supxlabel</span><span class="p">(</span><span class="s2">&quot;Weighted Sum Score&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s2">&quot;Probability&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_plot_custom_probability_function_002.png" srcset="../_images/sphx_glr_plot_custom_probability_function_002.png" alt="Pattern 1 (min_max_scale), Pattern 2 (sigmoid-right), Pattern 3 (sigmoid-right)" class = "sphx-glr-single-img"/><section id="cases-when-you-might-not-achieve-desired-amount-of-missingness">
+<h2>Cases when you might not achieve desired amount of missingness<a class="headerlink" href="#cases-when-you-might-not-achieve-desired-amount-of-missingness" title="Permalink to this headline">¶</a></h2>
+<p>Here we rerun the amputation process but with only one pattern,
+and that pattern uses a custom <code class="docutils literal notranslate"><span class="pre">score_to_probability_func</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;incomplete_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])],</span> <span class="s2">&quot;score_to_probability_func&quot;</span><span class="p">:</span> <span class="n">min_max_scale</span><span class="p">}</span>
+<span class="p">]</span>
+<span class="n">ma</span> <span class="o">=</span> <span class="n">MultivariateAmputation</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="n">my_prop</span><span class="p">,</span> <span class="n">patterns</span><span class="o">=</span><span class="n">patterns</span><span class="p">)</span>
+<span class="n">incomplete_data</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">mdp</span> <span class="o">=</span> <span class="n">mdPatterns</span><span class="p">()</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">mdp</span><span class="o">.</span><span class="n">get_patterns</span><span class="p">(</span><span class="n">incomplete_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_plot_custom_probability_function_003.png" srcset="../_images/sphx_glr_plot_custom_probability_function_003.png" alt="plot custom probability function" class = "sphx-glr-single-img"/><p>We expect about 30% of rows to be missing values.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">incomplete_data</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>20.630000000000003
+</pre></div>
+</div>
+<p>We expected 30% of rows to be missing values but when we only have one
+pattern with a custom <code class="docutils literal notranslate"><span class="pre">score_to_probability_func</span></code> we don’t see that result.</p>
+<p><strong>This is expected behavior</strong>.
+For the sigmoid functions, we use <code class="docutils literal notranslate"><span class="pre">prop</span></code> to influence the proportion
+of missingness by shifting the sigmoid function accordingly.
+However, for a given custom probability we cannot know ahead of time
+how to adjust the function in order to produce the desired proportion
+of missingness.
+In the previous example, we achieved nearly 30% missingness due to the
+second and third patterns using the sigmoid <code class="docutils literal notranslate"><span class="pre">score_to_probability_func</span></code>.</p>
+<p>If you would like to use a custom probability function is it your responsibility
+to adjust the function to produce the desired amount of missingness.
+You can calculate the expected proportion of missingness following the procedure in Appendix 2 of <a class="reference external" href="https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577">Schouten et al. (2018)</a>.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.420 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-custom-probability-function-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/61b55bc04624ccc90767ad8c5c7bc7e8/plot_custom_probability_function.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_custom_probability_function.py</span></code></a></p>
@@ -279,13 +329,14 @@ to download the full example code</p>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
+</section>
 
 
               </div>
               
               
               <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+<div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="plot_simulation_pipeline.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -308,8 +359,8 @@ to download the full example code</p>
       </div>
     </div>
   
-    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -320,7 +371,7 @@ to download the full example code</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
 </p>
     </div>
     

@@ -8,30 +8,30 @@
 
     <title>Welcome to pyampute’s documentation! &#8212; pyampute 0.0.1 documentation</title>
     
-    <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-  
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
     
-    <link rel="stylesheet"
-      href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-  
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
     
       
-  
+
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/blank.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     
-    <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-  
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -110,8 +110,8 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="contributing.html">
-  Contribution Guidelines
+ <a class="reference internal nav-link" href="contribution.html">
+  Contribution guidelines
  </a>
 </li>
 
@@ -139,8 +139,7 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -148,9 +147,6 @@
     
   </div>
 </nav>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
             </div>
             
           
@@ -188,38 +184,12 @@
 <p>With <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, we provide <a class="reference internal" href="pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a>: a transformer for generating missing values in complete datasets. This is useful for evaluating the effect of missing values on the outcome of your model Additionally, we provide functionality for inspecting incomplete datasets: <a class="reference internal" href="pyampute.exploration.html#pyampute.exploration.md_patterns.mdPatterns" title="pyampute.exploration.md_patterns.mdPatterns"><code class="xref py py-class docutils literal notranslate"><span class="pre">mdPatterns</span></code></a> and <a class="reference internal" href="pyampute.exploration.html#pyampute.exploration.mcar_statistical_tests.MCARTest" title="pyampute.exploration.mcar_statistical_tests.MCARTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">MCARTest</span></code></a>.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pypi.html">Python Package Index (PyPI)</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pyampute.html">Package <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pyampute.ampute.html">pyampute.ampute module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyampute.exploration.html">pyampute.exploration</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_easy_example.html">A quick example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_simulation_pipeline.html">Evaluating missing values with a simulation pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_custom_probability_function.html">Amputing with a Custom Probability Function</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="blogposts.html">Blogposts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mapping.html">A mapping from R-function <code class="docutils literal notranslate"><span class="pre">ampute</span></code> to <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="about.html">About us</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="about.html#rianne-schouten">Rianne Schouten</a></li>
-<li class="toctree-l2"><a class="reference internal" href="about.html#davina-zamanzadeh">Davina Zamanzadeh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="about.html#prabhant-singh">Prabhant Singh</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribution Guidelines</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#reporting-bugs">Reporting Bugs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#contributions">Contributions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-requests">Pull Requests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-requests-checklist">Pull Requests checklist</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyampute.html">Package <code class="docutils literal notranslate"><span class="pre">pyampute</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogposts.html">Blogposts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribution.html">Contribution guidelines</a></li>
 </ul>
 </div>
 </section>
@@ -245,8 +215,8 @@
       </div>
     </div>
   
-    <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -257,7 +227,7 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
 </p>
     </div>
     

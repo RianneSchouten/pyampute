@@ -99,7 +99,7 @@ Transforming one dataset
 
  .. code-block:: none
 
-    2022-02-10 18:55:54,573 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/prabhant/OpenML/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-10 15:10:13,744 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -142,7 +142,7 @@ A separate fit and transform
 
  .. code-block:: none
 
-    2022-02-10 18:55:54,765 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/prabhant/OpenML/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-10 15:10:14,095 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -175,22 +175,15 @@ Application in a pipeline
 
 
 
+
+
 .. rst-class:: sphx-glr-script-out
 
-.. code-block:: pytb
+ Out:
 
-    Traceback (most recent call last):
-      File "/Users/prabhant/OpenML/pyampute/examples/plot_easy_example.py", line 86, in <module>
-        X_imp_test = pipe.transform(X_compl_test)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/utils/metaestimators.py", line 113, in <lambda>
-        out = lambda *args, **kwargs: self.fn(obj, *args, **kwargs)  # noqa
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/pipeline.py", line 647, in transform
-        Xt = transform.transform(Xt)
-      File "/Users/prabhant/OpenML/pyampute/pyampute/ampute.py", line 929, in transform
-        chosen_candidates = np.random.binomial(
-      File "mtrand.pyx", line 3378, in numpy.random.mtrand.RandomState.binomial
-      File "__init__.pxd", line 742, in numpy.PyArray_MultiIterNew3
-    ValueError: shape mismatch: objects cannot be broadcast to a single shape
+ .. code-block:: none
+
+    2022-02-10 15:10:14,417 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -208,9 +201,23 @@ By default, SimpleImputer imputes with the mean of the observed data. It is ther
     print(np.sum(X_imp_test == medians[None,:], axis=0))
 
 
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    [  0 131 131 131 131 131   0   0   0   0]
+
+
+
+
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.391 seconds)
+   **Total running time of the script:** ( 0 minutes  0.694 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_easy_example.py:

@@ -33,27 +33,6 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Amputing with a Custom Probability Function">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_custom_probability_function_thumb.png
-     :alt: Amputing with a Custom Probability Function
-
-     :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_custom_probability_function
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Generating missing values in a complete dataset (we call this amputation) may seem like a bizar...">
 
 .. only:: html
@@ -72,6 +51,27 @@ Examples
    :hidden:
 
    /auto_examples/plot_simulation_pipeline
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Amputing with a custom probability function">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_custom_probability_function_thumb.png
+     :alt: Amputing with a custom probability function
+
+     :ref:`sphx_glr_auto_examples_plot_custom_probability_function.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_custom_probability_function
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

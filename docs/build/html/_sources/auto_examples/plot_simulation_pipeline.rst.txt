@@ -218,41 +218,41 @@ Altogether
 .. code-block:: pytb
 
     Traceback (most recent call last):
-      File "/Users/prabhant/OpenML/pyampute/examples/plot_simulation_pipeline.py", line 122, in <module>
+      File "/Users/davina/Documents/Stuff/Code/pyampute/examples/plot_simulation_pipeline.py", line 122, in <module>
         grid.fit(compl_dataset)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/model_selection/_search.py", line 805, in fit
-        base_estimator = clone(self.estimator)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/base.py", line 86, in clone
-        new_object_params[name] = clone(param, safe=False)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/base.py", line 64, in clone
-        return estimator_type([clone(e, safe=safe) for e in estimator])
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/base.py", line 64, in <listcomp>
-        return estimator_type([clone(e, safe=safe) for e in estimator])
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/base.py", line 64, in clone
-        return estimator_type([clone(e, safe=safe) for e in estimator])
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/base.py", line 64, in <listcomp>
-        return estimator_type([clone(e, safe=safe) for e in estimator])
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/site-packages/sklearn/base.py", line 67, in clone
-        return copy.deepcopy(estimator)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/copy.py", line 172, in deepcopy
-        y = _reconstruct(x, memo, *rv)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/copy.py", line 270, in _reconstruct
-        state = deepcopy(state, memo)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/copy.py", line 146, in deepcopy
-        y = copier(x, memo)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/copy.py", line 230, in _deepcopy_dict
-        y[deepcopy(key, memo)] = deepcopy(value, memo)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/copy.py", line 172, in deepcopy
-        y = _reconstruct(x, memo, *rv)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/copy.py", line 270, in _reconstruct
-        state = deepcopy(state, memo)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/copy.py", line 146, in deepcopy
-        y = copier(x, memo)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/copy.py", line 230, in _deepcopy_dict
-        y[deepcopy(key, memo)] = deepcopy(value, memo)
-      File "/Users/prabhant/opt/anaconda3/envs/env/lib/python3.8/copy.py", line 161, in deepcopy
-        rv = reductor(4)
-    TypeError: cannot pickle '_thread.RLock' object
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_search.py", line 891, in fit
+        self._run_search(evaluate_candidates)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_search.py", line 1392, in _run_search
+        evaluate_candidates(ParameterGrid(self.param_grid))
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_search.py", line 838, in evaluate_candidates
+        out = parallel(
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/joblib/parallel.py", line 1043, in __call__
+        if self.dispatch_one_batch(iterator):
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/joblib/parallel.py", line 861, in dispatch_one_batch
+        self._dispatch(tasks)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/joblib/parallel.py", line 779, in _dispatch
+        job = self._backend.apply_async(batch, callback=cb)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/joblib/_parallel_backends.py", line 208, in apply_async
+        result = ImmediateResult(func)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/joblib/_parallel_backends.py", line 572, in __init__
+        self.results = batch()
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/joblib/parallel.py", line 262, in __call__
+        return [func(*args, **kwargs)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/joblib/parallel.py", line 262, in <listcomp>
+        return [func(*args, **kwargs)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/utils/fixes.py", line 211, in __call__
+        return self.function(*args, **kwargs)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py", line 669, in _fit_and_score
+        estimator = estimator.set_params(**cloned_parameters)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/pipeline.py", line 188, in set_params
+        self._set_params("steps", **kwargs)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/utils/metaestimators.py", line 54, in _set_params
+        super().set_params(**params)
+      File "/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/base.py", line 240, in set_params
+        raise ValueError(
+    ValueError: Invalid parameter amputation_patterns for estimator Pipeline(steps=[('amputation', MultivariateAmputation()),
+                    ('imputation', SimpleImputer()),
+                    ('estimator', CustomEstimator())]). Check the list of available parameters with `estimator.get_params().keys()`.
 
 
 
@@ -260,7 +260,7 @@ Altogether
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.004 seconds)
+   **Total running time of the script:** ( 0 minutes  0.092 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_simulation_pipeline.py:

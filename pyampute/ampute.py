@@ -122,7 +122,7 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
                 
             }
 
-       DEFAULTS :  Dict[str, Any]
+    DEFAULTS :  Dict[str, Any]
         Default values used, especially if values are not passed for parameters in certain patterns (not to be confused with patterns not being specified at all).
     
     See also

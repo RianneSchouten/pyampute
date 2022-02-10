@@ -17,7 +17,7 @@ setup(
         "pandas",
         "numpy>=1.19.0",
         "scipy",
-        "matplotlib",
+        "matplotlib>=3.4.0",
         "scikit-learn",
     ],
     extras_require={
