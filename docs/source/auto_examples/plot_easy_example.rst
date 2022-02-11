@@ -99,7 +99,7 @@ Transforming one dataset
 
  .. code-block:: none
 
-    2022-02-11 15:58:25,042 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-11 20:17:30,818 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -134,7 +134,7 @@ A separate fit and transform
 
  .. code-block:: none
 
-    2022-02-11 15:58:25,276 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-11 20:17:31,051 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -175,7 +175,7 @@ Integration in a pipeline
 
  .. code-block:: none
 
-    2022-02-11 15:58:25,326 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-11 20:17:31,092 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 
 
 
@@ -202,22 +202,22 @@ By default, ``SimpleImputer`` imputes with the mean of the observed data. It is 
 
  .. code-block:: none
 
-    [119 119   0   0 119   0   0 119   0 119]
+    [129   0 129   0 129   0 129   0   0 129]
 
 
 
 
 .. GENERATED FROM PYTHON SOURCE LINES 92-96
 
-For more information about ``pyampute``'s parameters, see `A mapping from R-function ampute to pyampute`_. To learn how to design a more thorough experiment, see `Evaluating missing values with a simulation pipeline`_.
+For more information about ``pyampute``'s parameters, see `A mapping from R-function ampute to pyampute`_. To learn how to design a more thorough experiment, see `Evaluating missing values with grid search and a pipeline`_.
 
 .. _`A mapping from R-function ampute to pyampute`: https://rianneschouten.github.io/pyampute/build/html/mapping.html
-.. _`Evaluating missing values with a simulation pipeline`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html
+.. _`Evaluating missing values with grid search and a pipeline`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.283 seconds)
+   **Total running time of the script:** ( 0 minutes  0.296 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_easy_example.py:

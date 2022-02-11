@@ -39,7 +39,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Evaluating missing values with a simulation pipeline" href="plot_simulation_pipeline.html" />
+    <link rel="next" title="Evaluating missing values with grid search and a pipeline" href="plot_simulation_pipeline.html" />
     <link rel="prev" title="Examples" href="../examples.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -243,7 +243,7 @@ to download the full example code</p>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_easy_example_001.png" srcset="../_images/sphx_glr_plot_easy_example_001.png" alt="plot easy example" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 15:58:25,042 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 20:17:30,818 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 </pre></div>
 </div>
 </section>
@@ -261,7 +261,7 @@ to download the full example code</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 15:58:25,276 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 20:17:31,051 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 </pre></div>
 </div>
 </section>
@@ -281,7 +281,7 @@ to download the full example code</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 15:58:25,326 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 20:17:31,092 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 </pre></div>
 </div>
 <p>By default, <code class="docutils literal notranslate"><span class="pre">SimpleImputer</span></code> imputes with the mean of the observed data. It is therefore like that we find the median in 50% of the rows (of the test set, which contains 25% of <img class="math" src="../_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/>) for 50% of the variables.</p>
@@ -290,11 +290,11 @@ to download the full example code</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[119 119   0   0 119   0   0 119   0 119]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[129   0 129   0 129   0 129   0   0 129]
 </pre></div>
 </div>
-<p>For more information about <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>’s parameters, see <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/mapping.html">A mapping from R-function ampute to pyampute</a>. To learn how to design a more thorough experiment, see <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html">Evaluating missing values with a simulation pipeline</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.283 seconds)</p>
+<p>For more information about <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>’s parameters, see <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/mapping.html">A mapping from R-function ampute to pyampute</a>. To learn how to design a more thorough experiment, see <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html">Evaluating missing values with grid search and a pipeline</a>.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.296 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-easy-example-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/fd1f9d09640f7596d1a75d0d5773fd06/plot_easy_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_easy_example.py</span></code></a></p>
@@ -323,7 +323,7 @@ to download the full example code</p>
     <a class='right-next' id="next-link" href="plot_simulation_pipeline.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Evaluating missing values with a simulation pipeline</p>
+        <p class="prev-next-title">Evaluating missing values with grid search and a pipeline</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

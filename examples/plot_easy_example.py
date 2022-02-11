@@ -89,7 +89,7 @@ medians = np.nanmedian(X_imp_test, axis=0)
 print(np.sum(X_imp_test == medians[None,:], axis=0))
 
 # %%
-# For more information about ``pyampute``'s parameters, see `A mapping from R-function ampute to pyampute`_. To learn how to design a more thorough experiment, see `Evaluating missing values with a simulation pipeline`_.
+# For more information about ``pyampute``'s parameters, see `A mapping from R-function ampute to pyampute`_. To learn how to design a more thorough experiment, see `Evaluating missing values with grid search and a pipeline`_.
 #
 # .. _`A mapping from R-function ampute to pyampute`: https://rianneschouten.github.io/pyampute/build/html/mapping.html
-# .. _`Evaluating missing values with a simulation pipeline`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html
+# .. _`Evaluating missing values with grid search and a pipeline`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html

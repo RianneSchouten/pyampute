@@ -90,9 +90,9 @@ parameters["imputation__strategy"] = ["mean"]
 #
 # How you wish to evaluate the amputation and imputation greatly depends on the goal of your model. We will first show the experiment for a LinearRegression estimator, using predictors and an outcome feature.
 # 
-# We recommend to read `A custom pipeline for measuring detailed effects`_ to see how custom ``BaseEstimator``'s and ``TransformerMixin``'s can be used to gain a deeper understanding of the impact of missing values.
+# We recommend to read `A custom pipeline with more possibilities`_ to see how custom ``BaseEstimator``'s and ``TransformerMixin``'s can be used to gain a deeper understanding of the impact of missing values.
 #
-# .. _``:
+# .. _`A custom pipeline with more possibilities`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_custom_pipeline.html
 
 import pandas as pd
 from sklearn.linear_model import LinearRegression

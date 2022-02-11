@@ -1,7 +1,7 @@
 """
-================================================
-A custom pipeline for measuring detailed effects
-================================================
+=========================================
+A custom pipeline with more possibilities
+=========================================
 
 Earlier, we demonstrated how :class:`~pyampute.ampute.MultivariateAmputation` can be integrated in a scikit-learn pipeline (see `A quick example`_ and `Evaluating missing values with grid search and a pipeline`_).
 
@@ -147,8 +147,8 @@ grid = GridSearchCV(
     scoring=make_scorer(my_evaluation_metric),
 )
 
-grid.fit(compl_dataset, y=compl_dataset[:,0])
-grid.score(compl_dataset, y=compl_dataset[:,0])
+grid.fit(compl_dataset, np.zeros(len(compl_dataset)))
+grid.score(compl_dataset, compl_dataset[:,0])
 results_drop = pd.DataFrame(grid.cv_results_)
 
 # %%
@@ -162,8 +162,8 @@ grid = GridSearchCV(
     scoring=make_scorer(my_evaluation_metric),
 )
 
-grid.fit(compl_dataset, y=compl_dataset[:,0])
-grid.score(compl_dataset, y=compl_dataset[:,0])
+grid.fit(compl_dataset, np.zeros(len(compl_dataset)))
+grid.score(compl_dataset, compl_dataset[:,0])
 results_mean = pd.DataFrame(grid.cv_results_)
 
 # %%

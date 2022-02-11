@@ -80,7 +80,7 @@ Examples
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_custom_pipeline_thumb.png
-     :alt: A custom pipeline for measuring detailed effects
+     :alt: A custom pipeline with more possibilities
 
      :ref:`sphx_glr_auto_examples_plot_custom_pipeline.py`
 
