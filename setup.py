@@ -4,8 +4,8 @@ import setuptools
 
 setup(
     name="pyampute",
-    version="0.0.1",
-    description="Amputation suite based on the R MICE package.",
+    version="0.0.2",
+    description="Transformer for generating multivariate missingness in complete datasets",
     author="Rianne Schouten,Davina Zamanzadeh,Prabhant Singh",
     author_email="r.m.schouten@tue.nl,davzaman@gmail.com,p.singh@tue.nl",
     packages=setuptools.find_packages(
