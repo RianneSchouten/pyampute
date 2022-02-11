@@ -65,18 +65,20 @@ From source
 
 ::
 
-   here some code
+   git clone https://github.com/RianneSchouten/pyampute.git
+   pip install ./pyampute
 
 License
 -------
 
+BSD 3-Clause License
 
 Citation
 --------
 
 .. code:: bibtex
 
-   @Manual{pyampute,
+   @manual{pyampute,
    author = {Schouten, Rianne M. and Zamanzadeh, Davina and Singh, Prabhant},
    title = {pyampute: {A} {P}ython library for generating multivariate missingness patterns in complete datasets},
    year = {2022},

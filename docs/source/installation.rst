@@ -13,4 +13,6 @@ From source
 
 ::
 
+  git clone https://github.com/RianneSchouten/pyampute.git
+  pip install ./pyampute
 
