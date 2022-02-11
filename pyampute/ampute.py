@@ -34,7 +34,7 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
     - `k` = number of patterns.
 
     Amputation is the opposite of imputation: the generation of missing values in complete datasets. 
-    This is useful for evaluating the effect of missing values on your model, mostly in experimental settings, but also as a preprocessing step in developing models. 
+    This is useful for evaluating the effect of missing values in your model, mostly in experimental settings, but also as a preprocessing step in developing models. 
 
     We provide `several examples`_ and `an extensive blogpost`_ to explain in more detail how certain parameter choices affect the generated missingness.
 

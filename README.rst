@@ -17,26 +17,10 @@ Check out the `documentation and find examples`_!
 
 .. _`documentation and find examples`: https://rianneschouten.github.io/pyampute/build/html/index.html
 
-Installation
-------------
-Python Package Index (PyPI)
-***************************
-
-::
-
-   pip install pyampute
-
-From source
-***********
-
-::
-
-   here some code
-
 Features
 --------
 
-Amputation is the opposite of imputation: the generation of missing values in complete datasets. This is useful for evaluating the effect of missing values on your model, mostly in experimental settings, but also as a preprocessing step in developing models.
+Amputation is the opposite of imputation: the generation of missing values in complete datasets. This is useful for evaluating the effect of missing values in your model, mostly in experimental settings, but also as a preprocessing step in developing models.
 
 Our `MultivariateAmputation`_ class is compatible with the scikit-learn-style ``fit`` and ``transform`` paradigm and can be used in a scikit-learn ``Pipeline``.
 
@@ -57,7 +41,7 @@ The underlying methodology has been proposed by `Schouten, Lugtig and Vink (2018
    ma = MultivariateAmputation()
    X_incompl = ma.fit_transform(X_compl)
 
-Furthermore, we provide an `mdPatterns`_ class, which displays missing data patterns in incomplete datasets.
+Among others, we also provide an `mdPatterns`_ class, which displays missing data patterns in incomplete datasets.
 
 .. code-block:: python
 
@@ -66,6 +50,22 @@ Furthermore, we provide an `mdPatterns`_ class, which displays missing data patt
    patterns = mdp.get_patterns(X_incompl)
 
 .. _`mdPatterns`: https://rianneschouten.github.io/pyampute/build/html/pyampute.exploration.html
+
+Installation
+------------
+Python Package Index (PyPI)
+***************************
+
+::
+
+   pip install pyampute
+
+From source
+***********
+
+::
+
+   here some code
 
 License
 -------

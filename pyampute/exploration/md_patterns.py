@@ -79,7 +79,10 @@ class mdPatterns:
         Returns
         -------
         md_patterns : pandas DataFrame of shape `(k+2, m+2)`
-            `k` is the number of unique missing data patterns and `m` the number of dataset columns (features). The first row displays the data rows with no missing values and the last row gives column totals. The first column displays the count or proportion of rows that follow a pattern and the last column displays the number of missing values per pattern.
+            `k` is the number of unique missing data patterns and `m` the number of dataset columns (features). 
+            The first row displays the data rows with no missing values and the last row gives column totals. 
+            The first column displays the count or proportion of rows that follow a pattern, 
+            the last column displays the number of missing values per pattern.
         """
 
         # make sure X is a pd.DataFrame
