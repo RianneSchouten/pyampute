@@ -8,6 +8,7 @@ We have examples that demonstrate the use of :class:`~pyampute.ampute.Multivaria
 
    auto_examples/plot_easy_example
    auto_examples/plot_simulation_pipeline
+   auto_examples/plot_custom_pipeline
    auto_examples/plot_custom_probability_function
-   
+  
 

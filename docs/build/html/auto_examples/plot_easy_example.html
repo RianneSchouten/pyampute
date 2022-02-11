@@ -92,7 +92,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -146,24 +146,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   A quick example
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_simulation_pipeline.html">
-   Evaluating missing values with a simulation pipeline
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_custom_probability_function.html">
-   Amputing with a custom probability function
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
               </div>
@@ -196,8 +179,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#application-in-a-pipeline">
-   Application in a pipeline
+  <a class="reference internal nav-link" href="#integration-in-a-pipeline">
+   Integration in a pipeline
   </a>
  </li>
 </ul>
@@ -228,10 +211,10 @@ to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="a-quick-example">
 <span id="sphx-glr-auto-examples-plot-easy-example-py"></span><h1>A quick example<a class="headerlink" href="#a-quick-example" title="Permalink to this headline">¶</a></h1>
-<p>Generating missing values in complete datasets can be done with <a class="reference internal" href="../pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a>. This is useful for understanding and evaluating the effect of missing values on the outcome of a model.</p>
-<p><a class="reference internal" href="../pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a> is designed as an <a class="reference external" href="https://scikit-learn.org/stable/index.html">sklearn</a> <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin">TransformerMixin</a>, to allow for easy integration in a <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html">pipeline</a>.</p>
-<p>Here, we give a short demonstration. A more extensive example of designing simulation studies for evaluating the effect of missing values can be found in <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html">this example</a>. For people who are familiar with the implementation of multivariate amputation in R-function <a class="reference external" href="https://rianneschouten.github.io/mice_ampute/vignette/ampute.html">ampute</a>, <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/mapping.html">this blogpost</a> gives an overview of the similarities and differences with <a class="reference internal" href="../pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a>. Inspection of an incomplete dataset can be done with <a class="reference internal" href="../pyampute.exploration.html#pyampute.exploration.md_patterns.mdPatterns" title="pyampute.exploration.md_patterns.mdPatterns"><code class="xref py py-class docutils literal notranslate"><span class="pre">mdPatterns</span></code></a>.</p>
-<p>Note that the amputation methodology itself is proposed in <a class="reference external" href="https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577">Generating missing values for simulation purposes</a> and used in <a class="reference external" href="https://journals.sagepub.com/doi/full/10.1177/0049124118799376">The dance of the mechanisms</a>.</p>
+<p>Amputation is the opposite of imputation: the generation of missing values in complete datasets. That is useful in an experimental setting where you want to evaluate the effect of missing values on the outcome of a model.</p>
+<p><a class="reference internal" href="../pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a> is designed following scikit-learn’s <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> paradigm, and can therefore seamless be integrated in a larger data processing pipeline.</p>
+<p>Here, we give a short demonstration. A more extensive example can be found in <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html">this example</a>. For people who are familiar with the implementation of multivariate amputation in R-function <a class="reference external" href="https://rianneschouten.github.io/mice_ampute/vignette/ampute.html">ampute</a>, <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/mapping.html">this blogpost</a> gives an overview of the similarities and differences with <a class="reference internal" href="../pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a>. Inspection of an incomplete dataset can be done with <a class="reference internal" href="../pyampute.exploration.html#pyampute.exploration.md_patterns.mdPatterns" title="pyampute.exploration.md_patterns.mdPatterns"><code class="xref py py-class docutils literal notranslate"><span class="pre">mdPatterns</span></code></a>.</p>
+<p>Note that the amputation methodology itself is proposed in <a class="reference external" href="https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577">Generating missing values for simulation purposes</a> and in <a class="reference external" href="https://journals.sagepub.com/doi/full/10.1177/0049124118799376">The dance of the mechanisms</a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Rianne Schouten &lt;https://rianneschouten.github.io/&gt;</span>
 <span class="c1"># Co-Author: Davina Zamanzadeh &lt;https://davinaz.me/&gt;</span>
 </pre></div>
@@ -260,35 +243,32 @@ to download the full example code</p>
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_easy_example_001.png" srcset="../_images/sphx_glr_plot_easy_example_001.png" alt="plot easy example" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-10 15:10:13,744 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 15:58:25,042 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 </pre></div>
 </div>
 </section>
 <section id="a-separate-fit-and-transform">
 <h2>A separate fit and transform<a class="headerlink" href="#a-separate-fit-and-transform" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>Evaluation of the effect of missing values on the outcome of a prediction model is best done by performing the amputation on the train and test set separately.</p>
+<div><p>Integration in a larger pipeline requires separate <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> functionality.</p>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
-<span class="n">X_compl_train</span><span class="p">,</span> <span class="n">X_compl_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_compl</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2020</span><span class="p">)</span>
+<span class="n">X_compl_train</span><span class="p">,</span> <span class="n">X_compl_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_compl</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
 <span class="n">ma</span> <span class="o">=</span> <span class="n">MultivariateAmputation</span><span class="p">()</span>
 <span class="n">ma</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_compl_train</span><span class="p">)</span>
 <span class="n">X_incompl_test</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_compl_test</span><span class="p">)</span>
-
-<span class="n">mdp</span> <span class="o">=</span> <span class="n">mdPatterns</span><span class="p">()</span>
-<span class="n">patterns</span> <span class="o">=</span> <span class="n">mdp</span><span class="o">.</span><span class="n">get_patterns</span><span class="p">(</span><span class="n">X_incompl_test</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_easy_example_002.png" srcset="../_images/sphx_glr_plot_easy_example_002.png" alt="plot easy example" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-10 15:10:14,095 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 15:58:25,276 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 </pre></div>
 </div>
 </section>
-<section id="application-in-a-pipeline">
-<h2>Application in a pipeline<a class="headerlink" href="#application-in-a-pipeline" title="Permalink to this headline">¶</a></h2>
+<section id="integration-in-a-pipeline">
+<h2>Integration in a pipeline<a class="headerlink" href="#integration-in-a-pipeline" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>Because <a class="reference internal" href="../pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a> is designed as a <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin">TransformerMixin</a>, it is easy to set up an <a class="reference external" href="https://scikit-learn.org/stable/index.html">sklearn</a> <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html">pipeline</a> to evaluate several combinations of amputation settings and imputation methods.</p>
+<div><p>A short pipeline may look as follows.</p>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
 <span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
@@ -301,19 +281,20 @@ to download the full example code</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-10 15:10:14,417 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 15:58:25,326 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 </pre></div>
 </div>
-<p>By default, SimpleImputer imputes with the mean of the observed data. It is therefore like that we find the median in 50% of the rows (of the test set, which contains 25% of m) for 50% of the variables.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">SimpleImputer</span></code> imputes with the mean of the observed data. It is therefore like that we find the median in 50% of the rows (of the test set, which contains 25% of <img class="math" src="../_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/>) for 50% of the variables.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">medians</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">X_imp_test</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X_imp_test</span> <span class="o">==</span> <span class="n">medians</span><span class="p">[</span><span class="kc">None</span><span class="p">,:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[  0 131 131 131 131 131   0   0   0   0]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[119 119   0   0 119   0   0 119   0 119]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.694 seconds)</p>
+<p>For more information about <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>’s parameters, see <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/mapping.html">A mapping from R-function ampute to pyampute</a>. To learn how to design a more thorough experiment, see <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html">Evaluating missing values with a simulation pipeline</a>.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.283 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-easy-example-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/fd1f9d09640f7596d1a75d0d5773fd06/plot_easy_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_easy_example.py</span></code></a></p>

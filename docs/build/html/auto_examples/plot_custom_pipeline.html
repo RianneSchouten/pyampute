@@ -1,0 +1,913 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>A custom pipeline for measuring detailed effects &#8212; pyampute 0.0.1 documentation</title>
+    
+    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
+    
+    <link rel="stylesheet"
+      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+    
+      
+  
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    
+    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Amputing with a custom probability function" href="plot_custom_probability_function.html" />
+    <link rel="prev" title="Evaluating missing values with grid search and a pipeline" href="plot_simulation_pipeline.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../index.html">
+<p class="title">pyampute</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../pyampute.html">
+  Package
+  <code class="docutils literal notranslate">
+   <span class="pre">
+    pyampute
+   </span>
+  </code>
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../blogposts.html">
+  Blogposts
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../about.html">
+  About us
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../contribution.html">
+  Contribution guidelines
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#recap">
+   Recap
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-transformer-that-drops-incomplete-rows">
+   A transformer that drops incomplete rows
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-custom-estimator">
+   A custom estimator
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#an-evaluation-pipeline">
+   An evaluation pipeline
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comparison">
+   Comparison
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-custom-pipeline-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="a-custom-pipeline-for-measuring-detailed-effects">
+<span id="sphx-glr-auto-examples-plot-custom-pipeline-py"></span><h1>A custom pipeline for measuring detailed effects<a class="headerlink" href="#a-custom-pipeline-for-measuring-detailed-effects" title="Permalink to this headline">¶</a></h1>
+<p>Earlier, we demonstrated how <a class="reference internal" href="../pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a> can be integrated in a scikit-learn pipeline (see <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_easy_example.html">A quick example</a> and <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html">Evaluating missing values with grid search and a pipeline</a>).</p>
+<p>It may be valuable to understand the impact of missing values in more detail. Therefore, we demonstrate how a <code class="docutils literal notranslate"><span class="pre">CustomTransformer</span></code> and <code class="docutils literal notranslate"><span class="pre">CustomEstimator</span></code> can be used to do a more thorough analysis. Not only will such analysis gain insights in the statistical problems of missing data (and some imputation methods), but it will also help you to create real-world and realistic missingness scenarios.</p>
+<p>Another example, of a more systematic approach, can be found in <a class="reference external" href="https://journals.sagepub.com/doi/full/10.1177/0049124118799376">Schouten and Vink (2021)</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Rianne Schouten &lt;https://rianneschouten.github.io/&gt;</span>
+</pre></div>
+</div>
+<section id="recap">
+<h2>Recap<a class="headerlink" href="#recap" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Given is the following setting (from <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html">Evaluating missing values with grid search and a pipeline</a>):</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">cor</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">cov</span><span class="p">[</span><span class="n">cov</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cor</span>
+<span class="n">compl_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As amputation parameter settings, we will vary the proportion, the mechanism and the <code class="docutils literal notranslate"><span class="pre">score_to_probability_func</span></code>. Since in  the latter have to be specified within the same dictionary, we define the parameters for the grid search as follows.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
+
+<span class="n">mechs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MCAR&quot;</span><span class="p">,</span> <span class="s2">&quot;MAR&quot;</span><span class="p">,</span> <span class="s2">&quot;MNAR&quot;</span><span class="p">]</span>
+<span class="n">funcs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sigmoid-right&quot;</span><span class="p">,</span> <span class="s2">&quot;sigmoid-mid&quot;</span><span class="p">]</span>
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;amputation__prop&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span>
+    <span class="s2">&quot;amputation__patterns&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[{</span><span class="s2">&quot;incomplete_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;mechanism&quot;</span><span class="p">:</span> <span class="n">mechanism</span><span class="p">,</span> <span class="s2">&quot;score_to_probability_func&quot;</span><span class="p">:</span> <span class="n">func</span><span class="p">}]</span>
+        <span class="k">for</span> <span class="n">mechanism</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">mechs</span><span class="p">,</span> <span class="n">funcs</span><span class="p">))]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="a-transformer-that-drops-incomplete-rows">
+<h2>A transformer that drops incomplete rows<a class="headerlink" href="#a-transformer-that-drops-incomplete-rows" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Previously, we evaluated the <code class="docutils literal notranslate"><span class="pre">SimpleImputer</span></code> class from scikit-learn. Another good way to evaluate the effect of missing values, is by analyzing the incomplete dataset directly. Since most prediction and analysis models do not accept missing values, we apply the <cite>dropna</cite> or <cite>listwise deletion</cite> or <cite>complete case analysis</cite> method (all names refer to the same strategy). To allow for integration in a pipeline, we set up a custom <code class="docutils literal notranslate"><span class="pre">TransformerMixin</span></code>.</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">TransformerMixin</span>
+
+<span class="k">class</span> <span class="nc">DropTransformer</span><span class="p">(</span><span class="n">TransformerMixin</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="c1"># drop incomplete rows</span>
+        <span class="n">Xp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Xdrop</span> <span class="o">=</span> <span class="n">Xp</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">Xdrop</span>
+</pre></div>
+</div>
+</section>
+<section id="a-custom-estimator">
+<h2>A custom estimator<a class="headerlink" href="#a-custom-estimator" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Almost all, if not all, estimators and evaluation metrics in scikit-learn are aimed at prediction or classification. That is what most people want to do.</p>
+<p>However, for evaluating the effect of missing values on your model, it may be good to look further than just the prediction or classification accuracy. In this example, we will focus on the center of the distribution of one feature and evaluate the bias in that distribution.</p>
+<p>That could work as follows.</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
+
+<span class="k">class</span> <span class="nc">CustomEstimator</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+
+        <span class="c1"># return values of first feature</span>
+        <span class="n">values_used_for_score</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">values_used_for_score</span>
+
+<span class="k">def</span> <span class="nf">my_evaluation_metric</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+
+    <span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+    <span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+
+    <span class="n">bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m1</span> <span class="o">-</span> <span class="n">m2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bias</span>
+</pre></div>
+</div>
+</section>
+<section id="an-evaluation-pipeline">
+<h2>An evaluation pipeline<a class="headerlink" href="#an-evaluation-pipeline" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>As can be seen, the <code class="docutils literal notranslate"><span class="pre">predict</span></code> function returns the first feature of the transformed dataset. The evaluation metric then calculated the mean difference between that feature, and the truth.</p>
+<p>In our experiment, the complete dataset is the ground truth and we evaluate the impact of several missing data models (and imputation models) on that truth.</p>
+<p>We then run the pipeline twice.</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="kn">from</span> <span class="nn">pyampute.ampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">make_scorer</span>
+</pre></div>
+</div>
+<p>Once with the DropTransformer</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;amputation&#39;</span><span class="p">,</span> <span class="n">MultivariateAmputation</span><span class="p">()),</span> <span class="p">(</span><span class="s1">&#39;imputation&#39;</span><span class="p">,</span> <span class="n">DropTransformer</span><span class="p">()),</span> <span class="p">(</span><span class="s1">&#39;estimator&#39;</span><span class="p">,</span> <span class="n">CustomEstimator</span><span class="p">())]</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">pipe</span><span class="p">,</span>
+    <span class="n">param_grid</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="n">make_scorer</span><span class="p">(</span><span class="n">my_evaluation_metric</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">compl_dataset</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">compl_dataset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">compl_dataset</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">compl_dataset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">results_drop</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 17:52:37,694 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:37,744 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:37,795 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:37,843 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:37,891 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:37,938 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:37,986 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,033 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,080 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,128 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,175 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,222 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,269 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,317 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,366 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,414 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,461 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,508 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,555 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,603 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,651 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,698 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,746 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,793 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,840 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,887 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,934 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:38,982 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,029 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,076 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,124 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,174 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,222 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,271 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,320 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,369 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,418 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,466 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,515 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,564 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,612 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,663 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,713 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,763 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,813 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,863 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,911 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:39,961 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,010 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,059 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,108 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,158 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,208 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,257 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,306 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,356 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,405 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,455 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,505 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,554 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,604 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,653 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,703 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,752 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,801 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,853 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,902 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:40,952 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,002 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,052 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,102 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,154 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,205 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,255 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,306 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,357 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,407 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,457 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,509 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,558 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,609 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,663 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,715 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,766 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,818 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,867 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,915 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:41,963 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,013 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,063 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,113 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+</pre></div>
+</div>
+<p>Once with the SimpleImputer</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;amputation&#39;</span><span class="p">,</span> <span class="n">MultivariateAmputation</span><span class="p">()),</span> <span class="p">(</span><span class="s1">&#39;imputation&#39;</span><span class="p">,</span> <span class="n">SimpleImputer</span><span class="p">()),</span> <span class="p">(</span><span class="s1">&#39;estimator&#39;</span><span class="p">,</span> <span class="n">CustomEstimator</span><span class="p">())]</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">pipe</span><span class="p">,</span>
+    <span class="n">param_grid</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="n">make_scorer</span><span class="p">(</span><span class="n">my_evaluation_metric</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">compl_dataset</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">compl_dataset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">compl_dataset</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">compl_dataset</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">results_mean</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 17:52:42,210 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,256 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,302 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,348 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,398 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,447 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,495 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,542 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,590 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,637 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,685 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,734 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,783 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,831 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,879 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,927 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:42,974 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,021 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,067 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,113 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,160 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,207 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,254 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,300 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,348 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,394 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,444 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,490 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,539 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,588 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,635 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,684 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,734 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,784 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,833 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,883 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,931 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:43,980 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,027 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,075 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,123 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,171 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,220 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,270 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,319 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,368 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,417 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,465 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,514 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,562 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,610 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,660 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,710 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,761 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,809 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,858 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,907 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:44,955 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,004 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,052 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,101 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,150 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,199 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,248 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,296 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,347 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,398 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,447 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,498 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,548 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,596 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,645 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,695 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,743 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,796 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,845 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,894 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,943 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:45,993 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,043 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,092 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,140 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,189 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,238 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,287 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,336 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,385 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,436 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,484 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,533 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:52:46,583 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+</pre></div>
+</div>
+</section>
+<section id="comparison">
+<h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">res_drop</span> <span class="o">=</span> <span class="n">results_drop</span><span class="p">[[</span><span class="s1">&#39;param_amputation__patterns&#39;</span><span class="p">,</span> <span class="s1">&#39;param_amputation__prop&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_test_score&#39;</span><span class="p">]]</span>
+<span class="n">res_mean</span> <span class="o">=</span> <span class="n">results_mean</span><span class="p">[[</span><span class="s1">&#39;param_amputation__patterns&#39;</span><span class="p">,</span> <span class="s1">&#39;param_amputation__prop&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_test_score&#39;</span><span class="p">]]</span>
+
+<span class="n">res_drop</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mechanism, func&#39;</span><span class="p">,</span> <span class="s1">&#39;prop&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">]</span>
+<span class="n">res_mean</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mechanism, func&#39;</span><span class="p">,</span> <span class="s1">&#39;prop&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">]</span>
+
+<span class="n">res_drop</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mechanism, func</th>
+      <th>prop</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.1</td>
+      <td>0.004721</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.5</td>
+      <td>0.020471</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.9</td>
+      <td>0.072182</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.1</td>
+      <td>0.003712</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.5</td>
+      <td>0.019809</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.9</td>
+      <td>0.107539</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.1</td>
+      <td>0.054120</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.5</td>
+      <td>0.263878</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.9</td>
+      <td>0.485268</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.1</td>
+      <td>0.006057</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.5</td>
+      <td>0.009876</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.9</td>
+      <td>0.074324</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.1</td>
+      <td>0.078125</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.5</td>
+      <td>0.361183</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.9</td>
+      <td>0.703046</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.1</td>
+      <td>0.004879</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.5</td>
+      <td>0.012418</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.9</td>
+      <td>0.125879</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">res_mean</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mechanism, func</th>
+      <th>prop</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.1</td>
+      <td>0.008295</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.5</td>
+      <td>0.011327</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.9</td>
+      <td>0.030600</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.1</td>
+      <td>0.002871</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.5</td>
+      <td>0.012751</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
+      <td>0.9</td>
+      <td>0.045114</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.1</td>
+      <td>0.057950</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.5</td>
+      <td>0.251995</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.9</td>
+      <td>0.508581</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.1</td>
+      <td>0.010164</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.5</td>
+      <td>0.011841</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
+      <td>0.9</td>
+      <td>0.032824</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.1</td>
+      <td>0.080873</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.5</td>
+      <td>0.347163</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.9</td>
+      <td>0.678226</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.1</td>
+      <td>0.003874</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.5</td>
+      <td>0.016440</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
+      <td>0.9</td>
+      <td>0.007455</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>What you find here, is that a MCAR mechanism will not affect the center of the distribution of the first feature much, independent of the proportion of incomplete rows.</p>
+<p>A MAR mechanism with a sigmoid-right probability function will, on average, remove the right-hand side of the distribution (also, because there is a positive correlation between the observed data and the first feature). Therefore, the larger the proportion, the more bias. However, with a sigmoid-mid probability function, values in the center of the distribution of the first feature are removed, and there is therefore not much effect on the bias.</p>
+<p>The same logic applies to MNAR missingness, but since MNAR missingness does not depend on the size of the correlation between observed data and incomplete data, the bias will be stronger.</p>
+<p><a class="reference external" href="https://journals.sagepub.com/doi/full/10.1177/0049124118799376">Schouten and Vink (2021)</a> further discuss this topic and the effect of multiple imputation (which can be performed using scikit-learn’s IterativeImputer).</p>
+<p>SimpleImputer will use the mean of the observed data in the first feature. Therefore, in case there is any bias, that bias will remain. In case there is no bias, mean imputation will distort the correlation structure with other features. But that is another story…</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  9.096 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-custom-pipeline-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/c970eafe109229d0e12c897814f9eaed/plot_custom_pipeline.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_custom_pipeline.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/c582f26e1fb15e5009e0cbaadf9aa696/plot_custom_pipeline.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_custom_pipeline.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="plot_simulation_pipeline.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Evaluating missing values with grid search and a pipeline</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="plot_custom_probability_function.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Amputing with a custom probability function</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Rianne Schouten, Davina Zamanzadeh, &amp; Prabhant Singh.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

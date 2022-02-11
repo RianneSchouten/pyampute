@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Evaluating missing values with a simulation pipeline &#8212; pyampute 0.0.1 documentation</title>
+    <title>Evaluating missing values with grid search and a pipeline &#8212; pyampute 0.0.1 documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -39,7 +39,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Amputing with a custom probability function" href="plot_custom_probability_function.html" />
+    <link rel="next" title="A custom pipeline for measuring detailed effects" href="plot_custom_pipeline.html" />
     <link rel="prev" title="A quick example" href="plot_easy_example.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -92,7 +92,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -146,24 +146,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_easy_example.html">
-   A quick example
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Evaluating missing values with a simulation pipeline
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_custom_probability_function.html">
-   Amputing with a custom probability function
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
               </div>
@@ -191,8 +174,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#complete-datasets">
-   Complete datasets
+  <a class="reference internal nav-link" href="#complete-dataset">
+   Complete dataset
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -208,11 +191,6 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#evaluation">
    Evaluation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#altogether">
-   Altogether
   </a>
  </li>
 </ul>
@@ -241,10 +219,11 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-simulation-pipeline-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<section class="sphx-glr-example-title" id="evaluating-missing-values-with-a-simulation-pipeline">
-<span id="sphx-glr-auto-examples-plot-simulation-pipeline-py"></span><h1>Evaluating missing values with a simulation pipeline<a class="headerlink" href="#evaluating-missing-values-with-a-simulation-pipeline" title="Permalink to this headline">¶</a></h1>
-<p>Generating missing values in a complete dataset (we call this <cite>amputation</cite>) may seem like a bizarre thing to do. However, most people who work with all sorts of data will acknowledge that missing data is widespread and can be a severe issue for various types of analyses and models. In order to understand the effect of missing values and to know which missing data methods are appropriate in which situation, we perform simulation studies. And for that, we need amputation.</p>
-<p>With package <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, we provide the multivariate amputation methodology proposed by <a class="reference external" href="https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577">Schouten et al. (2018)</a>. Because our <a class="reference internal" href="../pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a> class is built on an sklearn TransformerMixin, it is easy to integrate such evaluation in a larger experiment. Here, we will demonstrate how that works.</p>
+<section class="sphx-glr-example-title" id="evaluating-missing-values-with-grid-search-and-a-pipeline">
+<span id="sphx-glr-auto-examples-plot-simulation-pipeline-py"></span><h1>Evaluating missing values with grid search and a pipeline<a class="headerlink" href="#evaluating-missing-values-with-grid-search-and-a-pipeline" title="Permalink to this headline">¶</a></h1>
+<p>Generating missing values in a complete dataset (we call this <cite>amputation</cite>) seems like a bizarre thing to do. However, most people who work with all sorts of data will acknowledge that missing data is widespread and can be a severe issue for various types of analyses and models. In order to understand the effect of missing values and to know which missing data methods are appropriate in which situation, we perform simulation studies. And for that, we need amputation.</p>
+<p>With package <code class="docutils literal notranslate"><span class="pre">pyampute</span></code>, we provide the multivariate amputation methodology proposed by <a class="reference external" href="https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577">Schouten et al. (2018)</a>. Because our <a class="reference internal" href="../pyampute.ampute.html#pyampute.ampute.MultivariateAmputation" title="pyampute.ampute.MultivariateAmputation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultivariateAmputation</span></code></a> class follows scikit-learn’s <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> paradigm, it is straightforward to design a missing data experiment.</p>
+<p>Here, we demonstrate how that works.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Rianne Schouten &lt;https://rianneschouten.github.io/&gt;</span>
 </pre></div>
 </div>
@@ -258,17 +237,17 @@ to download the full example code</p>
 <li><p>Impute the dataset</p></li>
 <li><p>Compare the performance of a model between the datasets in step 1, 2 and 3.</p></li>
 </ol>
-<p>It is often wise to first inspect the effect of amputation (by comparing the datasets in steps 1 and 2) before comparing with the dataset in step 3. Let’s get started.</p>
+<p>It is often wise to first inspect the effect of amputation (by comparing the datasets in steps 1 and 2) before comparing with step 3. Let’s get started.</p>
 </div></blockquote>
 </section>
-<section id="complete-datasets">
-<h2>Complete datasets<a class="headerlink" href="#complete-datasets" title="Permalink to this headline">¶</a></h2>
+<section id="complete-dataset">
+<h2>Complete dataset<a class="headerlink" href="#complete-dataset" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>A simulation starts with a complete dataset. Make sure that you use a dataset where variables are correlated with each other; otherwise it will not make sense to use weights in a MAR or MNAR mechanism (see <a href="#id1"><span class="problematic" id="id2">`Schouten et al. (2021)`_</span></a> for a discussion on this topic).</p>
+<div><p>A simulation starts with a complete dataset. Make sure that you use a dataset where variables are correlated with each other; otherwise it will not make sense to use a sophisticated amputation algorithm (see <a class="reference external" href="https://journals.sagepub.com/doi/full/10.1177/0049124118799376">Schouten et al. (2021)</a> for a discussion on this topic).</p>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">m</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
 
 <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
@@ -282,7 +261,9 @@ to download the full example code</p>
 <section id="multivariate-amputation">
 <h2>Multivariate amputation<a class="headerlink" href="#multivariate-amputation" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>Vary the parameters of the amputation procedure. As an example, we generate one missing data pattern with missing values in the first two variables. We vary the proportion of incomplete rows and the missingness mechanisms</p>
+<div><p>Vary the parameters of the amputation procedure. Read the <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/pyampute.ampute.html">documentation</a> or <a class="reference external" href="https://rianneschouten.github.io/pyampute/build/html/mapping.html">this blogpost</a> to understand how you can tune the parameters such that you create varying types of missingness.</p>
+<p>As an example, here, we generate <cite>one`</cite> missing data pattern with missing values in the <cite>first two variables</cite>: <code class="docutils literal notranslate"><span class="pre">&quot;incomplete_vars&quot;:[0,1]</span></code>. We vary the proportion of incomplete rows between 0.1 and 0.9.</p>
+<p>We furthermore experiment with the three mechanisms: Missing Completely At Random (MCAR), Missing At Random (MAR) and Missing Not At Random (MNAR) (cf. <a class="reference external" href="https://www.jstor.org/stable/2335739">Rubin (1976)</a>).</p>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;amputation__prop&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span>
@@ -298,7 +279,7 @@ to download the full example code</p>
 <section id="missing-data-methods">
 <h2>Missing data methods<a class="headerlink" href="#missing-data-methods" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p><cite>SimpleImputer`_</cite> is a univariate, single imputation method that is commonly used. However, in case of MCAR missingness, it distorts the relation with other variables, and in case of MAR and MNAR missingness it will not resolve issues with shifted variable distributions (see <a href="#id3"><span class="problematic" id="id4">`Van Buuren (2018)`_</span></a>) It may be better to use a method such as <a href="#id5"><span class="problematic" id="id6">`IterativeImputer`_</span></a>.</p>
+<div><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.impute.SimpleImputer.html">SimpleImputer</a> is a univariate, single imputation method that is commonly used. However, in case of MCAR missingness, it distorts the relation with other variables, and in case of MAR and MNAR missingness it will not resolve issues with shifted variable distributions (see <a class="reference external" href="https://stefvanbuuren.name/fimd/">Van Buuren (2018)</a>). It may be better to use a method such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.impute.IterativeImputer.html">IterativeImputer</a>.</p>
 <p>Yet, to demonstrate the working of a simulation pipeline, we will work with SimpleImputer for now.</p>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;imputation__strategy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mean&quot;</span><span class="p">]</span>
@@ -308,428 +289,89 @@ to download the full example code</p>
 <section id="evaluation">
 <h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>How you wish to evaluate the appropriateness of a missing data method greatly depends on the goal of your model. When you develop a prediction or classification model, you may want to use a standard estimator and evaluation metric.</p>
-<p>Here, as an example, we evaluate using principles from statistical theory, where the goal is to find an unbiased and efficient estimate of a population parameter in a sample (that contains missing values). As an easy example, we evaluate an estimate of the mean of a variable, in this case the mean of the first variable.</p>
-<p>Therefore, we set up an empty BaseEstimator that returns the values of the first variable. We then design a custom evaluation metric. Since we work with one complete dataset, the true population estimate is the mean of the variable in that dataset. Note, in case we would repeatedly sample a complete dataset, the values of the distribution would become the true population estimate. Here, that would be <code class="docutils literal notranslate"><span class="pre">true_mean</span> <span class="pre">=</span> <span class="pre">5</span></code>.</p>
-</div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
-
-
-<span class="k">class</span> <span class="nc">CustomEstimator</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
-
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">values_first_variable</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">values_first_variable</span>
-
-
-<span class="k">def</span> <span class="nf">my_evaluation_metric</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
-    <span class="n">bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pred</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">bias</span>
-</pre></div>
-</div>
-</section>
-<section id="altogether">
-<h2>Altogether<a class="headerlink" href="#altogether" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><p>We then create our pipeline, and run an exhaustive grid search to see the effect of various parameters on the bias of the mean of the first variable.</p>
+<div><p>How you wish to evaluate the amputation and imputation greatly depends on the goal of your model. We will first show the experiment for a LinearRegression estimator, using predictors and an outcome feature.</p>
+<p>We recommend to read <a href="#id1"><span class="problematic" id="id2">`A custom pipeline for measuring detailed effects`_</span></a> to see how custom <code class="docutils literal notranslate"><span class="pre">BaseEstimator</span></code>’s and <code class="docutils literal notranslate"><span class="pre">TransformerMixin</span></code>’s can be used to gain a deeper understanding of the impact of missing values.</p>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">make_scorer</span><span class="p">,</span> <span class="n">mean_squared_error</span>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 <span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">make_scorer</span><span class="p">,</span> <span class="n">r2_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span><span class="p">,</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">pyampute.ampute</span> <span class="kn">import</span> <span class="n">MultivariateAmputation</span>
 
 <span class="n">steps</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s2">&quot;amputation&quot;</span><span class="p">,</span> <span class="n">MultivariateAmputation</span><span class="p">()),</span>
     <span class="p">(</span><span class="s2">&quot;imputation&quot;</span><span class="p">,</span> <span class="n">SimpleImputer</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s2">&quot;estimator&quot;</span><span class="p">,</span> <span class="n">CustomEstimator</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s2">&quot;estimator&quot;</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">()),</span>
 <span class="p">]</span>
 <span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
 <span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
-    <span class="c1"># estimator=pipe, param_grid=parameters, scoring=make_scorer(my_evaluation_metric)</span>
     <span class="n">estimator</span><span class="o">=</span><span class="n">pipe</span><span class="p">,</span>
     <span class="n">param_grid</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
-    <span class="n">scoring</span><span class="o">=</span><span class="n">make_scorer</span><span class="p">(</span><span class="n">r2_score</span><span class="p">),</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="n">make_scorer</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">),</span>
 <span class="p">)</span>
 
-<span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">compl_dataset</span><span class="p">)</span>
-<span class="n">grid</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">compl_dataset</span><span class="p">,</span> <span class="n">compl_dataset</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">compl_dataset</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">compl_dataset</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X_compl_train</span><span class="p">,</span> <span class="n">X_compl_test</span><span class="p">,</span> <span class="n">y_compl_train</span><span class="p">,</span> <span class="n">y_compl_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
+
+<span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_compl_train</span><span class="p">,</span> <span class="n">y_compl_train</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_compl_test</span><span class="p">,</span> <span class="n">y_compl_test</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="p">[[</span><span class="s1">&#39;param_amputation__patterns&#39;</span><span class="p">,</span> <span class="s1">&#39;param_amputation__prop&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;param_imputation__strategy&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_test_score&#39;</span><span class="p">]]</span>
+<span class="n">res</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mechanism&#39;</span><span class="p">,</span> <span class="s1">&#39;prop&#39;</span><span class="p">,</span> <span class="s1">&#39;imputation&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">]</span>
+<span class="n">res</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-10 15:56:46,943 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:46,957 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:46,967 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:46,977 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:46,987 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:46,997 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,008 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,020 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,033 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,041 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,049 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,058 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,066 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,074 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,084 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,094 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,105 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,117 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,130 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,141 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,154 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,166 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,176 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,184 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,193 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,201 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,211 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,219 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,228 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,236 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,246 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,255 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,263 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,271 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,279 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,288 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,297 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,305 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,312 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,321 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,329 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,337 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,345 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,354 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-2022-02-10 15:56:47,362 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py:771: UserWarning: Scoring failed. The score on this train-test partition for these parameters will be set to nan. Details:
-Traceback (most recent call last):
-  File &quot;/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_validation.py&quot;, line 760, in _score
-    scores = scorer(estimator, X_test)
-TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
-
-  warnings.warn(
-/Users/davina/miniconda3/envs/pymice/lib/python3.9/site-packages/sklearn/model_selection/_search.py:969: UserWarning: One or more of the test scores are non-finite: [nan nan nan nan nan nan nan nan nan]
-  warnings.warn(
-2022-02-10 15:56:47,378 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data//Users/davina/Documents/Stuff/Code/pyampute/docs/data/shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2022-02-11 17:40:19,575 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,575 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,592 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,592 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,611 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,618 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,625 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,633 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,640 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,647 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,654 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,660 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,667 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,674 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,676 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,676 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,692 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,702 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,710 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,717 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,724 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,726 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,726 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,742 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,742 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,759 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,759 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,775 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,775 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,792 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,792 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,792 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,809 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,809 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,826 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,826 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,842 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,842 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,859 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,859 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,874 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,876 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,876 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,892 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,892 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+2022-02-11 17:40:19,909 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -751,202 +393,82 @@ TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>mean_fit_time</th>
-      <th>std_fit_time</th>
-      <th>mean_score_time</th>
-      <th>std_score_time</th>
-      <th>param_amputation__patterns</th>
-      <th>param_amputation__prop</th>
-      <th>param_imputation__strategy</th>
-      <th>params</th>
-      <th>split0_test_score</th>
-      <th>split1_test_score</th>
-      <th>split2_test_score</th>
-      <th>split3_test_score</th>
-      <th>split4_test_score</th>
-      <th>mean_test_score</th>
-      <th>std_test_score</th>
-      <th>rank_test_score</th>
+      <th>mechanism</th>
+      <th>prop</th>
+      <th>imputation</th>
+      <th>score</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.008730</td>
-      <td>0.000627</td>
-      <td>0.001122</td>
-      <td>0.001214</td>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.1</td>
       <td>mean</td>
-      <td>{'amputation__patterns': [{'incomplete_vars': ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1</td>
+      <td>0.602248</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.008498</td>
-      <td>0.001660</td>
-      <td>0.000564</td>
-      <td>0.000129</td>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.5</td>
       <td>mean</td>
-      <td>{'amputation__patterns': [{'incomplete_vars': ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2</td>
+      <td>0.650559</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.007347</td>
-      <td>0.000729</td>
-      <td>0.000491</td>
-      <td>0.000075</td>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.9</td>
       <td>mean</td>
-      <td>{'amputation__patterns': [{'incomplete_vars': ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>3</td>
+      <td>0.658278</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.009752</td>
-      <td>0.001111</td>
-      <td>0.000561</td>
-      <td>0.000060</td>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR'}]</td>
       <td>0.1</td>
       <td>mean</td>
-      <td>{'amputation__patterns': [{'incomplete_vars': ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4</td>
+      <td>0.613434</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.007850</td>
-      <td>0.001137</td>
-      <td>0.000546</td>
-      <td>0.000138</td>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR'}]</td>
       <td>0.5</td>
       <td>mean</td>
-      <td>{'amputation__patterns': [{'incomplete_vars': ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>5</td>
+      <td>0.640022</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>0.007256</td>
-      <td>0.000224</td>
-      <td>0.000479</td>
-      <td>0.000071</td>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR'}]</td>
       <td>0.9</td>
       <td>mean</td>
-      <td>{'amputation__patterns': [{'incomplete_vars': ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6</td>
+      <td>0.657624</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>0.006906</td>
-      <td>0.000172</td>
-      <td>0.000424</td>
-      <td>0.000020</td>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.1</td>
       <td>mean</td>
-      <td>{'amputation__patterns': [{'incomplete_vars': ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>7</td>
+      <td>0.621410</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>0.006933</td>
-      <td>0.000444</td>
-      <td>0.000406</td>
-      <td>0.000029</td>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.5</td>
       <td>mean</td>
-      <td>{'amputation__patterns': [{'incomplete_vars': ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>8</td>
+      <td>0.639814</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>0.007142</td>
-      <td>0.000727</td>
-      <td>0.000477</td>
-      <td>0.000033</td>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.9</td>
       <td>mean</td>
-      <td>{'amputation__patterns': [{'incomplete_vars': ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>9</td>
+      <td>0.663369</td>
     </tr>
   </tbody>
 </table>
 </div>
 </div>
 <br />
-<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.628 seconds)</p>
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.434 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-simulation-pipeline-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/4bf1123cce983fd4900cc6e535aa8b59/plot_simulation_pipeline.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_simulation_pipeline.py</span></code></a></p>
@@ -972,10 +494,10 @@ TypeError: __call__() missing 1 required positional argument: &#39;y_true&#39;
             <p class="prev-next-title">A quick example</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="plot_custom_probability_function.html" title="next page">
+    <a class='right-next' id="next-link" href="plot_custom_pipeline.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Amputing with a custom probability function</p>
+        <p class="prev-next-title">A custom pipeline for measuring detailed effects</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

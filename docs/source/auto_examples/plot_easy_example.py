@@ -3,13 +3,13 @@
 A quick example
 ===============
 
-Generating missing values in complete datasets can be done with :class:`~pyampute.ampute.MultivariateAmputation`. This is useful for understanding and evaluating the effect of missing values on the outcome of a model. 
+Amputation is the opposite of imputation: the generation of missing values in complete datasets. That is useful in an experimental setting where you want to evaluate the effect of missing values on the outcome of a model. 
 
-:class:`~pyampute.ampute.MultivariateAmputation` is designed as an `sklearn`_ `TransformerMixin`_, to allow for easy integration in a `pipeline`_.
+:class:`~pyampute.ampute.MultivariateAmputation` is designed following scikit-learn's ``fit`` and ``transform`` paradigm, and can therefore seamless be integrated in a larger data processing pipeline.
 
-Here, we give a short demonstration. A more extensive example of designing simulation studies for evaluating the effect of missing values can be found in `this example`_. For people who are familiar with the implementation of multivariate amputation in R-function `ampute`_, `this blogpost`_ gives an overview of the similarities and differences with :class:`~pyampute.ampute.MultivariateAmputation`. Inspection of an incomplete dataset can be done with :class:`~pyampute.exploration.md_patterns.mdPatterns`.
+Here, we give a short demonstration. A more extensive example can be found in `this example`_. For people who are familiar with the implementation of multivariate amputation in R-function `ampute`_, `this blogpost`_ gives an overview of the similarities and differences with :class:`~pyampute.ampute.MultivariateAmputation`. Inspection of an incomplete dataset can be done with :class:`~pyampute.exploration.md_patterns.mdPatterns`.
 
-Note that the amputation methodology itself is proposed in `Generating missing values for simulation purposes`_ and used in `The dance of the mechanisms`_.
+Note that the amputation methodology itself is proposed in `Generating missing values for simulation purposes`_ and in `The dance of the mechanisms`_.
 
 .. _`sklearn`: https://scikit-learn.org/stable/index.html
 .. _`TransformerMixin`: https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin
@@ -52,24 +52,21 @@ patterns = mdp.get_patterns(X_incompl)
 # A separate fit and transform
 ##############################
 #
-# Evaluation of the effect of missing values on the outcome of a prediction model is best done by performing the amputation on the train and test set separately.
+# Integration in a larger pipeline requires separate ``fit`` and ``transform`` functionality. 
 #
 
 from sklearn.model_selection import train_test_split
 
-X_compl_train, X_compl_test = train_test_split(X_compl, random_state=2020)
+X_compl_train, X_compl_test = train_test_split(X_compl, random_state=2022)
 ma = MultivariateAmputation()
 ma.fit(X_compl_train)
 X_incompl_test = ma.transform(X_compl_test)
 
-mdp = mdPatterns()
-patterns = mdp.get_patterns(X_incompl_test)
-
 # %%
-# Application in a pipeline
+# Integration in a pipeline
 ###########################
 #
-# Because :class:`~pyampute.ampute.MultivariateAmputation` is designed as a `TransformerMixin`_, it is easy to set up an `sklearn`_ `pipeline`_ to evaluate several combinations of amputation settings and imputation methods.
+# A short pipeline may look as follows. 
 #
 # .. _`sklearn`: https://scikit-learn.org/stable/index.html
 # .. _`TransformerMixin`: https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin
@@ -86,7 +83,13 @@ pipe.fit(X_compl_train)
 X_imp_test = pipe.transform(X_compl_test)
 
 # %%
-# By default, SimpleImputer imputes with the mean of the observed data. It is therefore like that we find the median in 50% of the rows (of the test set, which contains 25% of m) for 50% of the variables.
+# By default, ``SimpleImputer`` imputes with the mean of the observed data. It is therefore like that we find the median in 50% of the rows (of the test set, which contains 25% of :math:`m`) for 50% of the variables.
 
 medians = np.nanmedian(X_imp_test, axis=0)
 print(np.sum(X_imp_test == medians[None,:], axis=0))
+
+# %%
+# For more information about ``pyampute``'s parameters, see `A mapping from R-function ampute to pyampute`_. To learn how to design a more thorough experiment, see `Evaluating missing values with a simulation pipeline`_.
+#
+# .. _`A mapping from R-function ampute to pyampute`: https://rianneschouten.github.io/pyampute/build/html/mapping.html
+# .. _`Evaluating missing values with a simulation pipeline`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html

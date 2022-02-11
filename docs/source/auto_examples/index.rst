@@ -12,7 +12,7 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Generating missing values in complete datasets can be done with MultivariateAmputation. This is...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Amputation is the opposite of imputation: the generation of missing values in complete datasets...">
 
 .. only:: html
 
@@ -33,12 +33,12 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Generating missing values in a complete dataset (we call this amputation) may seem like a bizar...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Generating missing values in a complete dataset (we call this amputation) seems like a bizarre ...">
 
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_simulation_pipeline_thumb.png
-     :alt: Evaluating missing values with a simulation pipeline
+     :alt: Evaluating missing values with grid search and a pipeline
 
      :ref:`sphx_glr_auto_examples_plot_simulation_pipeline.py`
 
@@ -72,6 +72,27 @@ Examples
    :hidden:
 
    /auto_examples/plot_custom_probability_function
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Earlier, we demonstrated how MultivariateAmputation can be integrated in a scikit-learn pipelin...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_custom_pipeline_thumb.png
+     :alt: A custom pipeline for measuring detailed effects
+
+     :ref:`sphx_glr_auto_examples_plot_custom_pipeline.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_custom_pipeline
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
