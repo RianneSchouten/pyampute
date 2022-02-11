@@ -568,9 +568,9 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
             except Exception:
                 logging.warning(
                     "Failed to load lookup table for a prespecified score to probability function. "
-                    f"It is possible /data/{LOOKUP_TABLE_PATH}.csv is missing,"
-                    f" in the wrong location, or corrupted. "
-                    "Try rerunning /amputation/scripts.py to regenerate the lookup table."
+                    f"It is possible {LOOKUP_TABLE_PATH} is missing, in the wrong location, or corrupted. "
+                    "Try rerunning scripts/generate_shift_lookup_table.py "
+                    "to regenerate the lookup table."
                 )
                 self.shift_lookup_table = None
 

@@ -16,6 +16,9 @@ def generate_shift_lookup_table(
         "max_diff_with_target"
     ],
 ):
+    """
+    Note: This should be run from the root folder so it is properly stored in "/data".
+    """
     normal_sample = np.random.standard_normal(size=n_samples)
     percent_missing = np.arange(0.01, 1.01, 0.01)
     score_to_prob_func_names = [

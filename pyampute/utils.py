@@ -11,7 +11,7 @@ from os.path import join
 ArrayLike = Union[pd.Series, np.array, List]
 Matrix = Union[pd.DataFrame, np.ndarray]
 
-LOOKUP_TABLE_PATH = join(getcwd(), "data", "shift_lookup.csv")
+LOOKUP_TABLE_PATH = join("data", "shift_lookup.csv")
 
 
 def standardize_uppercase(input: str) -> str:

@@ -221,7 +221,7 @@ Note that Pattern 1 and Pattern 3 have the same weights.
 .. GENERATED FROM PYTHON SOURCE LINES 98-102
 
 Cases when you might not achieve desired amount of missingness
-===================
+==============================================================
 Here we rerun the amputation process but with only one pattern,
 and that pattern uses a custom ``score_to_probability_func``.
 
