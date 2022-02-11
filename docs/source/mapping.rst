@@ -320,13 +320,16 @@ Conclusion
 
 In sum, with :class:`~pyampute.ampute.MultivariateAmputation` in Python package ``pyampute`` we allow for easy, multivariate amputation of complete datasets. 
 
-In the example `Evaluating missing values with a simulation pipeline`_, we demonstrate how you can design a pipeline that evaluates missing data methods for various types of missingness. Note furthermore that ``pyampute`` comes with :class:`~pyampute.exploration.md_patterns.mdPatterns`, which allows for a quick inspection of an incomplete dataset, and with :class:`~pyampute.exploration.mcar_statistical_tests.McarTest`, an implementation of [Little1988]_ MCAR test, although it should be used with care. 
+Read more in `Evaluating missing values with grid search and a pipeline`_ and `A custom pipeline with more possibilities`_ to learn how to design an experimental pipeline for evaluating the effect of missing values. 
+
+Note furthermore that ``pyampute`` comes with :class:`~pyampute.exploration.md_patterns.mdPatterns`, which allows for a quick inspection of an incomplete dataset, and with :class:`~pyampute.exploration.mcar_statistical_tests.McarTest`, an implementation of [Little1988]_ MCAR test, although it should be used with care. 
 
 Please do not hesitate to `contact us`_ in case there are any questions.
 
 Cheers,
 
-.. _Evaluating missing values with a simulation pipeline: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html
+.. _`Evaluating missing values with grid search and a pipeline`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html
+.. _`A custom pipeline with more possibilities`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_custom_pipeline.html
 .. _contact us: https://rianneschouten.github.io/pyampute/build/html/about.html
 
 References
