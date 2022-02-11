@@ -34,7 +34,7 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
     - `k` = number of patterns.
 
     Amputation is the opposite of imputation: the generation of missing values in complete datasets. 
-    This is useful for evaluating the effect of missing values in your model, mostly in experimental settings, but also as a preprocessing step in developing models. 
+    This is useful for evaluating the effect of missing values in your model, possibly in a larger pipeline in combination with various imputation methods, estimators and evaluation metrics. 
 
     We provide `several examples`_ and `an extensive blogpost`_ to explain in more detail how certain parameter choices affect the generated missingness.
 
@@ -134,10 +134,11 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
 
     Notes
     -----
-    The methodology for multivariate amputation has been proposed by `Schouten et al. (2018)`_ and is implemented in an R-function: `mice::ampute`_.
+    The methodology for multivariate amputation has been proposed by `Schouten et al. (2018)`_. For a more thorough understanding of how the input parameters can be used, read `this blogpost`_. It may be good to know that multivariate amputation is implemented in an R-function as well; `mice::ampute`_.
 
     .. _`Schouten et al. (2018)`: https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577
     .. _`mice::ampute`: https://rianneschouten.github.io/mice_ampute/vignette/ampute.html
+    .. _`this blogpost`: https://rianneschouten.github.io/pyampute/build/html/mapping.html
 
     Examples
     --------
@@ -816,6 +817,10 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
             and `m` is the number of features (column, variables). Data cannot
             contain missing values and should be numeric, or will be forced to
             be numeric.
+        
+        y : ArrayLike
+            Ignored. 
+            Not used, present here for consistency.
         """
 
         # This must come first so we can check patterns
@@ -902,6 +907,10 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
             Complete input data, where `n` is the number of data rows (samples) and `m` is the number of features (column, variables).
             Data cannot contain missing values and should be numeric,
             or will be forced to be numeric.
+
+        y : ArrayLike
+            Ignored. 
+            Not used, present here for consistency.
 
         Returns
         -------
