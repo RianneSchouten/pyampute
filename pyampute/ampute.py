@@ -807,7 +807,7 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
     def fit(self, X: Matrix, y: ArrayLike = None) -> "MultivariateAmputation":
         """Fits amputer on complete data X.
 
-        Validates input data and implements parameter settings.
+        Validates input data and parameter settings.
 
         Parameters
         ----------
@@ -898,7 +898,7 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
         return self
 
     def transform(self, X: Matrix, y: ArrayLike = None) -> Matrix:
-        """Fits amputer on complete data X and returns the incomplete data X
+        """Masks data according to the desired pattern and returns the incomplete data X.
 
         Parameters
         ----------        

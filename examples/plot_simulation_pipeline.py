@@ -51,10 +51,10 @@ compl_dataset = np.random.multivariate_normal(mean, cov, n)
 # Multivariate amputation
 #########################
 #
-# Vary the parameters of the amputation procedure. Read the `documentation`_ or `this blogpost`_ to understand how you can tune the parameters such that you create varying types of missingness. 
-# 
-# As an example, here, we generate `one`` missing data pattern with missing values in the `first two variables`: ``"incomplete_vars":[0,1]``. We vary the proportion of incomplete rows between 0.1 and 0.9.
-# 
+# Vary the parameters of the amputation procedure. Read the `documentation`_ or `this blogpost`_ to understand how you can tune the parameters such that you create varying types of missingness.
+#
+# As an example, here, we generate `one` missing data pattern with missing values in the `first two variables`: ``"incomplete_vars":[0,1]``. We vary the proportion of incomplete rows between 0.1 and 0.9.
+#
 # We furthermore experiment with the three mechanisms: Missing Completely At Random (MCAR), Missing At Random (MAR) and Missing Not At Random (MNAR) (cf. `Rubin (1976)`_).
 #
 # .. _`documentation`: https://rianneschouten.github.io/pyampute/build/html/pyampute.ampute.html
@@ -89,7 +89,7 @@ parameters["imputation__strategy"] = ["mean"]
 ############
 #
 # How you wish to evaluate the amputation and imputation greatly depends on the goal of your model. We will first show the experiment for a LinearRegression estimator, using predictors and an outcome feature.
-# 
+#
 # We recommend to read `A custom pipeline with more possibilities`_ to see how custom ``BaseEstimator``'s and ``TransformerMixin``'s can be used to gain a deeper understanding of the impact of missing values.
 #
 # .. _`A custom pipeline with more possibilities`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_custom_pipeline.html
@@ -109,19 +109,25 @@ steps = [
 ]
 pipe = Pipeline(steps)
 grid = GridSearchCV(
-    estimator=pipe,
-    param_grid=parameters,
-    scoring=make_scorer(mean_squared_error),
+    estimator=pipe, param_grid=parameters, scoring=make_scorer(mean_squared_error),
 )
 
-X, y = compl_dataset[:,:-1], compl_dataset[:,-1]
-X_compl_train, X_compl_test, y_compl_train, y_compl_test = train_test_split(X, y, random_state=2022)
+X, y = compl_dataset[:, :-1], compl_dataset[:, -1]
+X_compl_train, X_compl_test, y_compl_train, y_compl_test = train_test_split(
+    X, y, random_state=2022
+)
 
 grid.fit(X_compl_train, y_compl_train)
 grid.score(X_compl_test, y_compl_test)
 results = pd.DataFrame(grid.cv_results_)
 
-res = results[['param_amputation__patterns', 'param_amputation__prop', 
-               'param_imputation__strategy', 'mean_test_score']]
-res.columns = ['mechanism', 'prop', 'imputation', 'score']
+res = results[
+    [
+        "param_amputation__patterns",
+        "param_amputation__prop",
+        "param_imputation__strategy",
+        "mean_test_score",
+    ]
+]
+res.columns = ["mechanism", "prop", "imputation", "score"]
 res
