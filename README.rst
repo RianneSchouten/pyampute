@@ -38,13 +38,14 @@ Features
 
 Amputation is the opposite of imputation: the generation of missing values in complete datasets. This is useful for evaluating the effect of missing values on your model, mostly in experimental settings, but also as a preprocessing step in developing models.
 
-:class:`~pyampute.ampute.MultivariateAmputation` is compatible with the scikit-learn-style ``fit`` and ``transform`` paradigm and can be used in a scikit-learn ``Pipeline``.
+Our `MultivariateAmputation`_ class is compatible with the scikit-learn-style ``fit`` and ``transform`` paradigm and can be used in a scikit-learn ``Pipeline``.
 
-Multivariate Amputation is proposed by `Schouten, Lugtig and Vink (2018)`_. The methodology has been implemented in an R-function as well: `mice::ampute`_. Compared to ``ampute``, ``pyampute``'s parameters are easier to specify and allow for more variation. See `this blogpost`_ to learn more.
+The underlying methodology has been proposed by `Schouten, Lugtig and Vink (2018)`_ and has been implemented in an R-function as well: `mice::ampute`_. Compared to ``ampute``, ``pyampute``'s parameters are easier to specify and allow for more variation. See `this blogpost`_ to learn more.
 
 .. _`Schouten, Lugtig and Vink (2018)`: https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577
 .. _`mice::ampute`: https://rianneschouten.github.io/mice_ampute/vignette/ampute.html
 .. _`this blogpost`: https://rianneschouten.github.io/pyampute/build/html/mapping.html
+.. _`MultivariateAmputation`: https://rianneschouten.github.io/pyampute/build/html/pyampute.ampute.html
 
 .. code-block:: python
 
@@ -56,13 +57,15 @@ Multivariate Amputation is proposed by `Schouten, Lugtig and Vink (2018)`_. The 
    ma = MultivariateAmputation()
    X_incompl = ma.fit_transform(X_compl)
 
-Furthermore, :class:`~pyampute.exploration.md_patterns.mdPatterns` displays missing data patterns in incomplete datasets.
+Furthermore, we provide an `mdPatterns`_ class, which displays missing data patterns in incomplete datasets.
 
 .. code-block:: python
 
    from pyampute.exploration.md_patterns import mdPatterns
    mdp = mdPatterns()
-   patterns = mdp.get_patterns(nhanes2)
+   patterns = mdp.get_patterns(X_incompl)
+
+.. _`mdPatterns`: https://rianneschouten.github.io/pyampute/build/html/pyampute.exploration.html
 
 License
 -------
