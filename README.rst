@@ -31,14 +31,14 @@ From source
 
 ::
 
+   here some code
 
-
-:class:`~pyampute.ampute.MultivariateAmputation`
-------------------------------------------------
+Features
+--------
 
 Amputation is the opposite of imputation: the generation of missing values in complete datasets. This is useful for evaluating the effect of missing values on your model, mostly in experimental settings, but also as a preprocessing step in developing models.
 
-Our class is compatible with the scikit-learn-style ``fit`` and ``transform`` paradigm and can be used in a scikit-learn ``Pipeline``.
+:class:`~pyampute.ampute.MultivariateAmputation` is compatible with the scikit-learn-style ``fit`` and ``transform`` paradigm and can be used in a scikit-learn ``Pipeline``.
 
 Multivariate Amputation is proposed by `Schouten, Lugtig and Vink (2018)`_. The methodology has been implemented in an R-function as well: `mice::ampute`_. Compared to ``ampute``, ``pyampute``'s parameters are easier to specify and allow for more variation. See `this blogpost`_ to learn more.
 
@@ -56,10 +56,7 @@ Multivariate Amputation is proposed by `Schouten, Lugtig and Vink (2018)`_. The 
    ma = MultivariateAmputation()
    X_incompl = ma.fit_transform(X_compl)
 
-:class:`~pyampute.exploration.md_patterns.mdPatterns`
------------------------------------------------------
-
-Displays missing data patterns in incomplete datasets
+Furthermore, :class:`~pyampute.exploration.md_patterns.mdPatterns` displays missing data patterns in incomplete datasets.
 
 .. code-block:: python
 
@@ -77,7 +74,7 @@ Citation
 .. code:: bibtex
 
    @Manual{pyampute,
-   author = {Schouten, Rianne M., Zamanzadeh, Davina and Singh, Prabhant},
+   author = {Schouten, Rianne M. and Zamanzadeh, Davina and Singh, Prabhant},
    title = {pyampute: {A} {P}ython library for generating multivariate missingness patterns in complete datasets},
    year = {2022},
    url = {https://github.com/RianneSchouten/pyampute}
@@ -100,6 +97,6 @@ For questions, comments and if you would like to contribute, please do not hesit
 
 Cheers,
 
-.. `find our contact details here`: https://rianneschouten.github.io/pyampute/build/html/about.html
+.. _`find our contact details here`: https://rianneschouten.github.io/pyampute/build/html/about.html
 
 
