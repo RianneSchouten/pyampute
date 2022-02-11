@@ -1,5 +1,5 @@
-pymice
-======
+pyampute
+========
 |made-with-python| |code-coverage|
 
 .. |made-with-python| image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
@@ -8,51 +8,98 @@ pymice
 .. |code-coverage| image:: https://img.shields.io/codecov/c/github/RianneSchouten/pyampute
    :target: https://app.codecov.io/gh/RianneSchouten/pyampute/
 
-
 .. role:: pyth(code)
   :language: python
 
 A Python library for generating missing values in complete datasets (i.e. amputation) and exploration of incomplete datasets. 
 
-Check out the `documentation`_!
+Check out the `documentation and find examples`_!
 
-.. _documentation: https://rianneschouten.github.io/pyampute/build/html/index.html
+.. _`documentation and find examples`: https://rianneschouten.github.io/pyampute/build/html/index.html
 
-amputation.ampute
------------------
+Installation
+------------
+Python Package Index (PyPI)
+***************************
 
-The MultivariateAmputation class is an implementation of the multivariate amputation methodology by `Schouten, Lugtig and Vink (2018)`_. It is designed as an sklearn TranformerMixin class to allow for easy integration with pipelines. 
-.. _Schouten, Lugtig and Vink (2018): https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577
+::
 
-Compared to the implementation in ``mice:ampute`` in **R**, ``pymice.amputation.ampute`` has a few extra functionalities:
+   pip install pyampute
 
-1. The function's arguments are more intuitive. In this `blog post`_, we provide a mapping.
-2. The method allows for custom probability functions, see this `example`_.
-3. The function allows for non-numerical data features, as long as they are not used as observed data in MAR amputation.
+From source
+***********
 
-.. _blog post: https://rianneschouten.github.io/pymice/build/html/index.html
-.. _example: https://rianneschouten.github.io/pymice/build/html/index.html
+::
 
-exploration.md_patterns
-----------------------
 
-Extra exploration functions are available to explore incomplete datasets. 
 
-The ``mdPatterns`` class is an implementation of ``mice:md.pattern`` in **R** and gives a quick overview of the missingness patterns::
+:class:`~pyampute.ampute.MultivariateAmputation`
+------------------------------------------------
+
+Amputation is the opposite of imputation: the generation of missing values in complete datasets. This is useful for evaluating the effect of missing values on your model, mostly in experimental settings, but also as a preprocessing step in developing models.
+
+Our class is compatible with the scikit-learn-style ``fit`` and ``transform`` paradigm and can be used in a scikit-learn ``Pipeline``.
+
+Multivariate Amputation is proposed by `Schouten, Lugtig and Vink (2018)`_. The methodology has been implemented in an R-function as well: `mice::ampute`_. Compared to ``ampute``, ``pyampute``'s parameters are easier to specify and allow for more variation. See `this blogpost`_ to learn more.
+
+.. _`Schouten, Lugtig and Vink (2018)`: https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577
+.. _`mice::ampute`: https://rianneschouten.github.io/mice_ampute/vignette/ampute.html
+.. _`this blogpost`: https://rianneschouten.github.io/pyampute/build/html/mapping.html
 
 .. code-block:: python
 
-   from pymice.exploration.mdpattern import mdPatterns
-   my_pat = mdPatterns(inc_data)
-   my_pat.summary()
-   my_pat.visualization()
+   import numpy as np
+   from pyampute.ampute import MultivariateAmputation
+   n = 1000
+   m = 10
+   X_compl = np.random.randn(n,m)
+   ma = MultivariateAmputation()
+   X_incompl = ma.fit_transform(X_compl)
+
+:class:`~pyampute.exploration.md_patterns.mdPatterns`
+-----------------------------------------------------
+
+Displays missing data patterns in incomplete datasets
+
+.. code-block:: python
+
+   from pyampute.exploration.md_patterns import mdPatterns
+   mdp = mdPatterns()
+   patterns = mdp.get_patterns(nhanes2)
+
+License
+-------
 
 
-installation
-------------
+Citation
+--------
 
-via pip
-```
-pip install pyampute
-```
+.. code:: bibtex
+
+   @Manual{pyampute,
+   author = {Schouten, Rianne M., Zamanzadeh, Davina and Singh, Prabhant},
+   title = {pyampute: {A} {P}ython library for generating multivariate missingness patterns in complete datasets},
+   year = {2022},
+   url = {https://github.com/RianneSchouten/pyampute}
+   }
+
+   @article{Schouten2018,
+   title={Generating missing values for simulation purposes: {A} multivariate amputation procedure},
+   author={Schouten, Rianne M. and Lugtig, Peter and Vink, Gerko},
+   journal={Journal of Statistical Computation and Simulation},
+   volume={88},
+   number={15},
+   pages={2909--2930},
+   year={2018}
+   }
+
+Contact details
+---------------
+
+For questions, comments and if you would like to contribute, please do not hesitate to contact us. You can `find our contact details here`_.
+
+Cheers,
+
+.. `find our contact details here`: https://rianneschouten.github.io/pyampute/build/html/about.html
+
 

@@ -1,9 +1,16 @@
 Installation
 ============
 
-Here some general sentence.
+Python Package Index (PyPI)
+***************************
 
-.. toctree::
-   :maxdepth: 4
+::
 
-   pypi
+   pip install pyampute
+
+From source
+***********
+
+::
+
+

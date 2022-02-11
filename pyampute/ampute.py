@@ -34,13 +34,14 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
     - `k` = number of patterns.
 
     Amputation is the opposite of imputation: the generation of missing values in complete datasets. 
-    This is useful for evaluating the effect of missing values on your outcome, mostly in experimental settings, but also as a preprocessing step in developing models. 
+    This is useful for evaluating the effect of missing values on your model, mostly in experimental settings, but also as a preprocessing step in developing models. 
 
     We provide `several examples`_ and `an extensive blogpost`_ to explain in more detail how certain parameter choices affect the generated missingness.
 
-    Our class is comptabile with the scikit-learn-style `fit()` and `transform()` paradigm and can be used in a scikit-learn `Pipeline` (reference).
+    Our class is compatible with the scikit-learn-style ``fit`` and ``transform`` paradigm and can be used in a scikit-learn ``Pipeline`` (`see this example`_).
 
     .. _`several examples`: https://rianneschouten.github.io/pyampute/build/html/examples.html
+    .. _`see this example`: https://rianneschouten.github.io/pyampute/build/html/auto_examples/plot_simulation_pipeline.html
     .. _`an extensive blogpost`: https://rianneschouten.github.io/pyampute/build/html/mapping.html
     .. _`TransformerMixin`: https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html
 
