@@ -36,13 +36,14 @@ import numpy as np
 from pyampute.ampute import MultivariateAmputation
 from pyampute.exploration.md_patterns import mdPatterns
 
-rng = np.random.RandomState(2022)
+seed = 2022
+rng = np.random.RandomState(seed)
 
 m = 1000
 n = 10
 X_compl = np.random.randn(m,n)
 
-ma = MultivariateAmputation()
+ma = MultivariateAmputation(seed=seed)
 X_incompl = ma.fit_transform(X_compl)
 
 mdp = mdPatterns()

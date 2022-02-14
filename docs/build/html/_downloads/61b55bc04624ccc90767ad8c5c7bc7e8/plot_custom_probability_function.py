@@ -96,7 +96,7 @@ plt.show()
 
 # %%
 # Cases when you might not achieve desired amount of missingness
-# ===================
+# ==============================================================
 # Here we rerun the amputation process but with only one pattern,
 # and that pattern uses a custom ``score_to_probability_func``.
 

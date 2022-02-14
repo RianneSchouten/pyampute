@@ -62,7 +62,7 @@ Transforming one dataset
  Multivariate amputation of one dataset can directly be performed with ``fit_transform``. Inspection of an incomplete dataset can be done with :class:`~pyampute.exploration.md_patterns.mdPatterns`. By default, :class:`~pyampute.ampute.MultivariateAmputation` generates 1 pattern with MAR missingness in 50% of the data rows for 50% of the variables.
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-51
+.. GENERATED FROM PYTHON SOURCE LINES 33-52
 
 .. code-block:: default
 
@@ -72,13 +72,14 @@ Transforming one dataset
     from pyampute.ampute import MultivariateAmputation
     from pyampute.exploration.md_patterns import mdPatterns
 
-    rng = np.random.RandomState(2022)
+    seed = 2022
+    rng = np.random.RandomState(seed)
 
     m = 1000
     n = 10
     X_compl = np.random.randn(m,n)
 
-    ma = MultivariateAmputation()
+    ma = MultivariateAmputation(seed=seed)
     X_incompl = ma.fit_transform(X_compl)
 
     mdp = mdPatterns()
@@ -99,12 +100,12 @@ Transforming one dataset
 
  .. code-block:: none
 
-    2022-02-11 20:17:30,818 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-14 14:51:34,277 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible data\shift_lookup.csv is missing, in the wrong location, or corrupted. Try rerunning scripts/generate_shift_lookup_table.py to regenerate the lookup table.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-57
+.. GENERATED FROM PYTHON SOURCE LINES 53-58
 
 A separate fit and transform
 #############################
@@ -112,7 +113,7 @@ A separate fit and transform
  Integration in a larger pipeline requires separate ``fit`` and ``transform`` functionality. 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-65
+.. GENERATED FROM PYTHON SOURCE LINES 58-66
 
 .. code-block:: default
 
@@ -134,12 +135,12 @@ A separate fit and transform
 
  .. code-block:: none
 
-    2022-02-11 20:17:31,051 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-14 14:51:34,509 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible data\shift_lookup.csv is missing, in the wrong location, or corrupted. Try rerunning scripts/generate_shift_lookup_table.py to regenerate the lookup table.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-75
+.. GENERATED FROM PYTHON SOURCE LINES 67-76
 
 Integration in a pipeline
 ##########################
@@ -151,7 +152,7 @@ Integration in a pipeline
  .. _`pipeline`: https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-85
+.. GENERATED FROM PYTHON SOURCE LINES 76-86
 
 .. code-block:: default
 
@@ -175,16 +176,16 @@ Integration in a pipeline
 
  .. code-block:: none
 
-    2022-02-11 20:17:31,092 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible /data/C:\Users\20200059\Documents\Github\pyampute\docs\data\shift_lookup.csv.csv is missing, in the wrong location, or corrupted. Try rerunning /amputation/scripts.py to regenerate the lookup table.
+    2022-02-14 14:51:34,563 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible data\shift_lookup.csv is missing, in the wrong location, or corrupted. Try rerunning scripts/generate_shift_lookup_table.py to regenerate the lookup table.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-87
+.. GENERATED FROM PYTHON SOURCE LINES 87-88
 
 By default, ``SimpleImputer`` imputes with the mean of the observed data. It is therefore like that we find the median in 50% of the rows (of the test set, which contains 25% of :math:`m`) for 50% of the variables.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-91
+.. GENERATED FROM PYTHON SOURCE LINES 88-92
 
 .. code-block:: default
 
@@ -202,12 +203,12 @@ By default, ``SimpleImputer`` imputes with the mean of the observed data. It is 
 
  .. code-block:: none
 
-    [129   0 129   0 129   0 129   0   0 129]
+    [124   0 124   0   0 124   0 124   0 124]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-96
+.. GENERATED FROM PYTHON SOURCE LINES 93-97
 
 For more information about ``pyampute``'s parameters, see `A mapping from R-function ampute to pyampute`_. To learn how to design a more thorough experiment, see `Evaluating missing values with grid search and a pipeline`_.
 
@@ -217,7 +218,7 @@ For more information about ``pyampute``'s parameters, see `A mapping from R-func
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.296 seconds)
+   **Total running time of the script:** ( 0 minutes  0.286 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_easy_example.py:

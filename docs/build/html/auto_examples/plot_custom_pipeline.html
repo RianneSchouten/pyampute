@@ -8,30 +8,30 @@
 
     <title>A custom pipeline with more possibilities &#8212; pyampute 0.0.1 documentation</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
-
+    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
     
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
+    <link rel="stylesheet"
+      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
     
       
-
+  
     
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
-
+    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -92,7 +92,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -140,36 +140,18 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_easy_example.html">
-   A quick example
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_simulation_pipeline.html">
-   Evaluating missing values with grid search and a pipeline
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   A custom pipeline with more possibilities
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_custom_probability_function.html">
-   Amputing with a custom probability function
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
             </div>
             
           
@@ -425,109 +407,109 @@ to download the full example code</p>
       <th>0</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.1</td>
-      <td>5.014432</td>
+      <td>4.998182</td>
     </tr>
     <tr>
       <th>1</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.5</td>
-      <td>5.013641</td>
+      <td>5.000930</td>
     </tr>
     <tr>
       <th>2</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.9</td>
-      <td>4.963086</td>
+      <td>4.968318</td>
     </tr>
     <tr>
       <th>3</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.1</td>
-      <td>5.013206</td>
+      <td>4.997803</td>
     </tr>
     <tr>
       <th>4</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.5</td>
-      <td>5.023640</td>
+      <td>5.000513</td>
     </tr>
     <tr>
       <th>5</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.9</td>
-      <td>5.037216</td>
+      <td>4.960432</td>
     </tr>
     <tr>
       <th>6</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.1</td>
-      <td>4.959030</td>
+      <td>4.939510</td>
     </tr>
     <tr>
       <th>7</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.5</td>
-      <td>4.751766</td>
+      <td>4.734522</td>
     </tr>
     <tr>
       <th>8</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.9</td>
-      <td>4.513268</td>
+      <td>4.487541</td>
     </tr>
     <tr>
       <th>9</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.1</td>
-      <td>5.011022</td>
+      <td>4.998513</td>
     </tr>
     <tr>
       <th>10</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.5</td>
-      <td>5.021566</td>
+      <td>4.987720</td>
     </tr>
     <tr>
       <th>11</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.9</td>
-      <td>5.017626</td>
+      <td>4.988158</td>
     </tr>
     <tr>
       <th>12</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.1</td>
-      <td>4.937118</td>
+      <td>4.915197</td>
     </tr>
     <tr>
       <th>13</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.5</td>
-      <td>4.642683</td>
+      <td>4.633981</td>
     </tr>
     <tr>
       <th>14</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.9</td>
-      <td>4.322357</td>
+      <td>4.299794</td>
     </tr>
     <tr>
       <th>15</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.1</td>
-      <td>5.011179</td>
+      <td>4.994162</td>
     </tr>
     <tr>
       <th>16</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.5</td>
-      <td>5.014147</td>
+      <td>5.008572</td>
     </tr>
     <tr>
       <th>17</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.9</td>
-      <td>5.015259</td>
+      <td>5.001925</td>
     </tr>
   </tbody>
 </table>
@@ -566,109 +548,109 @@ to download the full example code</p>
       <th>0</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.1</td>
-      <td>5.012845</td>
+      <td>4.995512</td>
     </tr>
     <tr>
       <th>1</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.5</td>
-      <td>5.006278</td>
+      <td>4.993663</td>
     </tr>
     <tr>
       <th>2</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.9</td>
-      <td>5.002721</td>
+      <td>4.984080</td>
     </tr>
     <tr>
       <th>3</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.1</td>
-      <td>5.015457</td>
+      <td>4.993795</td>
     </tr>
     <tr>
       <th>4</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.5</td>
-      <td>5.007667</td>
+      <td>4.989644</td>
     </tr>
     <tr>
       <th>5</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.9</td>
-      <td>5.015203</td>
+      <td>4.990534</td>
     </tr>
     <tr>
       <th>6</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.1</td>
-      <td>4.953040</td>
+      <td>4.936358</td>
     </tr>
     <tr>
       <th>7</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.5</td>
-      <td>4.760839</td>
+      <td>4.729616</td>
     </tr>
     <tr>
       <th>8</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.9</td>
-      <td>4.488823</td>
+      <td>4.490166</td>
     </tr>
     <tr>
       <th>9</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.1</td>
-      <td>5.015122</td>
+      <td>4.996426</td>
     </tr>
     <tr>
       <th>10</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.5</td>
-      <td>5.021201</td>
+      <td>4.997076</td>
     </tr>
     <tr>
       <th>11</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
       <td>0.9</td>
-      <td>5.002301</td>
+      <td>5.028430</td>
     </tr>
     <tr>
       <th>12</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.1</td>
-      <td>4.935351</td>
+      <td>4.922512</td>
     </tr>
     <tr>
       <th>13</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.5</td>
-      <td>4.645233</td>
+      <td>4.635368</td>
     </tr>
     <tr>
       <th>14</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.9</td>
-      <td>4.295551</td>
+      <td>4.286367</td>
     </tr>
     <tr>
       <th>15</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.1</td>
-      <td>5.012499</td>
+      <td>4.996205</td>
     </tr>
     <tr>
       <th>16</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.5</td>
-      <td>5.011370</td>
+      <td>5.007475</td>
     </tr>
     <tr>
       <th>17</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.9</td>
-      <td>5.038292</td>
+      <td>4.994835</td>
     </tr>
   </tbody>
 </table>
@@ -680,7 +662,7 @@ to download the full example code</p>
 <p>The same logic applies to MNAR missingness, but since MNAR missingness does not depend on the size of the correlation between observed data and incomplete data, the bias will be stronger.</p>
 <p><a class="reference external" href="https://journals.sagepub.com/doi/full/10.1177/0049124118799376">Schouten and Vink (2021)</a> further discuss this topic and the effect of multiple imputation (which can be performed using scikit-learn’s IterativeImputer).</p>
 <p>SimpleImputer will use the mean of the observed data in the first feature. Therefore, in case there is any bias, that bias will remain. In case there is no bias, mean imputation will distort the correlation structure with other features. But that is another story…</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  9.233 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  9.200 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-custom-pipeline-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c970eafe109229d0e12c897814f9eaed/plot_custom_pipeline.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_custom_pipeline.py</span></code></a></p>
@@ -698,7 +680,7 @@ to download the full example code</p>
               
               
               <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="plot_simulation_pipeline.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -721,8 +703,8 @@ to download the full example code</p>
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
-<footer class="footer mt-5 mt-md-0">
+    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
@@ -733,7 +715,7 @@ to download the full example code</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
 </p>
     </div>
     
