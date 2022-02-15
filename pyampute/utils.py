@@ -47,8 +47,8 @@ def enforce_numeric(
         # enforce pd df if native python list
         X = pd.DataFrame(X)
         if vars_to_enforce is not None:
-            X[vars_to_enforce] = (
-                X[vars_to_enforce]
+            X.loc[:, vars_to_enforce.tolist()] = (
+                X.loc[:,vars_to_enforce.tolist()]
                 .apply(pd.to_numeric, errors="coerce")
                 .dropna(axis=1, how="all")
             )
