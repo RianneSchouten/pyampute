@@ -1,3 +1,4 @@
+from xmlrpc.client import boolean
 import numpy as np
 import pandas as pd
 import unittest
@@ -45,17 +46,24 @@ class TestEnforceNumeric(unittest.TestCase):
         self.assertTrue(np.array_equal(numeric, correct))
 
     def test_pandas(self):
-        array = pd.DataFrame(self.array, self.columns)
+        array = pd.DataFrame(self.array, columns=self.columns)
         enforce_all = enforce_numeric(array)
         # Test passing indices of vars to enforce
         numeric_idx = enforce_numeric(array, self.cols_to_enforce)
         # Test passing col names of vars to enforce
         numeric_strname = enforce_numeric(array, array.columns[self.cols_to_enforce])
-        correct = pd.DataFrame(self.numeric, self.columns)
+        correct = pd.DataFrame(self.numeric, columns=self.columns)
+        # Test boolean mask for columns
+        boolean_mask = [
+            True if i in self.cols_to_enforce else False
+            for i in range(len(self.columns))
+        ]
+        boolean_column = enforce_numeric(array, boolean_mask)
 
         self.assertTrue(enforce_all.equals(numeric_idx))
         self.assertTrue(numeric_strname.equals(numeric_idx))
         self.assertTrue(numeric_strname.equals(correct))
+        self.assertTrue(boolean_column.equals(numeric_strname))
 
 
 if __name__ == "__main__":
