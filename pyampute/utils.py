@@ -5,7 +5,6 @@ from typing import List, Optional, Union
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 import numpy as np
-from os import getcwd
 from os.path import join
 
 ArrayLike = Union[pd.Series, np.array, List]
