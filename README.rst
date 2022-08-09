@@ -76,13 +76,18 @@ BSD 3-Clause License
 Citation
 --------
 
-.. code:: bibtex
+.. code-block:: bibtex
 
-   @manual{pyampute,
-   author = {Schouten, Rianne M. and Zamanzadeh, Davina and Singh, Prabhant},
-   title = {pyampute: {A} {P}ython library for generating multivariate missingness patterns in complete datasets},
-   year = {2022},
-   url = {https://github.com/RianneSchouten/pyampute}
+   @misc{schouten_rianne_m_2022_6946887,
+   author       = {Schouten, Rianne M and
+                  Zamanzadeh, Davina and
+                  Singh, Prabhant},
+   title        = {pyampute: a Python library for data amputation},
+   month        = aug,
+   year         = 2022,
+   publisher    = {Zenodo},
+   doi          = {10.25080/majora-212e5952-03e},
+   url          = {https://doi.org/10.25080/majora-212e5952-03e}
    }
 
    @article{Schouten2018,
@@ -94,6 +99,8 @@ Citation
    pages={2909--2930},
    year={2018}
    }
+
+Watch our SciPy'22 presentation `here<https://www.youtube.com/watch?v=jMEzKFV-ilc&list=PLYx7XA2nY5GcBWLGTzhJ1vxGtHIcyHrRr&index=3>`_.
 
 Contact details
 ---------------
