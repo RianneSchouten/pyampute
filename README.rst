@@ -100,7 +100,9 @@ Citation
    year={2018}
    }
 
-Watch our SciPy'22 presentation `here<https://www.youtube.com/watch?v=jMEzKFV-ilc&list=PLYx7XA2nY5GcBWLGTzhJ1vxGtHIcyHrRr&index=3>`_.
+Watch our `SciPy'22 presentation here`_.
+
+.. _`SciPy'22 presentation here`: https://www.youtube.com/watch?v=jMEzKFV-ilc&list=PLYx7XA2nY5GcBWLGTzhJ1vxGtHIcyHrRr&index=3.
 
 Contact details
 ---------------
