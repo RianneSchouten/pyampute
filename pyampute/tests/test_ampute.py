@@ -13,7 +13,8 @@ class TestAmpute(unittest.TestCase):
     def test_mechanisms(self):
         # create complete data
         n = 10000
-        X = np.random.randn(n, 2)
+        rng = np.random.default_rng()
+        X = rng.standard_normal((n, 2))
 
         for mechanism in ["MAR", "MNAR", "MCAR"]:
             with self.subTest("Multiple Patterns"):
@@ -77,7 +78,8 @@ class TestAmpute(unittest.TestCase):
     def test_specific_situation(self):
         # create complete data
         n = 10000
-        X = np.random.randn(n, 2)
+        rng = np.random.default_rng()
+        X = rng.standard_normal((n, 2))
 
         # define some arguments
         my_incomplete_vars = [np.array([0]), np.array([1]), np.array([1])]
@@ -119,8 +121,9 @@ class TestAmpute(unittest.TestCase):
 
     def test_repeat_pattern(self):
         n = 10000
+        rng = np.random.default_rng()
         with self.subTest("1 Repeat Pattern on Same Var"):
-            X = np.random.randn(n, 2)
+            X = rng.standard_normal((n, 2))
             patterns = [
                 {"incomplete_vars": [0], "mechanism": "mcar"},
                 {"incomplete_vars": [0], "mechanism": "mcar"},
@@ -132,14 +135,12 @@ class TestAmpute(unittest.TestCase):
 
             # total number of incomplete rows equals prop
             self.assertTrue(
-                np.allclose(
-                    patterns.loc[1, "row_count"], (0.3 * n), atol=0.05 * n,
-                )
+                np.allclose(patterns.loc[1, "row_count"], (0.3 * n), atol=0.05 * n,)
             )
         with self.subTest(
             "Repeat Pattern on Same Var, Varying Freq Plus Extra Pattern"
         ):
-            X = np.random.randn(n, 2)
+            X = rng.standard_normal((n, 2))
             new_patterns = [
                 {"incomplete_vars": [0], "mechanism": "mcar", "freq": 0.2},
                 {"incomplete_vars": [0], "mechanism": "mcar", "freq": 0.1},
@@ -153,14 +154,17 @@ class TestAmpute(unittest.TestCase):
             # total number of incomplete rows equals prop
             self.assertTrue(
                 np.allclose(
-                    patterns.loc[2, "row_count"], ((0.2 + 0.1) * n * 0.6), atol=0.05 * n,
+                    patterns.loc[2, "row_count"],
+                    ((0.2 + 0.1) * n * 0.6),
+                    atol=0.05 * n,
                 )
             )
 
     def test_seed(self):
         # create complete data
         n = 10000
-        X = np.random.randn(n, 2)
+        rng = np.random.default_rng()
+        X = rng.standard_normal((n, 2))
         default = MultivariateAmputation()  # no seed set by default
         # should produce different values
         self.assertFalse(
@@ -180,13 +184,18 @@ class TestAmpute(unittest.TestCase):
     def test_self(self):
 
         n = 10000
-        X = np.random.randn(n, 10)
-    
+        rng = np.random.default_rng()
+        X = rng.standard_normal((n, 10))
+
         ma = MultivariateAmputation(
-            patterns = [
-                {'incomplete_vars': [2,3], 'mechanism': "MCAR"},
-                {'incomplete_vars': [8,9,1], 'mechanism': "MNAR"},
-                {'incomplete_vars': [1], 'weights': {0:1,1:2}, 'mechanism': "MAR+MNAR"}
+            patterns=[
+                {"incomplete_vars": [2, 3], "mechanism": "MCAR"},
+                {"incomplete_vars": [8, 9, 1], "mechanism": "MNAR"},
+                {
+                    "incomplete_vars": [1],
+                    "weights": {0: 1, 1: 2},
+                    "mechanism": "MAR+MNAR",
+                },
             ]
         )
         X_amputed = ma.fit_transform(X)
@@ -196,13 +205,20 @@ class TestAmpute(unittest.TestCase):
         self.assertListEqual(ma.mechanisms.tolist(), ["MCAR", "MNAR", "MAR+MNAR"])
         self.assertEqual(len(ma.wss_per_pattern[0]), len(ma.probs_per_pattern[0]))
         self.assertEqual(len(ma.assigned_group_number), X.shape[0])
-        self.assertEqual(len(ma.assigned_group_number[ma.assigned_group_number == 1]), len(ma.wss_per_pattern[1]))
-        self.assertEqual(len(ma.assigned_group_number[ma.assigned_group_number == 2]), len(ma.probs_per_pattern[2]))
+        self.assertEqual(
+            len(ma.assigned_group_number[ma.assigned_group_number == 1]),
+            len(ma.wss_per_pattern[1]),
+        )
+        self.assertEqual(
+            len(ma.assigned_group_number[ma.assigned_group_number == 2]),
+            len(ma.probs_per_pattern[2]),
+        )
 
     def test_sigmoid_score_to_prob_function(self):
         # create complete data
         n = 10000
-        X = np.random.randn(n, 2)
+        rng = np.random.default_rng()
+        X = rng.standard_normal((n, 2))
 
         my_score_to_prob_functions = [
             "sigmoid-right",

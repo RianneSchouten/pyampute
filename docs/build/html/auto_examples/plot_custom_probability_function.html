@@ -92,7 +92,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -146,29 +146,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_easy_example.html">
-   A quick example
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_simulation_pipeline.html">
-   Evaluating missing values with grid search and a pipeline
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_custom_pipeline.html">
-   A custom pipeline with more possibilities
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Amputing with a custom probability function
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
               </div>
@@ -227,7 +205,8 @@ to download the full example code</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">10000</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Define custom probability function.</p>
@@ -276,7 +255,7 @@ The first pattern introduces missingness to feature 0, and the latter two introd
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>28.24
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>27.6
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyampute.exploration.md_patterns</span> <span class="kn">import</span> <span class="n">mdPatterns</span>
@@ -285,7 +264,12 @@ The first pattern introduces missingness to feature 0, and the latter two introd
 <span class="n">pattern</span> <span class="o">=</span> <span class="n">mdp</span><span class="o">.</span><span class="n">get_patterns</span><span class="p">(</span><span class="n">incomplete_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_custom_probability_function_001.png" srcset="../_images/sphx_glr_plot_custom_probability_function_001.png" alt="plot custom probability function" class = "sphx-glr-single-img"/><p>Plot probabilities per pattern against the weighted sum scores per pattern.
+<img src="../_images/sphx_glr_plot_custom_probability_function_001.png" srcset="../_images/sphx_glr_plot_custom_probability_function_001.png" alt="plot custom probability function" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/dav/research/pyampute/pyampute/exploration/md_patterns.py:120: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  group_values = group_values.append(colsums, ignore_index=True)
+</pre></div>
+</div>
+<p>Plot probabilities per pattern against the weighted sum scores per pattern.
 Note that Pattern 1 and Pattern 3 have the same weights.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
@@ -323,12 +307,17 @@ and that pattern uses a custom <code class="docutils literal notranslate"><span 
 <span class="n">pattern</span> <span class="o">=</span> <span class="n">mdp</span><span class="o">.</span><span class="n">get_patterns</span><span class="p">(</span><span class="n">incomplete_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_custom_probability_function_003.png" srcset="../_images/sphx_glr_plot_custom_probability_function_003.png" alt="plot custom probability function" class = "sphx-glr-single-img"/><p>We expect about 30% of rows to be missing values.</p>
+<img src="../_images/sphx_glr_plot_custom_probability_function_003.png" srcset="../_images/sphx_glr_plot_custom_probability_function_003.png" alt="plot custom probability function" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/dav/research/pyampute/pyampute/exploration/md_patterns.py:120: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  group_values = group_values.append(colsums, ignore_index=True)
+</pre></div>
+</div>
+<p>We expect about 30% of rows to be missing values.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">incomplete_data</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>20.52
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>19.6
 </pre></div>
 </div>
 <p>We expected 30% of rows to be missing values but when we only have one
@@ -344,7 +333,7 @@ second and third patterns using the sigmoid <code class="docutils literal notran
 <p>If you would like to use a custom probability function is it your responsibility
 to adjust the function to produce the desired amount of missingness.
 You can calculate the expected proportion of missingness following the procedure in Appendix 2 of <a class="reference external" href="https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577">Schouten et al. (2018)</a>.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.523 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.372 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-custom-probability-function-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/61b55bc04624ccc90767ad8c5c7bc7e8/plot_custom_probability_function.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_custom_probability_function.py</span></code></a></p>

@@ -19,7 +19,8 @@ def generate_shift_lookup_table(
     """
     Note: This should be run from the root folder so it is properly stored in "/data".
     """
-    normal_sample = np.random.standard_normal(size=n_samples)
+    rng = np.random.default_rng()
+    normal_sample = rng.standard_normal(size=n_samples)
     percent_missing = np.arange(0.01, 1.01, 0.01)
     score_to_prob_func_names = [
         "SIGMOID-RIGHT",

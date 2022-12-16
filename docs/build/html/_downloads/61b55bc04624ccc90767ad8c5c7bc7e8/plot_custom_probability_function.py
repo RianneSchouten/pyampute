@@ -10,7 +10,8 @@ Amputing with a custom probability function
 import numpy as np
 
 n = 10000
-X = np.random.randn(n, 2)
+rng = np.random.default_rng()
+X = rng.standard_normal((n, 2))
 
 # %%
 # Define custom probability function.

@@ -45,7 +45,8 @@ mean = np.repeat(5, m)
 cor = 0.5
 cov = np.identity(m)
 cov[cov == 0] = cor
-compl_dataset = np.random.multivariate_normal(mean, cov, n)
+rng = np.random.default_rng()
+compl_dataset = rng.multivariate_normal(mean, cov, n)
 
 # %%
 # Multivariate amputation

@@ -37,7 +37,8 @@ The underlying methodology has been proposed by `Schouten, Lugtig and Vink (2018
    from pyampute.ampute import MultivariateAmputation
    n = 1000
    m = 10
-   X_compl = np.random.randn(n,m)
+   rng = np.random.default_rng()
+   X_compl = rng.standard_normal((m, n))
    ma = MultivariateAmputation()
    X_incompl = ma.fit_transform(X_compl)
 

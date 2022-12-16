@@ -26,8 +26,7 @@ class TestMdPatterns(unittest.TestCase):
 
         self.assertEqual(patterns.shape, (4, 5))
         self.assertListEqual(
-            patterns.loc["rows_no_missing"].values.tolist(),
-            [0, 1, 1, 1, 0]
+            patterns.loc["rows_no_missing"].values.tolist(), [0, 1, 1, 1, 0]
         )
 
         self.assertEqual(patterns.loc[1].values[1:-1].sum(), 2)
@@ -37,9 +36,9 @@ class TestMdPatterns(unittest.TestCase):
     def test_output_ma_as_input(self):
 
         # create complete dataset
-        np.random.seed(2022)
+        rng = np.random.default_rng(2022)
         n = 1000
-        X = np.random.randn(n, 2)
+        X = rng.standard_normal((n, 2))
 
         # ampute the dataset with a seed value
         ma = MultivariateAmputation(seed=2022)
@@ -68,7 +67,8 @@ class TestMdPatterns(unittest.TestCase):
         self.assertEqual(patterns.shape, (6, 6))
         self.assertListEqual(
             patterns.iloc[1:-1, 1:-1].values.tolist(),
-            [[1, 1, 1, 0], [1, 1, 0, 1], [1, 0, 0, 1], [1, 0, 0, 0]])
+            [[1, 1, 1, 0], [1, 1, 0, 1], [1, 0, 0, 1], [1, 0, 0, 0]],
+        )
 
     def test_proportions(self):
 
@@ -80,7 +80,7 @@ class TestMdPatterns(unittest.TestCase):
         self.assertEqual(patterns["row_prop"].values[:-1].astype(float).sum(), 1.0)
         self.assertListEqual(
             patterns.loc["n_missing_values_per_col"].values[1:].astype(float).tolist(),
-            [0.0, 0.32, 0.36, 0.4, 0.27]
+            [0.0, 0.32, 0.36, 0.4, 0.27],
         )
 
         # self.assertEqual(patterns.iloc[0:-1, 0].astype(float).values.sum(), 1.0)

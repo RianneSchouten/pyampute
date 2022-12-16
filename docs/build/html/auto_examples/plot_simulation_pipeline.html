@@ -92,7 +92,7 @@
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../examples.html">
   Examples
  </a>
@@ -146,29 +146,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_easy_example.html">
-   A quick example
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Evaluating missing values with grid search and a pipeline
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_custom_pipeline.html">
-   A custom pipeline with more possibilities
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="plot_custom_probability_function.html">
-   Amputing with a custom probability function
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
               </div>
@@ -276,7 +254,8 @@ to download the full example code</p>
 <span class="n">cor</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 <span class="n">cov</span><span class="p">[</span><span class="n">cov</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cor</span>
-<span class="n">compl_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+<span class="n">compl_dataset</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -384,70 +363,70 @@ to download the full example code</p>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.1</td>
       <td>mean</td>
-      <td>0.583530</td>
+      <td>0.594913</td>
     </tr>
     <tr>
       <th>1</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.5</td>
       <td>mean</td>
-      <td>0.620522</td>
+      <td>0.652538</td>
     </tr>
     <tr>
       <th>2</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
       <td>0.9</td>
       <td>mean</td>
-      <td>0.652151</td>
+      <td>0.670950</td>
     </tr>
     <tr>
       <th>3</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR'}]</td>
       <td>0.1</td>
       <td>mean</td>
-      <td>0.586277</td>
+      <td>0.615525</td>
     </tr>
     <tr>
       <th>4</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR'}]</td>
       <td>0.5</td>
       <td>mean</td>
-      <td>0.617516</td>
+      <td>0.645212</td>
     </tr>
     <tr>
       <th>5</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR'}]</td>
       <td>0.9</td>
       <td>mean</td>
-      <td>0.639589</td>
+      <td>0.670470</td>
     </tr>
     <tr>
       <th>6</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.1</td>
       <td>mean</td>
-      <td>0.600758</td>
+      <td>0.620013</td>
     </tr>
     <tr>
       <th>7</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.5</td>
       <td>mean</td>
-      <td>0.630034</td>
+      <td>0.672114</td>
     </tr>
     <tr>
       <th>8</th>
       <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
       <td>0.9</td>
       <td>mean</td>
-      <td>0.642723</td>
+      <td>0.671452</td>
     </tr>
   </tbody>
 </table>
 </div>
 </div>
 <br />
-<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.346 seconds)</p>
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.186 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-simulation-pipeline-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/4bf1123cce983fd4900cc6e535aa8b59/plot_simulation_pipeline.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_simulation_pipeline.py</span></code></a></p>

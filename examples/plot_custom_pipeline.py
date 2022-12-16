@@ -34,7 +34,8 @@ mean = np.repeat(5, m)
 cor = 0.5
 cov = np.identity(m)
 cov[cov == 0] = cor
-compl_dataset = np.random.multivariate_normal(mean, cov, n)
+rng = np.random.default_rng()
+compl_dataset = rng.multivariate_normal(mean, cov, n)
 
 # %%
 # As amputation parameter settings, we will vary the proportion, the mechanism and the ``score_to_probability_func``. Since in  the latter have to be specified within the same dictionary, we define the parameters for the grid search as follows.

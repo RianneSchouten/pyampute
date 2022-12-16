@@ -144,9 +144,9 @@ class MultivariateAmputation(TransformerMixin, BaseEstimator):
     --------
     >>> import numpy as np
     >>> from pyampute.ampute import MultivariateAmputation
-    >>> m = 1000
-    >>> n = 10
-    >>> rng = np.random.default_rng(seed)
+    >>> n = 1000
+    >>> m = 10
+    >>> rng = np.random.default_rng()
     >>> X_compl = rng.standard_normal((m, n))
     >>> ma = MultivariateAmputation()
     >>> X_incompl = ma.fit_transform(X_compl)

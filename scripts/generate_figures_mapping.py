@@ -24,7 +24,8 @@ def generate_figures_mapping():
         [cor, cor, cor, 1],
     ]
     n = 1000
-    compl_dataset = np.random.multivariate_normal(mean, cov, n)
+    rng = np.random.default_rng()
+    compl_dataset = rng.multivariate_normal(mean, cov, n)
 
     ma = MultivariateAmputation(
         patterns=[

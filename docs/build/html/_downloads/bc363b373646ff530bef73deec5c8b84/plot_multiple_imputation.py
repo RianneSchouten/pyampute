@@ -69,8 +69,6 @@ from sklearn.metrics import mean_squared_error as mse
 
 from pyampute import MultivariateAmputation
 
-rng = np.random.RandomState(0)
-
 # Make a function that calculates the variance of the beta estimates. This is
 # necessary because the linear regression model from sklearn does not provide
 # these values.
