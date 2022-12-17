@@ -100,7 +100,6 @@ Transforming one dataset
 
  .. code-block:: none
 
-    2022-12-16 15:20:07,276 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible data/shift_lookup.csv is missing, in the wrong location, or corrupted. Try rerunning scripts/generate_shift_lookup_table.py to regenerate the lookup table.
     /home/dav/research/pyampute/pyampute/exploration/md_patterns.py:120: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
       group_values = group_values.append(colsums, ignore_index=True)
 
@@ -130,14 +129,6 @@ A separate fit and transform
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    2022-12-16 15:20:07,497 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible data/shift_lookup.csv is missing, in the wrong location, or corrupted. Try rerunning scripts/generate_shift_lookup_table.py to regenerate the lookup table.
 
 
 
@@ -172,14 +163,6 @@ Integration in a pipeline
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    2022-12-16 15:20:07,552 [WARNING] Failed to load lookup table for a prespecified score to probability function. It is possible data/shift_lookup.csv is missing, in the wrong location, or corrupted. Try rerunning scripts/generate_shift_lookup_table.py to regenerate the lookup table.
-
 
 
 
@@ -205,7 +188,7 @@ By default, ``SimpleImputer`` imputes with the mean of the observed data. It is 
 
  .. code-block:: none
 
-    [116   0   0 116   0 116   0 116   0 116]
+    [  0   0 120 120 120   0 120 120   0   0]
 
 
 
@@ -220,7 +203,7 @@ For more information about ``pyampute``'s parameters, see `A mapping from R-func
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.304 seconds)
+   **Total running time of the script:** ( 0 minutes  0.226 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_easy_example.py:

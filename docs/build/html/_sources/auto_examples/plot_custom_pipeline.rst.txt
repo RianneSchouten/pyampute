@@ -342,109 +342,109 @@ Comparison
           <th>0</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.1</td>
-          <td>5.005602</td>
+          <td>4.998796</td>
         </tr>
         <tr>
           <th>1</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.5</td>
-          <td>5.006141</td>
+          <td>4.998061</td>
         </tr>
         <tr>
           <th>2</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.9</td>
-          <td>4.986714</td>
+          <td>4.993133</td>
         </tr>
         <tr>
           <th>3</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.1</td>
-          <td>5.004240</td>
+          <td>5.005670</td>
         </tr>
         <tr>
           <th>4</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.5</td>
-          <td>4.985828</td>
+          <td>5.010373</td>
         </tr>
         <tr>
           <th>5</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.9</td>
-          <td>5.047626</td>
+          <td>5.024687</td>
         </tr>
         <tr>
           <th>6</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.1</td>
-          <td>4.942859</td>
+          <td>4.945268</td>
         </tr>
         <tr>
           <th>7</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.5</td>
-          <td>4.737460</td>
+          <td>4.748383</td>
         </tr>
         <tr>
           <th>8</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.9</td>
-          <td>4.413183</td>
+          <td>4.510414</td>
         </tr>
         <tr>
           <th>9</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.1</td>
-          <td>4.995197</td>
+          <td>4.998428</td>
         </tr>
         <tr>
           <th>10</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.5</td>
-          <td>4.975828</td>
+          <td>5.014696</td>
         </tr>
         <tr>
           <th>11</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.9</td>
-          <td>4.955213</td>
+          <td>4.972411</td>
         </tr>
         <tr>
           <th>12</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.1</td>
-          <td>4.918617</td>
+          <td>4.917843</td>
         </tr>
         <tr>
           <th>13</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.5</td>
-          <td>4.634837</td>
+          <td>4.636337</td>
         </tr>
         <tr>
           <th>14</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.9</td>
-          <td>4.288100</td>
+          <td>4.312762</td>
         </tr>
         <tr>
           <th>15</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.1</td>
-          <td>5.000082</td>
+          <td>4.993687</td>
         </tr>
         <tr>
           <th>16</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.5</td>
-          <td>4.996782</td>
+          <td>4.999428</td>
         </tr>
         <tr>
           <th>17</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.9</td>
-          <td>4.992335</td>
+          <td>4.970546</td>
         </tr>
       </tbody>
     </table>
@@ -496,109 +496,109 @@ Comparison
           <th>0</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.1</td>
-          <td>5.004357</td>
+          <td>4.999176</td>
         </tr>
         <tr>
           <th>1</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.5</td>
-          <td>5.002610</td>
+          <td>5.003938</td>
         </tr>
         <tr>
           <th>2</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.9</td>
-          <td>4.997362</td>
+          <td>4.991379</td>
         </tr>
         <tr>
           <th>3</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.1</td>
-          <td>5.003849</td>
+          <td>5.002979</td>
         </tr>
         <tr>
           <th>4</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.5</td>
-          <td>5.005478</td>
+          <td>4.999179</td>
         </tr>
         <tr>
           <th>5</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.9</td>
-          <td>4.990324</td>
+          <td>5.013873</td>
         </tr>
         <tr>
           <th>6</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.1</td>
-          <td>4.945300</td>
+          <td>4.944237</td>
         </tr>
         <tr>
           <th>7</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.5</td>
-          <td>4.740035</td>
+          <td>4.749489</td>
         </tr>
         <tr>
           <th>8</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.9</td>
-          <td>4.494424</td>
+          <td>4.520981</td>
         </tr>
         <tr>
           <th>9</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.1</td>
-          <td>5.001584</td>
+          <td>4.996579</td>
         </tr>
         <tr>
           <th>10</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.5</td>
-          <td>4.983976</td>
+          <td>5.004579</td>
         </tr>
         <tr>
           <th>11</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR...</td>
           <td>0.9</td>
-          <td>4.998912</td>
+          <td>5.010057</td>
         </tr>
         <tr>
           <th>12</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.1</td>
-          <td>4.919105</td>
+          <td>4.916333</td>
         </tr>
         <tr>
           <th>13</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.5</td>
-          <td>4.637829</td>
+          <td>4.639330</td>
         </tr>
         <tr>
           <th>14</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.9</td>
-          <td>4.295394</td>
+          <td>4.310698</td>
         </tr>
         <tr>
           <th>15</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.1</td>
-          <td>4.995958</td>
+          <td>4.999446</td>
         </tr>
         <tr>
           <th>16</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.5</td>
-          <td>5.002626</td>
+          <td>4.992550</td>
         </tr>
         <tr>
           <th>17</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.9</td>
-          <td>5.005352</td>
+          <td>5.023169</td>
         </tr>
       </tbody>
     </table>
@@ -624,7 +624,7 @@ SimpleImputer will use the mean of the observed data in the first feature. There
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.544 seconds)
+   **Total running time of the script:** ( 0 minutes  6.931 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_custom_pipeline.py:

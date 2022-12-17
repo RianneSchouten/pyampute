@@ -151,7 +151,7 @@ We expect about 30% of rows to be missing values
  .. code-block:: none
 
 
-    27.6
+    26.82
 
 
 
@@ -292,7 +292,7 @@ We expect about 30% of rows to be missing values.
  .. code-block:: none
 
 
-    19.6
+    21.490000000000002
 
 
 
@@ -319,7 +319,7 @@ You can calculate the expected proportion of missingness following the procedure
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.372 seconds)
+   **Total running time of the script:** ( 0 minutes  0.336 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_custom_probability_function.py:

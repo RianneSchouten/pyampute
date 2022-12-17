@@ -354,7 +354,7 @@ the last column displays the number of missing values per pattern.</p>
 <dd class="field-odd"><p><strong>X</strong> (Matrix of shape <cite>(n, m)</cite>) – Dataset with missing values. <cite>n</cite> rows (samples) and <cite>m</cite> columns (features).</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>pvalues</strong> – The p-values of t-tests for each pair of features. Null hypothesis for cell <img class="math" src="_images/math/83884167e76ea85b44cb888c9e37a02919b547d7.png" alt="pvalues[h,j]"/>: data in feature <img class="math" src="_images/math/4c120f773ab4e1c59ad2bd44aae969ce24dd190a.png" alt="h"/> is Missing Completely At Random (MCAR) with respect to feature <img class="math" src="_images/math/e3fc28292267f066fee7718c64f4bbfece521f24.png" alt="j"/> for all <img class="math" src="_images/math/7bd3612cf528fb6e9a1e188c41fcb85a5df95d11.png" alt="h,j"/> in <img class="math" src="_images/math/86663b8c8ca279d6d4c390db5ce47e014a0004a8.png" alt="{1,2,...m}"/>. Diagonal values do not exist.</p>
+<dd class="field-even"><p><strong>pvalues</strong> – The p-values of t-tests for each pair of features. Null hypothesis for cell <span class="math">pvalues[h,j]</span>: data in feature <span class="math">h</span> is Missing Completely At Random (MCAR) with respect to feature <span class="math">j</span> for all <span class="math">h,j</span> in <span class="math">{1,2,...m}</span>. Diagonal values do not exist.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>pandas DataFrame of shape <cite>(m, m)</cite></p>

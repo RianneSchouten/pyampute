@@ -42,9 +42,8 @@ extensions = [
     "sphinx.ext.autosummary",  # need api.rst (add to index.rst)
     # https://github.com/agronholm/sphinx-autodoc-typehints
     "sphinx_autodoc_typehints",  # so I can autoinject type hints to docs
-    "sphinx_gallery.gen_gallery",
-    'sphinx.ext.imgmath', # for math in rst files
-    'sphinx.ext.mathjax', # for matrices in rst files
+    "sphinx.ext.imgmath",  # for math in rst files
+    "sphinx.ext.mathjax",  # for matrices in rst files
     # https://sphinx-gallery.github.io/stable/index.html
     "sphinx_gallery.gen_gallery",
 ]
@@ -52,6 +51,7 @@ extensions = [
 sphinx_gallery_conf = {
     "examples_dirs": "../../examples",
     "gallery_dirs": "auto_examples",
+    "run_stale_examples": True,
 }
 
 # Add any paths that contain templates here, relative to this directory.

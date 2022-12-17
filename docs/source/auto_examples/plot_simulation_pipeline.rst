@@ -246,63 +246,63 @@ Evaluation
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.1</td>
           <td>mean</td>
-          <td>0.594913</td>
+          <td>0.602882</td>
         </tr>
         <tr>
           <th>1</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.5</td>
           <td>mean</td>
-          <td>0.652538</td>
+          <td>0.650967</td>
         </tr>
         <tr>
           <th>2</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MCA...</td>
           <td>0.9</td>
           <td>mean</td>
-          <td>0.670950</td>
+          <td>0.662562</td>
         </tr>
         <tr>
           <th>3</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR'}]</td>
           <td>0.1</td>
           <td>mean</td>
-          <td>0.615525</td>
+          <td>0.607856</td>
         </tr>
         <tr>
           <th>4</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR'}]</td>
           <td>0.5</td>
           <td>mean</td>
-          <td>0.645212</td>
+          <td>0.642429</td>
         </tr>
         <tr>
           <th>5</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MAR'}]</td>
           <td>0.9</td>
           <td>mean</td>
-          <td>0.670470</td>
+          <td>0.659790</td>
         </tr>
         <tr>
           <th>6</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.1</td>
           <td>mean</td>
-          <td>0.620013</td>
+          <td>0.630124</td>
         </tr>
         <tr>
           <th>7</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.5</td>
           <td>mean</td>
-          <td>0.672114</td>
+          <td>0.655468</td>
         </tr>
         <tr>
           <th>8</th>
           <td>[{'incomplete_vars': [0, 1], 'mechanism': 'MNA...</td>
           <td>0.9</td>
           <td>mean</td>
-          <td>0.671452</td>
+          <td>0.657825</td>
         </tr>
       </tbody>
     </table>
@@ -314,7 +314,7 @@ Evaluation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.186 seconds)
+   **Total running time of the script:** ( 0 minutes  0.215 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_simulation_pipeline.py:
