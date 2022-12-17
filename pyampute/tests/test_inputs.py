@@ -7,17 +7,19 @@ from pyampute.ampute import MultivariateAmputation
 from pyampute.exploration.md_patterns import mdPatterns
 
 seed = 0
+nsamples = 1000
+rng = np.random.default_rng(seed)
 columns = ["age", "weight", "ismale", "fries_s", "fries_m", "fries_l"]
-X_nomissing = pd.DataFrame(
+X_nomissing = pd.concat(
     [
-        [44, 15.1, 0, 0, 1, 0],
-        [49, 57.2, 1, 0, 0, 1],
-        [26, 26.3, 0, 0, 1, 0],
-        [16, 73.4, 1, 1, 0, 0],
-        [13, 56.5, 1, 0, 1, 0],
-        [57, 29.6, 0, 1, 0, 0],
+        pd.DataFrame(rng.random((nsamples, 2)), columns=["age", "weight"]),
+        # half categorical, sandwhiched between 2 multicat
+        pd.Series(rng.integers(0, 2, nsamples), name="ismale"),
+        pd.get_dummies(rng.integers(0, 3, nsamples)).rename(
+            columns=dict(zip(range(3), ["fries_s", "fries_m", "fries_l"]))
+        ),
     ],
-    columns=columns,
+    axis=1,
 )
 continuous_columns = ["age", "weight"]
 onehot_prefix_names = ["fries"]
@@ -93,7 +95,7 @@ class TestDefaults(unittest.TestCase):
                 )
             )
             self.assertTrue(
-                np.array_equal(adjust.mechanisms, np.array(["MAR", "MAR+MNAR"]), )
+                np.array_equal(adjust.mechanisms, np.array(["MAR", "MAR+MNAR"]),)
             )
             self.assertTrue(
                 np.array_equal(
@@ -129,7 +131,7 @@ class TestDefaults(unittest.TestCase):
             )
         )
         self.assertTrue(
-            np.array_equal(mechanism_case_coverage.freqs, np.array([1 / 3] * 3), )
+            np.array_equal(mechanism_case_coverage.freqs, np.array([1 / 3] * 3),)
         )
 
     def test_weights_dict(self):

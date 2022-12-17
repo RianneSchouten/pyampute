@@ -51,8 +51,8 @@ class TestMdPatterns(unittest.TestCase):
         self.assertEqual(patterns.shape, (3, 4))
         self.assertEqual(patterns.loc["rows_no_missing"].values[1:-1].sum(), 2)
         self.assertEqual(patterns.loc["rows_no_missing", "n_missing_values"], 0)
-        self.assertEqual(patterns.loc["rows_no_missing", "row_count"], 489)
-        self.assertEqual(patterns.loc[1, "row_count"], 511)
+        self.assertEqual(patterns.loc["rows_no_missing", "row_count"], 508)
+        self.assertEqual(patterns.loc[1, "row_count"], 492)
 
         # self.assertEqual(patterns.iloc[0, 1:-1].sum(), 2)
         # self.assertEqual(patterns.iloc[0, -1], 0)
