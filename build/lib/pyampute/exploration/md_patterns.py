@@ -1,4 +1,5 @@
 """Displays missing data patterns in incomplete datasets"""
+
 # Author: Rianne Schouten <https://rianneschouten.github.io/>
 # Co-Author: Srinidhi Ilango
 
@@ -61,7 +62,11 @@ class mdPatterns:
         self.md_patterns = None
 
     def get_patterns(
-        self, X: Matrix, count_or_proportion: str = "count", show_plot: bool = True
+        self,
+        X: Matrix,
+        count_or_proportion: str = "count",
+        show_plot: bool = True,
+        figsize: tuple = (10, 8),
     ) -> pd.DataFrame:
         """Extracts and visualizes missing data patterns in an incomplete dataset
 
@@ -69,19 +74,19 @@ class mdPatterns:
         ----------
         X : Matrix of shape `(n, m)`
             Dataset with missing values. `n` rows (samples) and `m` columns (features).
-        
+
         count_or_proportion : str, {"count", "proportion"}, default : "count"
-            Whether the number of rows should be specified as a count or a proportion. 
+            Whether the number of rows should be specified as a count or a proportion.
 
         show_plot : bool, default : True
-            Whether a plot should be displayed using ``plt.show``. 
+            Whether a plot should be displayed using ``plt.show``.
 
         Returns
         -------
         md_patterns : pandas DataFrame of shape `(k+2, m+2)`
-            `k` is the number of unique missing data patterns and `m` the number of dataset columns (features). 
-            The first row displays the data rows with no missing values and the last row gives column totals. 
-            The first column displays the count or proportion of rows that follow a pattern, 
+            `k` is the number of unique missing data patterns and `m` the number of dataset columns (features).
+            The first row displays the data rows with no missing values and the last row gives column totals.
+            The first column displays the count or proportion of rows that follow a pattern,
             the last column displays the number of missing values per pattern.
         """
 
@@ -93,7 +98,7 @@ class mdPatterns:
 
         # make plot
         if show_plot:
-            self._make_plot()
+            self._make_plot(figsize=figsize)
 
         return self.md_patterns
 
@@ -149,8 +154,8 @@ class mdPatterns:
         )
         return self.md_patterns
 
-    def _make_plot(self):
-        """"Creates visualization of missing data patterns"""
+    def _make_plot(self, figsize: tuple = (10, 8)):
+        """ "Creates visualization of missing data patterns"""
 
         group_values = self.md_patterns
 
@@ -162,7 +167,7 @@ class mdPatterns:
         myblue = "#006CC2B3"
         cmap = colors.ListedColormap([myred, myblue])
 
-        fig, ax = plt.subplots(1)
+        fig, ax = plt.subplots(figsize=figsize)
         ax.imshow(heat_values.astype(bool), aspect="auto", cmap=cmap)
 
         by = ax.twinx()  # right ax
