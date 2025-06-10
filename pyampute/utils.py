@@ -6,11 +6,15 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype
 import numpy as np
 from os.path import join
+import os
 
 ArrayLike = Union[pd.Series, np.array, List]
 Matrix = Union[pd.DataFrame, np.ndarray]
 
-LOOKUP_TABLE_PATH = join("data", "shift_lookup.csv")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+LOOKUP_TABLE_PATH = os.path.join(BASE_DIR, "data", "shift_lookup.csv")
 
 
 def standardize_uppercase(input: str) -> str:
