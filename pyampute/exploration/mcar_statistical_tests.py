@@ -1,6 +1,8 @@
 """Statistical hypothesis test for Missing Completely At Random (MCAR)"""
+
 # Author: Rianne Schouten <https://rianneschouten.github.io/>
 # Co-Author: Davina Zamanzadeh <https://davinaz.me/>
+# Modified to report effect sizes alongside p-values.
 
 from logging import error
 import numpy as np
@@ -10,6 +12,25 @@ from scipy.stats import chi2, ttest_ind
 
 # Local
 from pyampute.utils import Matrix
+
+
+def _cohens_d(a: pd.Series, b: pd.Series) -> float:
+    """
+    Pooled-variance Cohen's d for two samples.
+
+    Returns np.nan when either group has fewer than 2 usable values or the
+    pooled standard deviation is 0.
+    """
+    a = a.dropna()
+    b = b.dropna()
+    n1, n2 = len(a), len(b)
+    if n1 < 2 or n2 < 2:
+        return np.nan
+    s1, s2 = a.std(ddof=1), b.std(ddof=1)
+    pooled = np.sqrt(((n1 - 1) * s1**2 + (n2 - 1) * s2**2) / (n1 + n2 - 2))
+    if pooled == 0:
+        return np.nan
+    return (a.mean() - b.mean()) / pooled
 
 
 class MCARTest:
@@ -23,17 +44,17 @@ class MCARTest:
     Parameters
     ----------
     method : str, {"little", "ttest"}, default : "little"
-        Whether to perform a chi-square test on the entire dataset ("little") or separate t-tests for every combination of variables ("ttest"). 
+        Whether to perform a chi-square test on the entire dataset ("little") or separate t-tests for every combination of variables ("ttest").
 
     See also
     --------
     :class:`~pyampute.exploration.md_patterns.mdPatterns` : Displays missing data patterns in incomplete datasets
-    
+
     :class:`~pyampute.ampute.MultivariateAmputation` : Transformer for generating multivariate missingness in complete datasets
 
     Notes
     -----
-    We advise to use Little's MCAR test carefully. Rejecting the null hypothesis may not always mean that data is not MCAR, nor is accepting the null hypothesis a guarantee that data is MCAR. See `Schouten et al. (2021)`_ for a thorough discussion of missingness mechanisms. 
+    We advise to use Little's MCAR test carefully. Rejecting the null hypothesis may not always mean that data is not MCAR, nor is accepting the null hypothesis a guarantee that data is MCAR. See `Schouten et al. (2021)`_ for a thorough discussion of missingness mechanisms.
 
     .. _`Schouten et al. (2021)`: https://journals.sagepub.com/doi/full/10.1177/0049124118799376
 
@@ -44,7 +65,7 @@ class MCARTest:
     >>> data_mcar = pd.read_table("data/missingdata_mcar.csv")
     >>> mt = MCARTest(method="little")
     >>> print(mt.little_mcar_test(data_mcar))
-    0.17365464213775494    
+    0.17365464213775494
     """
 
     def __init__(self, method: str = "little"):
@@ -61,24 +82,44 @@ class MCARTest:
             )
 
     @staticmethod
-    def little_mcar_test(X: Matrix) -> float:
+    def little_mcar_test(X: Matrix, return_stats: bool = False):
         """
         Implementation of Little's MCAR test
-        
+
         Parameters
         ----------
         X : Matrix of shape `(n, m)`
             Dataset with missing values. `n` rows (samples) and `m` columns (features).
 
+        return_stats : bool, default : False
+            If False, returns only the p-value (original behavior). If True,
+            returns a dict with the p-value, the chi-square statistic, the
+            degrees of freedom, and an effect size.
+
         Returns
         -------
         pvalue : float
-            The p-value of a chi-square hypothesis test. Null hypothesis: data is Missing Completely At Random (MCAR). Alternative hypothesis: data is not MCAR.
+            The p-value of a chi-square hypothesis test when `return_stats` is
+            False. Null hypothesis: data is Missing Completely At Random (MCAR).
+            Alternative hypothesis: data is not MCAR.
+
+        stats : dict
+            Returned when `return_stats` is True, with keys:
+
+            - ``"pvalue"`` : chi-square p-value
+            - ``"statistic"`` : Little's chi-square statistic ``d2``
+            - ``"df"`` : degrees of freedom
+            - ``"effect_size"`` : ``sqrt(d2 / n)``, a Cohen's w style measure.
+              Because ``d2`` is a sample-size-weighted sum of Mahalanobis
+              distances of the pattern means from the grand mean, this equals
+              the root of the average squared Mahalanobis distance and is
+              interpretable as a standardized effect magnitude.
         """
 
         dataset = X.copy()
         vars = dataset.dtypes.index.values
         n_var = dataset.shape[1]
+        n_obs = dataset.shape[0]
 
         # mean and covariance estimates
         # ideally, this is done with a maximum likelihood estimator
@@ -114,10 +155,19 @@ class MCARTest:
         # perform test and save output
         pvalue = 1 - chi2.cdf(d2, df)
 
+        if return_stats:
+            effect_size = np.sqrt(d2 / n_obs) if n_obs > 0 else np.nan
+            return {
+                "pvalue": pvalue,
+                "statistic": float(d2),
+                "df": int(df),
+                "effect_size": float(effect_size),
+            }
+
         return pvalue
 
     @staticmethod
-    def mcar_t_tests(X: Matrix) -> pd.DataFrame:
+    def mcar_t_tests(X: Matrix, effect_size: bool = False):
         """
         Performs t-tests for MCAR for each pair of features.
 
@@ -126,15 +176,31 @@ class MCARTest:
         X : Matrix of shape `(n, m)`
             Dataset with missing values. `n` rows (samples) and `m` columns (features).
 
+        effect_size : bool, default : False
+            If False, returns only the p-value matrix (original behavior). If
+            True, returns a tuple ``(pvalues, cohens_d)`` where the second
+            matrix holds the pooled-variance Cohen's d for each pair.
+
         Returns
         -------
         pvalues : pandas DataFrame of shape `(m, m)`
-            The p-values of t-tests for each pair of features. Null hypothesis for cell :math:`pvalues[h,j]`: data in feature :math:`h` is Missing Completely At Random (MCAR) with respect to feature :math:`j` for all :math:`h,j` in :math:`{1,2,...m}`. Diagonal values do not exist. 
+            The p-values of t-tests for each pair of features. Null hypothesis for cell :math:`pvalues[h,j]`: data in feature :math:`h` is Missing Completely At Random (MCAR) with respect to feature :math:`j` for all :math:`h,j` in :math:`{1,2,...m}`. Diagonal values do not exist.
+
+        cohens_d : pandas DataFrame of shape `(m, m)`
+            Returned when `effect_size` is True. Cell :math:`[h, j]` is Cohen's d
+            comparing feature :math:`j` between the rows where feature :math:`h`
+            is missing versus present. Positive values mean feature :math:`j` is
+            larger on average when :math:`h` is missing.
         """
         dataset = X.copy()
         vars = dataset.dtypes.index.values
         mcar_matrix = pd.DataFrame(
             data=np.zeros(shape=(dataset.shape[1], dataset.shape[1])),
+            columns=vars,
+            index=vars,
+        )
+        effect_matrix = pd.DataFrame(
+            data=np.full(shape=(dataset.shape[1], dataset.shape[1]), fill_value=np.nan),
             columns=vars,
             index=vars,
         )
@@ -146,5 +212,10 @@ class MCARTest:
                 mcar_matrix.loc[var, tvar] = ttest_ind(
                     part_one, part_two, equal_var=False
                 ).pvalue
+                effect_matrix.loc[var, tvar] = _cohens_d(part_one, part_two)
 
-        return mcar_matrix[mcar_matrix.notnull()]
+        pvalues = mcar_matrix[mcar_matrix.notnull()]
+
+        if effect_size:
+            return pvalues, effect_matrix
+        return pvalues

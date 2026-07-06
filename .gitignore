@@ -14,3 +14,7 @@ pyampute.egg-info/
 dist/
 
 htmlcov/
+
+.env
+.venv
+**/*venv*/
